@@ -57,7 +57,7 @@ const About = () => {
           {/* Profile */}
           <div className="space-y-8">
             <Card className="card-3d p-8">
-              <h3 className="text-2xl font-bold mb-4 text-neon">Minha Expertise</h3>
+              <h3 className="text-2xl font-bold mb-4 text-warm">Minha Expertise</h3>
               <p className="text-muted-foreground leading-relaxed mb-6">
                 Com anos de experiência na indústria audiovisual, especializo-me em transformar conceitos criativos em realidade através de técnicas avançadas de edição, VFX e CGI. Cada projeto é uma oportunidade de superar limites técnicos e artísticos.
               </p>
@@ -68,7 +68,7 @@ const About = () => {
 
             {/* Skills */}
             <Card className="card-3d p-8">
-              <h3 className="text-2xl font-bold mb-6 text-neon">Ferramentas & Software</h3>
+              <h3 className="text-2xl font-bold mb-6 text-warm">Ferramentas & Software</h3>
               <div className="flex flex-wrap gap-3">
                 {skills.map((skill, index) => (
                   <Badge
@@ -85,7 +85,7 @@ const About = () => {
 
           {/* Services */}
           <div className="space-y-6">
-            <h3 className="text-2xl font-bold mb-8 text-center text-neon">Serviços</h3>
+            <h3 className="text-2xl font-bold mb-8 text-center text-warm">Serviços</h3>
             {services.map((service, index) => (
               <Card
                 key={index}

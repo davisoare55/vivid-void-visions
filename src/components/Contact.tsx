@@ -22,7 +22,7 @@ const Contact = () => {
           {/* Contact Info */}
           <div className="space-y-8">
             <Card className="card-3d p-8">
-              <h3 className="text-2xl font-bold mb-6 text-neon">Entre em Contato</h3>
+              <h3 className="text-2xl font-bold mb-6 text-warm">Entre em Contato</h3>
               <div className="space-y-6">
                 <div className="flex items-center space-x-4 interactive">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
@@ -57,7 +57,7 @@ const Contact = () => {
             </Card>
 
             <Card className="card-3d p-8">
-              <h3 className="text-xl font-bold mb-4 text-neon">Orçamento Gratuito</h3>
+              <h3 className="text-xl font-bold mb-4 text-warm">Orçamento Gratuito</h3>
               <p className="text-muted-foreground leading-relaxed">
                 Solicite um orçamento sem compromisso. Analisarei seu projeto e retornarei com uma proposta personalizada em até 24 horas.
               </p>
@@ -66,7 +66,7 @@ const Contact = () => {
 
           {/* Contact Form */}
           <Card className="card-3d p-8">
-            <h3 className="text-2xl font-bold mb-6 text-neon">Envie sua Mensagem</h3>
+            <h3 className="text-2xl font-bold mb-6 text-warm">Envie sua Mensagem</h3>
             <form className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>

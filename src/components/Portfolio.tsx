@@ -1,6 +1,25 @@
 import { Card } from '@/components/ui/card';
+import { useEffect, useRef } from 'react';
 
 const Portfolio = () => {
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Inject the video script
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://scripts.converteai.net/1207b016-5c31-47e2-ba8e-a8059d7a99ff/players/68b8aa58e2667294be3e13eb/v4/player.js';
+    script.async = true;
+    document.head.appendChild(script);
+
+    return () => {
+      // Cleanup script when component unmounts
+      const existingScript = document.querySelector(`script[src="${script.src}"]`);
+      if (existingScript) {
+        document.head.removeChild(existingScript);
+      }
+    };
+  }, []);
   const projects = [
     {
       title: "VFX Cinematográfico",
@@ -39,30 +58,20 @@ const Portfolio = () => {
 
         {/* Featured Video */}
         <div className="mb-20">
-          <div className="relative max-w-4xl mx-auto">
-            <div className="card-3d rounded-lg p-8 mb-8">
-              <h3 className="text-2xl font-bold mb-4 text-center text-neon">
-                Vídeo Destaque
-              </h3>
-              <div className="relative aspect-video rounded-lg overflow-hidden bg-background-tertiary">
-                <div className="flex items-center justify-center h-full">
-                  <div 
-                    dangerouslySetInnerHTML={{
-                      __html: `
-                        <vturb-smartplayer id="vid-68b8aa58e2667294be3e13eb" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
-                        <script type="text/javascript">
-                          var s=document.createElement("script");
-                          s.src="https://scripts.converteai.net/1207b016-5c31-47e2-ba8e-a8059d7a99ff/players/68b8aa58e2667294be3e13eb/v4/player.js";
-                          s.async=!0;
-                          document.head.appendChild(s);
-                        </script>
-                      `
-                    }}
-                  />
-                </div>
+            <div className="relative max-w-4xl mx-auto">
+              <div className="card-3d rounded-lg p-6 mb-8">
+                <h3 className="text-2xl font-bold mb-4 text-center text-warm">
+                  Vídeo Destaque
+                </h3>
+                <div 
+                  ref={videoContainerRef}
+                  className="relative aspect-video rounded-lg overflow-hidden bg-background-tertiary border border-border/50"
+                  dangerouslySetInnerHTML={{
+                    __html: '<vturb-smartplayer id="vid-68b8aa58e2667294be3e13eb" style="display: block; margin: 0 auto; width: 100%; height: 100%;"></vturb-smartplayer>'
+                  }}
+                />
               </div>
             </div>
-          </div>
         </div>
 
         {/* Projects Grid */}
@@ -73,8 +82,8 @@ const Portfolio = () => {
               className="card-3d p-6 h-full interactive group"
               style={{ animationDelay: `${index * 0.2}s` }}
             >
-              <div className="h-48 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg mb-6 flex items-center justify-center group-hover:from-primary/30 group-hover:to-secondary/30 transition-all duration-300">
-                <div className="text-4xl text-primary opacity-60">
+              <div className="h-40 bg-gradient-to-br from-primary/15 to-accent/15 rounded-lg mb-4 flex items-center justify-center group-hover:from-primary/20 group-hover:to-accent/20 transition-all duration-300">
+                <div className="text-3xl opacity-60">
                   {index === 0 && "🎬"}
                   {index === 1 && "✨"}
                   {index === 2 && "🎯"}
