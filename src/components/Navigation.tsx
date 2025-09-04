@@ -21,10 +21,12 @@ const Navigation = () => {
   };
 
   const navItems = [
-    { label: 'Início', id: 'hero' },
-    { label: 'Portfolio', id: 'portfolio' },
-    { label: 'Sobre', id: 'sobre' },
-    { label: 'Contato', id: 'contato' }
+    { id: 'portfolio', label: 'Início' },
+    { id: 'prova-social', label: 'Prova Social' },
+    { id: 'como-funciona', label: 'Como Funciona' },
+    { id: 'portfolio', label: 'Casos' },
+    { id: 'exclusividade', label: 'Exclusividade' },
+    { id: 'sobre', label: 'Sobre' }
   ];
 
   return (
@@ -36,9 +38,9 @@ const Navigation = () => {
           {/* Logo */}
           <div 
             className="text-2xl font-bold text-gradient cursor-pointer interactive"
-            onClick={() => scrollToSection('hero')}
+            onClick={() => scrollToSection('portfolio')}
           >
-            EDITOR.VFX
+            SOARES.FOOH
           </div>
 
           {/* Desktop Navigation */}
@@ -56,7 +58,7 @@ const Navigation = () => {
               onClick={() => scrollToSection('contato')}
               className="btn-hero px-6 py-2 interactive"
             >
-              Orçamento
+              Garantir minha vaga agora
             </Button>
           </div>
 

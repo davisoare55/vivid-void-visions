@@ -1,116 +1,69 @@
+import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Mail, Phone, MessageCircle } from 'lucide-react';
 
 const Contact = () => {
+  const [timeLeft, setTimeLeft] = useState(7 * 60); // 7 minutes in seconds
+  const [spotsLeft] = useState(2);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
   return (
     <section id="contato" className="py-20 px-6 relative">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-6xl font-bold mb-6 text-gradient">
             Vamos Trabalhar Juntos
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Pronto para dar vida ao seu projeto? Entre em contato e vamos discutir como posso ajudar a tornar sua visão realidade.
-          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Info */}
-          <div className="space-y-8">
-            <Card className="card-3d p-8">
-              <h3 className="text-2xl font-bold mb-6 text-warm">Entre em Contato</h3>
-              <div className="space-y-6">
-                <div className="flex items-center space-x-4 interactive">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <Mail className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-foreground">Email</p>
-                    <p className="text-muted-foreground">contato@editor.com</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-4 interactive">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <Phone className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-foreground">Telefone</p>
-                    <p className="text-muted-foreground">+55 (11) 99999-9999</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-4 interactive">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <MessageCircle className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-foreground">WhatsApp</p>
-                    <p className="text-muted-foreground">+55 (11) 99999-9999</p>
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="card-3d p-8">
-              <h3 className="text-xl font-bold mb-4 text-warm">Orçamento Gratuito</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Solicite um orçamento sem compromisso. Analisarei seu projeto e retornarei com uma proposta personalizada em até 24 horas.
+        {/* Urgency Timer */}
+        <div className="p-8 mb-12 border-2 border-white rounded-lg interactive group hover:scale-105 transition-all duration-300" style={{background: 'linear-gradient(145deg, #000000 0%, #0a0a0a 30%, #1a1a1a 70%, #2a2a2a 100%)', boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
+          <div className="text-center">
+            <div className="mb-6">
+              <h3 className="text-2xl font-bold text-primary mb-2">Oferta por Tempo Limitado</h3>
+              <p className="text-lg text-muted-foreground mb-4">
+                Apenas <span className="text-primary font-bold">{spotsLeft} vagas restantes</span> para este mês
               </p>
-            </Card>
+            </div>
+            
+            <div className="mb-8">
+              <div className="text-4xl md:text-6xl font-bold text-primary mb-2" style={{ fontFamily: 'var(--font-display)' }}>
+                {formatTime(timeLeft)}
+              </div>
+              <p className="text-sm text-muted-foreground">Tempo restante para garantir sua vaga</p>
+            </div>
+
+            <Button
+              className="btn-hero px-12 py-6 text-xl font-bold interactive rounded-2xl min-w-[300px] shadow-2xl"
+              style={{ fontFamily: 'var(--font-display)' }}
+            >
+              Garantir minha vaga agora
+            </Button>
+            
+            <p className="text-sm text-muted-foreground mt-4">
+              Processo seletivo • Retorno em 24h úteis
+            </p>
           </div>
-
-          {/* Contact Form */}
-          <Card className="card-3d p-8">
-            <h3 className="text-2xl font-bold mb-6 text-warm">Envie sua Mensagem</h3>
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-foreground">Nome</label>
-                  <Input 
-                    placeholder="Seu nome completo"
-                    className="bg-background-secondary border-border focus:border-primary interactive"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-foreground">Email</label>
-                  <Input 
-                    type="email"
-                    placeholder="seu@email.com"
-                    className="bg-background-secondary border-border focus:border-primary interactive"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2 text-foreground">Assunto</label>
-                <Input 
-                  placeholder="Assunto do seu projeto"
-                  className="bg-background-secondary border-border focus:border-primary interactive"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2 text-foreground">Mensagem</label>
-                <Textarea 
-                  placeholder="Descreva seu projeto em detalhes..."
-                  rows={6}
-                  className="bg-background-secondary border-border focus:border-primary interactive resize-none"
-                />
-              </div>
-
-              <Button 
-                type="submit"
-                className="btn-hero w-full py-3 interactive"
-              >
-                Enviar Mensagem
-              </Button>
-            </form>
-          </Card>
         </div>
       </div>
     </section>

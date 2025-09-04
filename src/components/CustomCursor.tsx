@@ -30,11 +30,12 @@ const CustomCursor = () => {
   return (
     <>
       <div
-        className="cursor"
+        className="fixed w-6 h-6 pointer-events-none transition-all duration-200 ease-out"
         style={{
-          left: position.x,
-          top: position.y,
-          transform: `translate(-50%, -50%) scale(${isHovering ? 1.5 : 1})`,
+          left: `${position.x - 12}px`,
+          top: `${position.y - 12}px`,
+          background: 'radial-gradient(circle, #FF8C00 0%, rgba(255, 140, 0, 0.8) 40%, transparent 70%)',
+          zIndex: 99999
         }}
       />
       <div
