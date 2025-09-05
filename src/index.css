@@ -138,6 +138,7 @@
   body {
     @apply bg-background text-foreground overflow-x-hidden;
     font-family: var(--font-body);
+    font-weight: 500; /* Changed from default to medium */
     cursor: none;
   }
 
@@ -219,6 +220,8 @@
     position: relative;
     overflow: hidden;
     box-shadow: 0 0 30px rgba(255, 140, 0, 0.3);
+    font-weight: 700; /* Bold weight for buttons */
+    letter-spacing: 0.5px; /* Increased letter spacing */
   }
 
   .btn-hero:hover {
@@ -242,8 +245,6 @@
     left: 100%;
   }
 
-  .btn-hero:hover {
-  }
 
   /* Section Transitions */
   .section-enter {
@@ -265,6 +266,17 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+  }
+
+  /* Button Typography */
+  button, .btn, .btn-hero {
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  /* All regular text to medium weight */
+  p, span, div:not(.btn):not(button) {
+    font-weight: 500;
   }
 
   .border-glow {
