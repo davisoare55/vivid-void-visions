@@ -31,23 +31,23 @@ const Contact = () => {
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6 text-gradient">
+          <h2 className="text-2xl sm:text-3xl md:text-6xl font-bold mb-6 text-gradient">
             Vamos Trabalhar Juntos
           </h2>
         </div>
 
         {/* Urgency Timer */}
-        <div className="p-8 mb-12 border-2 border-white rounded-lg interactive group hover:scale-105 transition-all duration-300" style={{background: 'linear-gradient(145deg, #000000 0%, #0a0a0a 30%, #1a1a1a 70%, #2a2a2a 100%)', boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
+        <div className="p-4 sm:p-6 md:p-8 mb-12 border-2 border-white rounded-lg interactive group hover:scale-105 transition-all duration-300" style={{background: 'linear-gradient(145deg, #000000 0%, #0a0a0a 30%, #1a1a1a 70%, #2a2a2a 100%)', boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
           <div className="text-center">
             <div className="mb-6">
-              <h3 className="text-2xl font-bold text-primary mb-2">Oferta por Tempo Limitado</h3>
-              <p className="text-lg text-muted-foreground mb-4">
+              <h3 className="text-xl sm:text-2xl font-bold text-primary mb-2">Oferta por Tempo Limitado</h3>
+              <p className="text-base sm:text-lg text-muted-foreground mb-4">
                 Apenas <span className="text-primary font-bold">{spotsLeft} vagas restantes</span> para este mês
               </p>
             </div>
             
             <div className="mb-8">
-              <div className="text-4xl md:text-6xl font-bold text-primary mb-2" style={{ fontFamily: 'var(--font-display)' }}>
+              <div className="text-3xl sm:text-4xl md:text-6xl font-bold text-primary mb-2" style={{ fontFamily: 'var(--font-display)' }}>
                 {formatTime(timeLeft)}
               </div>
               <p className="text-sm text-muted-foreground">Tempo restante para garantir sua vaga</p>
@@ -57,7 +57,7 @@ const Contact = () => {
               href="https://docs.google.com/forms/d/e/1FAIpQLSfadJIhA1H410Cj_6Mxs8kEj6bupPDbivUqiWZPR0_pqt7wlQ/viewform?usp=header"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-hero px-12 py-6 text-xl font-bold interactive rounded-2xl min-w-[300px] shadow-2xl inline-block text-center"
+              className="btn-hero px-8 sm:px-12 py-4 sm:py-6 text-lg sm:text-xl font-bold interactive rounded-2xl min-w-[280px] sm:min-w-[300px] shadow-2xl inline-block text-center"
               style={{ fontFamily: 'var(--font-display)' }}
             >
               Garantir minha vaga agora

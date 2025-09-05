@@ -39,9 +39,6 @@ const Index = () => {
               <About />
             </ScrollRevealSection>
             <ScrollRevealSection staggerDelay={50}>
-              <PorQueFooh />
-            </ScrollRevealSection>
-            <ScrollRevealSection staggerDelay={50}>
               <OQueRecebe />
             </ScrollRevealSection>
             <ScrollRevealSection staggerDelay={50}>

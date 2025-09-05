@@ -11,18 +11,18 @@ const Exclusividade = () => {
       <div className="max-w-5xl mx-auto text-center">
         {/* Header */}
         <div className="mb-16">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6 text-gradient">
+          <h2 className="text-2xl sm:text-3xl md:text-6xl font-bold mb-6 text-gradient">
             Exclusividade real
           </h2>
         </div>
 
         {/* Main Content */}
-        <div className="p-12 border-2 border-white rounded-3xl bg-transparent interactive group hover:scale-105 transition-all duration-300" style={{boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
+        <div className="p-6 sm:p-8 md:p-12 border-2 border-white rounded-3xl bg-transparent interactive group hover:scale-105 transition-all duration-300" style={{boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
           <div className="mb-8">
             <div className="mb-6 flex justify-center group-hover:scale-110 transition-transform duration-300">
-              <img src="/portfolio/branco/exclusividade-diamante-branco.png" alt="Exclusividade" className="w-16 h-16" />
+              <img src="/portfolio/branco/exclusividade-diamante-branco.png" alt="Exclusividade" className="w-12 h-12 sm:w-16 sm:h-16" />
             </div>
-            <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-8">
+            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground leading-relaxed mb-8">
               Para manter a qualidade artesanal, atendo apenas <span className="text-primary font-bold">4 projetos por mês</span>.<br/>
               As vagas são preenchidas por processo seletivo.
             </p>

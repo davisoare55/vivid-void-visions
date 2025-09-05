@@ -16,12 +16,12 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-10 text-center max-w-6xl mx-auto px-6">
         <div className="mb-8">
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 text-gradient leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-8xl font-bold mb-6 text-gradient leading-tight">
             EDITOR
             <br />
             <span className="text-warm">VISUAL</span>
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed px-4">
             Especialista em edição de vídeos, VFX e CGI. Transformando ideias em experiências visuais únicas e impactantes.
           </p>
         </div>
