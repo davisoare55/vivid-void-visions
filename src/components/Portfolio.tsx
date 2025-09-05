@@ -100,9 +100,10 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
       <div className="max-w-7xl mx-auto relative z-20">
         {/* Header */}
         <div className="text-center mb-8 md:mb-16">
-          <h1 className="font-black mb-4 md:mb-8 text-gradient leading-tight drop-shadow-2xl text-center px-3 md:px-6" style={{fontSize: 'clamp(2.5rem, 8vw, 4rem)', lineHeight: '1.0', textWrap: 'balance'}}>
-            Por que empresas nos EUA<br/>
-            estão usando <span className="text-warm glow-text">FOOH 3D?</span>
+          <h1 className="font-black mb-4 md:mb-8 text-gradient leading-tight drop-shadow-2xl px-3 md:px-6" style={{fontSize: 'clamp(2.5rem, 8vw, 4rem)', lineHeight: '1.0', textAlign: 'justify', textAlignLast: 'justify'}}>
+            Por que empresas<br/>
+            nos EUA estão<br/>
+            usando <span className="text-warm glow-text">FOOH 3D?</span>
           </h1>
         </div>
 
