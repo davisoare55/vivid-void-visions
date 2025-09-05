@@ -43,8 +43,8 @@ const Hero = () => {
           </a>
         </div>
 
-        {/* Subtle Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        {/* Subtle Scroll Indicator - only on desktop */}
+        <div className="hidden md:block absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
           <ChevronDown className="w-6 h-6 text-primary/60" />
         </div>
       </div>
