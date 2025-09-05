@@ -153,7 +153,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
               {/* Right fade gradient */}
               <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div>
               <div className="flex animate-scroll gap-6">
-              {[...projects, ...projects, ...projects].map((project, index) => (
+              {[...projects, ...projects, ...projects, ...projects].map((project, index) => (
                 <div
                   key={index}
                   className="flex-shrink-0 w-48 sm:w-64 md:w-80 card-3d p-2 sm:p-3 md:p-4 rounded-lg"

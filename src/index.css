@@ -138,41 +138,19 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
-    font-weight: 500; /* Changed from default to medium */
+    font-weight: 500;
     overflow-x: hidden;
     width: 100%;
     max-width: 100vw;
-    hyphens: auto;
-    text-justify: inter-word;
   }
 
   @media (max-width: 767px) {
     body {
-      padding: 0 16px !important;
-      margin-right: 0 !important;
-      width: 100vw !important;
-      max-width: 100vw !important;
+      padding: 0 16px;
     }
     
-    * {
-      box-sizing: border-box !important;
-      max-width: 100vw !important;
-    }
-    
-    .container, section, div {
-      max-width: 100vw !important;
-    }
-    
-    /* Hide all floating elements on mobile */
     .fixed, [class*="fixed"] {
-      display: none !important;
-    }
-    
-    /* Ensure no elements extend beyond viewport */
-    html, body {
-      overflow-x: hidden !important;
-      width: 100% !important;
-      max-width: 100vw !important;
+      display: none;
     }
   }
 
@@ -188,16 +166,10 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    font-weight: 900 !important; /* Boldest possible weight */
-    text-wrap: balance;
-    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-weight: 900;
   }
 
   p {
-    max-width: 65ch;
-    hyphens: auto;
-    text-align: justify;
-    text-justify: inter-word;
     line-height: 1.6;
   }
 }
@@ -489,12 +461,12 @@
 
 @media (max-width: 768px) {
   .animate-scroll {
-    animation: scroll 8s linear infinite;
+    animation: scroll 4s linear infinite;
   }
 
   @media (max-width: 767px) {
     .animate-scroll {
-      animation: scroll 6s linear infinite;
+      animation: scroll 3s linear infinite;
     }
   }
 }
