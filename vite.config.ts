@@ -5,7 +5,7 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/vivid-void-visions/',
+  base: process.env.NODE_ENV === 'production' ? '/vivid-void-visions/' : '/',
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
