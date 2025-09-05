@@ -144,6 +144,7 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+    font-weight: 900 !important; /* Boldest possible weight */
   }
 }
 
@@ -220,7 +221,7 @@
     position: relative;
     overflow: hidden;
     box-shadow: 0 0 30px rgba(255, 140, 0, 0.3);
-    font-weight: 700; /* Bold weight for buttons */
+    font-weight: 900 !important; /* Maximum bold weight for buttons */
     letter-spacing: 0.5px; /* Increased letter spacing */
   }
 
@@ -268,15 +269,29 @@
     filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
   }
 
-  /* Button Typography */
+  /* Button Typography - Boldest possible */
   button, .btn, .btn-hero {
-    font-weight: 700 !important;
+    font-weight: 900 !important; /* Changed from 700 to 900 for maximum boldness */
     letter-spacing: 0.5px !important;
   }
 
-  /* All regular text to medium weight */
+  /* All regular text to medium weight with consistent sizing */
   p, span, div:not(.btn):not(button) {
     font-weight: 500;
+  }
+
+  /* Standardize smaller text sizes */
+  .text-sm {
+    font-size: 0.95rem !important; /* Increased from default 0.875rem */
+  }
+
+  .text-xs {
+    font-size: 0.8rem !important; /* Increased from default 0.75rem */
+  }
+
+  /* Consistent base text size */
+  .text-base {
+    font-size: 1.05rem !important; /* Slightly larger than default 1rem */
   }
 
   .border-glow {
