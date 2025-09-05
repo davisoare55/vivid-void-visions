@@ -88,7 +88,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
   return (
     <section 
       id="portfolio" 
-      className="py-20 px-6 relative overflow-hidden"
+      className="py-20 px-0 md:px-6 relative overflow-hidden"
     >
       {/* Background gradient overlay - only on desktop */}
       <div 
@@ -100,8 +100,8 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
       <div className="max-w-7xl mx-auto relative z-20">
         {/* Header */}
         <div className="text-center mb-8 md:mb-16">
-          <h1 className="text-5xl sm:text-6xl md:text-2xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-6 md:mb-8 text-gradient leading-tight drop-shadow-2xl text-center px-1 sm:px-2 md:px-6">
-            Por que empresas nos EUA<br/>estão usando <span className="text-warm glow-text">FOOH CGI?</span>
+          <h1 className="text-5xl sm:text-6xl md:text-2xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-6 md:mb-8 text-gradient leading-tight drop-shadow-2xl text-center px-3 md:px-6">
+            Por que empresas<br/>nos EUA estão usando<br/><span className="text-warm glow-text">FOOH CGI?</span>
           </h1>
         </div>
 
@@ -111,10 +111,10 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
               <div className="rounded-lg p-0 md:p-4 lg:p-6 xl:p-8 mb-4">
                 <div 
                   ref={videoContainerRef}
-                  className="relative w-full rounded-lg overflow-hidden bg-background-tertiary border-0 md:border border-border/50"
+                  className="relative w-full rounded-none md:rounded-lg overflow-hidden bg-background-tertiary border-0 md:border border-border/50"
                   style={{ 
                     aspectRatio: '16/9',
-                    minHeight: '250px',
+                    minHeight: '300px',
                     maxHeight: '600px'
                   }}
                   dangerouslySetInnerHTML={{
