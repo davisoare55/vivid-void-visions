@@ -20,7 +20,7 @@ const OQueRecebe = () => {
   ];
 
   return (
-    <section className="py-3 md:py-12 px-3 md:px-6 bg-background relative overflow-hidden w-full max-w-full">
+    <section className="py-3 md:py-12 px-4 md:px-6 bg-background relative overflow-hidden w-full max-w-full">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-2 md:mb-8">

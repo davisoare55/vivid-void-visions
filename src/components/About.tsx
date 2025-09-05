@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 const About = () => {
 
   return (
-    <section id="sobre" className="py-20 px-3 md:px-6 relative w-full max-w-full overflow-x-hidden">
+    <section id="sobre" className="py-20 px-4 md:px-6 relative w-full max-w-full overflow-x-hidden">
       <div className="max-w-7xl mx-auto w-full max-w-full">
         {/* Header */}
         <div className="text-center mb-16">

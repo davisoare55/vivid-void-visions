@@ -88,7 +88,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
   return (
     <section 
       id="portfolio" 
-      className="py-20 px-0 md:px-6 relative overflow-hidden"
+      className="py-20 px-4 md:px-6 relative overflow-hidden"
     >
       {/* Background gradient overlay - only on desktop */}
       <div 

@@ -7,7 +7,7 @@ const Exclusividade = () => {
   };
 
   return (
-    <section id="exclusividade" className="py-3 md:py-12 px-3 md:px-6 bg-background-secondary w-full max-w-full overflow-x-hidden">
+    <section id="exclusividade" className="py-3 md:py-12 px-4 md:px-6 bg-background-secondary w-full max-w-full overflow-x-hidden">
       <div className="max-w-5xl mx-auto text-center">
         {/* Header */}
         <div className="mb-2 md:mb-8">
