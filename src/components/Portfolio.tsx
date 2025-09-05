@@ -102,19 +102,19 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
         <div className="text-center mb-8 md:mb-16">
           <h1 className="font-black mb-4 md:mb-8 text-gradient leading-tight drop-shadow-2xl text-center px-3 md:px-6" style={{fontSize: 'clamp(2.5rem, 8vw, 4rem)', lineHeight: '1.0'}}>
             <div className="flex justify-between w-full">
-              <span>Por</span>
-              <span>que</span>
-              <span>empresas</span>
+              <span style={{transform: 'scaleX(1.3)', transformOrigin: 'left'}}>Por</span>
+              <span style={{transform: 'scaleX(1.4)', transformOrigin: 'center'}}>que</span>
+              <span style={{transform: 'scaleX(0.85)', transformOrigin: 'right'}}>empresas</span>
             </div>
             <div className="flex justify-between w-full">
-              <span>nos</span>
-              <span>EUA</span>
-              <span>estão</span>
+              <span style={{transform: 'scaleX(1.6)', transformOrigin: 'left'}}>nos</span>
+              <span style={{transform: 'scaleX(1.2)', transformOrigin: 'center'}}>EUA</span>
+              <span style={{transform: 'scaleX(0.9)', transformOrigin: 'right'}}>estão</span>
             </div>
             <div className="flex justify-between w-full">
-              <span>usando</span>
-              <span className="text-warm glow-text">FOOH</span>
-              <span className="text-warm glow-text">3D?</span>
+              <span style={{transform: 'scaleX(0.9)', transformOrigin: 'left'}}>usando</span>
+              <span className="text-warm glow-text" style={{transform: 'scaleX(1.15)', transformOrigin: 'center'}}>FOOH</span>
+              <span className="text-warm glow-text" style={{transform: 'scaleX(1.3)', transformOrigin: 'right'}}>3D?</span>
             </div>
           </h1>
         </div>
