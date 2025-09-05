@@ -106,7 +106,9 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
               src="/headline-mobile.png" 
               alt="Por que empresas nos EUA estão usando FOOH 3D?" 
               className="w-full h-auto max-w-sm md:max-w-4xl mx-auto drop-shadow-2xl"
-              style={{filter: 'drop-shadow(0 25px 25px rgb(0 0 0 / 0.15))'}}
+              style={{
+                filter: 'drop-shadow(0 25px 25px rgb(0 0 0 / 0.15)) drop-shadow(0 0 20px rgba(251, 146, 60, 0.3)) drop-shadow(0 0 40px rgba(251, 146, 60, 0.1))'
+              }}
             />
           </div>
         </div>
