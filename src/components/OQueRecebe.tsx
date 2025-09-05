@@ -20,17 +20,17 @@ const OQueRecebe = () => {
   ];
 
   return (
-    <section className="py-3 md:py-12 px-4 md:px-6 bg-background relative overflow-hidden w-full max-w-full">
+    <section className="py-8 md:py-16 px-4 md:px-6 bg-background relative overflow-hidden w-full max-w-full">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-2 md:mb-8">
-          <h2 className="text-2xl sm:text-3xl md:text-6xl font-bold mb-1 md:mb-4 text-gradient">
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-6xl font-bold mb-6 md:mb-8 text-gradient">
             Entregáveis
           </h2>
         </div>
 
         {/* Deliverables List */}
-        <div className="space-y-2 md:space-y-4 mb-2 md:mb-8">
+        <div className="space-y-6 md:space-y-8 mb-8 md:mb-12">
           {deliverables.map((item, index) => (
             <Card
               key={index}
@@ -41,13 +41,13 @@ const OQueRecebe = () => {
                 boxShadow: '0 10px 30px rgba(255, 255, 255, 0.2)'
               }}
             >
-              <div className="flex flex-col items-center text-center space-y-4">
+              <div className="flex flex-col items-center text-center space-y-6 px-4 py-2">
                 <div className="text-4xl group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
                   {item.icon}
                 </div>
-                <div>
-                  <h3 className="text-2xl md:text-3xl font-bold mb-4 text-black">{item.title}</h3>
-                  <p className="text-lg md:text-xl text-gray-800 leading-relaxed">{item.description}</p>
+                <div className="max-w-full">
+                  <h3 className="text-2xl md:text-3xl font-bold mb-6 text-black">{item.title}</h3>
+                  <p className="text-lg md:text-xl text-gray-800 leading-relaxed px-2">{item.description}</p>
                 </div>
               </div>
             </Card>

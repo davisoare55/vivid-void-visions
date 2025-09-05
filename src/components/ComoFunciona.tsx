@@ -33,7 +33,7 @@ const ComoFunciona = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-6 text-gradient text-center whitespace-nowrap">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-6 text-gradient text-center px-4">
             Processo simples, sem reuniões demoradas
           </h2>
         </div>
@@ -55,11 +55,11 @@ const ComoFunciona = () => {
                 <img src={step.icon.props.src} alt={step.icon.props.alt} className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
               </div>
               
-              <h3 className="text-base sm:text-lg md:text-xl font-bold mb-2 sm:mb-3 md:mb-4 text-foreground">
+              <h3 className="text-base sm:text-lg md:text-xl font-bold mb-4 sm:mb-5 md:mb-6 text-foreground">
                 {step.title}
               </h3>
               
-              <p className="text-muted-foreground leading-relaxed text-xs sm:text-sm md:text-sm">
+              <p className="text-muted-foreground leading-relaxed text-xs sm:text-sm md:text-sm px-2">
                 {step.description}
               </p>
             </Card>
