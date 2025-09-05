@@ -16,7 +16,7 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-10 text-center max-w-6xl mx-auto px-6">
         <div className="mb-8">
-          <h1 className="text-4xl sm:text-5xl md:text-8xl font-bold mb-6 text-gradient leading-tight">
+          <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold mb-6 text-gradient leading-tight">
             EDITOR
             <br />
             <span className="text-warm">VISUAL</span>

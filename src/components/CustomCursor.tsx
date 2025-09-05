@@ -3,29 +3,50 @@ import { useEffect, useState } from 'react';
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const updatePosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+    // Check if device is mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
     };
 
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.tagName === 'BUTTON' || target.tagName === 'A' || target.classList.contains('interactive')) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    const updatePosition = (e: MouseEvent) => {
+      if (!isMobile) {
+        setPosition({ x: e.clientX, y: e.clientY });
       }
     };
 
-    document.addEventListener('mousemove', updatePosition);
-    document.addEventListener('mouseover', handleMouseOver);
+    const handleMouseOver = (e: MouseEvent) => {
+      if (!isMobile) {
+        const target = e.target as HTMLElement;
+        if (target.tagName === 'BUTTON' || target.tagName === 'A' || target.classList.contains('interactive')) {
+          setIsHovering(true);
+        } else {
+          setIsHovering(false);
+        }
+      }
+    };
+
+    if (!isMobile) {
+      document.addEventListener('mousemove', updatePosition);
+      document.addEventListener('mouseover', handleMouseOver);
+    }
 
     return () => {
+      window.removeEventListener('resize', checkMobile);
       document.removeEventListener('mousemove', updatePosition);
       document.removeEventListener('mouseover', handleMouseOver);
     };
-  }, []);
+  }, [isMobile]);
+
+  // Don't render anything on mobile
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <>

@@ -90,17 +90,17 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
       id="portfolio" 
       className="py-20 px-6 relative overflow-hidden"
     >
-      {/* Background gradient overlay */}
+      {/* Background gradient overlay - only on desktop */}
       <div 
-        className="fixed inset-0 pointer-events-none z-10"
+        className="hidden md:block fixed inset-0 pointer-events-none z-10"
         style={{
           background: `radial-gradient(circle 400px at ${gradientPosition.x}px ${gradientPosition.y}px, rgba(251, 146, 60, 0.25) 0%, transparent 50%)`
         }}
       />
       <div className="max-w-7xl mx-auto relative z-20">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-8 text-gradient leading-tight drop-shadow-2xl text-center px-2 sm:px-4 md:px-6">
+        <div className="text-center mb-8 md:mb-16">
+          <h1 className="text-5xl sm:text-6xl md:text-2xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-6 md:mb-8 text-gradient leading-tight drop-shadow-2xl text-center px-1 sm:px-2 md:px-6">
             Por que empresas nos EUA<br/>estão usando <span className="text-warm glow-text">FOOH CGI?</span>
           </h1>
         </div>
@@ -150,9 +150,9 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
               {[...projects, ...projects].map((project, index) => (
                 <div
                   key={index}
-                  className="flex-shrink-0 w-80 card-3d p-4 rounded-lg"
+                  className="flex-shrink-0 w-48 sm:w-64 md:w-80 card-3d p-2 sm:p-3 md:p-4 rounded-lg"
                 >
-                  <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-4 bg-background-tertiary border border-border/50">
+                  <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-1 sm:mb-2 md:mb-4 bg-background-tertiary border border-border/50">
                     <video
                       className="w-full h-full object-cover"
                       autoPlay
@@ -171,8 +171,8 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                     </video>
                   </div>
                   <div className="text-center">
-                    <h4 className="font-bold text-lg mb-1 text-foreground tracking-wider">{project.client}</h4>
-                    <p className="text-primary font-semibold">{project.views}</p>
+                    <h4 className="font-bold text-sm sm:text-base md:text-lg mb-0.5 md:mb-1 text-foreground tracking-wider">{project.client}</h4>
+                    <p className="text-primary font-semibold text-xs sm:text-sm md:text-base">{project.views}</p>
                   </div>
                 </div>
               ))}
@@ -181,18 +181,18 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
           </div>
         )}
 
-        {/* Floating Arrows */}
+        {/* Floating Arrows - only on desktop */}
         {showArrows && showFullSite && (
           <>
             {/* Left Arrow */}
-            <div className="fixed left-8 top-1/2 transform -translate-y-1/2 z-50 animate-bounce fade-in-up-delayed" style={{ animationDelay: '0.8s' }}>
+            <div className="hidden md:block fixed left-8 top-1/2 transform -translate-y-1/2 z-50 animate-bounce fade-in-up-delayed" style={{ animationDelay: '0.8s' }}>
               <div className="bg-orange-500 rounded-full p-4 shadow-lg">
                 <ChevronDown className="w-8 h-8 text-white" />
               </div>
             </div>
             
             {/* Right Arrow */}
-            <div className="fixed right-8 top-1/2 transform -translate-y-1/2 z-50 animate-bounce fade-in-up-delayed" style={{ animationDelay: '1.3s' }}>
+            <div className="hidden md:block fixed right-8 top-1/2 transform -translate-y-1/2 z-50 animate-bounce fade-in-up-delayed" style={{ animationDelay: '1.3s' }}>
               <div className="bg-orange-500 rounded-full p-4 shadow-lg">
                 <ChevronDown className="w-8 h-8 text-white" />
               </div>

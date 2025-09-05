@@ -20,21 +20,21 @@ const OQueRecebe = () => {
   ];
 
   return (
-    <section id="o-que-recebe" className="py-20 px-6 bg-background-secondary">
+    <section className="py-3 md:py-12 px-3 md:px-6 bg-background relative overflow-hidden w-full max-w-full">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6 text-gradient">
+        <div className="text-center mb-2 md:mb-8">
+          <h2 className="text-2xl sm:text-3xl md:text-6xl font-bold mb-1 md:mb-4 text-gradient">
             Entregáveis
           </h2>
         </div>
 
         {/* Deliverables List */}
-        <div className="space-y-6 mb-12">
+        <div className="space-y-2 md:space-y-4 mb-2 md:mb-8">
           {deliverables.map((item, index) => (
             <Card
               key={index}
-              className="p-8 w-full interactive group border-0 relative overflow-hidden rounded-3xl"
+              className="p-2 md:p-6 w-full interactive group border-0 relative overflow-hidden rounded-3xl"
               style={{ 
                 animationDelay: `${index * 0.1}s`,
                 background: 'linear-gradient(145deg, #ffffff 0%, #f5f5f5 25%, #e5e5e5 50%, #d5d5d5 75%, #c5c5c5 100%)',

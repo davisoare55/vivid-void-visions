@@ -7,20 +7,20 @@ const Exclusividade = () => {
   };
 
   return (
-    <section id="exclusividade" className="py-20 px-6 bg-background-secondary">
+    <section id="exclusividade" className="py-3 md:py-12 px-3 md:px-6 bg-background-secondary w-full max-w-full overflow-x-hidden">
       <div className="max-w-5xl mx-auto text-center">
         {/* Header */}
-        <div className="mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-6xl font-bold mb-6 text-gradient">
+        <div className="mb-2 md:mb-8">
+          <h2 className="text-2xl sm:text-3xl md:text-6xl font-bold mb-1 md:mb-4 text-gradient">
             Exclusividade real
           </h2>
         </div>
 
         {/* Main Content */}
-        <div className="p-6 sm:p-8 md:p-12 border-2 border-white rounded-3xl bg-transparent interactive group hover:scale-105 transition-all duration-300" style={{boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
-          <div className="mb-8">
-            <div className="mb-6 flex justify-center group-hover:scale-110 transition-transform duration-300">
-              <img src="/portfolio/branco/exclusividade-diamante-branco.png" alt="Exclusividade" className="w-12 h-12 sm:w-16 sm:h-16" />
+        <div className="p-2 sm:p-4 md:p-8 border-2 border-white rounded-3xl bg-transparent interactive group hover:scale-105 transition-all duration-300" style={{boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
+          <div className="mb-2 md:mb-6">
+            <div className="mb-1 md:mb-4 flex justify-center group-hover:scale-110 transition-transform duration-300">
+              <img src="/portfolio/branco/exclusividade-diamante-branco.png" alt="Exclusividade" className="w-8 h-8 sm:w-10 sm:h-10 md:w-16 md:h-16" />
             </div>
             <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground leading-relaxed mb-8">
               Para manter a qualidade artesanal, atendo apenas <span className="text-primary font-bold">4 projetos por mês</span>.<br/>

@@ -132,14 +132,43 @@
 @layer base {
   * {
     @apply border-border;
-    cursor: none;
+    box-sizing: border-box;
   }
 
   body {
-    @apply bg-background text-foreground overflow-x-hidden;
+    @apply bg-background text-foreground;
     font-family: var(--font-body);
     font-weight: 500; /* Changed from default to medium */
-    cursor: none;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  @media (max-width: 767px) {
+    body {
+      padding-right: 0 !important;
+      margin-right: 0 !important;
+    }
+    
+    * {
+      box-sizing: border-box !important;
+      max-width: 100vw !important;
+    }
+    
+    .container, section, div {
+      padding-right: 0 !important;
+      margin-right: 0 !important;
+    }
+  }
+
+  @media (min-width: 768px) {
+    * {
+      cursor: none;
+    }
+    
+    body {
+      cursor: none;
+    }
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -149,29 +178,33 @@
 }
 
 @layer components {
-  /* Custom Cursor */
-  .cursor {
-    position: fixed;
-    width: 20px;
-    height: 20px;
-    background: var(--gradient-primary);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: all 0.1s ease;
-    box-shadow: var(--shadow-neon);
+  /* Custom Cursor - only on desktop */
+  @media (min-width: 768px) {
+    .cursor {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      background: var(--gradient-primary);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+      transition: all 0.3s ease;
+    }
   }
 
-  .cursor-dot {
-    position: fixed;
-    width: 4px;
-    height: 4px;
-    background: hsl(var(--foreground));
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 10000;
-    transform: translate(-50%, -50%);
+  /* Cursor dot - only on desktop */
+  @media (min-width: 768px) {
+    .cursor-dot {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: hsl(var(--foreground));
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%);
+    }
   }
 
   /* Refined 3D Card Effects */
@@ -426,7 +459,19 @@
 }
 
 .animate-scroll {
-  animation: scroll 30s linear infinite;
+  animation: scroll 15s linear infinite;
+}
+
+@media (max-width: 768px) {
+  .animate-scroll {
+    animation: scroll 30s linear infinite;
+  }
+
+  @media (max-width: 767px) {
+    .animate-scroll {
+      animation: scroll 2s linear infinite;
+    }
+  }
 }
 
 /* Scrollbar Styling */

@@ -6,7 +6,6 @@ import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import About from '@/components/About';
 import ProvaSocial from '@/components/ProvaSocial';
-import PorQueFooh from '@/components/PorQueFooh';
 import OQueRecebe from '@/components/OQueRecebe';
 import ComoFunciona from '@/components/ComoFunciona';
 import Exclusividade from '@/components/Exclusividade';
@@ -25,13 +24,13 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background w-full max-w-full overflow-x-hidden">
       <CustomCursor />
       {showFullSite && <Navigation />}
-      <main>
+      <main className="w-full max-w-full overflow-x-hidden">
         <Portfolio showFullSite={showFullSite} />
         {showFullSite && (
-          <div>
+          <div className="w-full max-w-full overflow-x-hidden">
             <ScrollRevealSection>
               <ProvaSocial />
             </ScrollRevealSection>
