@@ -100,22 +100,24 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
       <div className="max-w-7xl mx-auto relative z-20">
         {/* Header */}
         <div className="text-center mb-8 md:mb-16">
-          <h1 className="font-black mb-4 md:mb-8 text-gradient leading-tight drop-shadow-2xl text-center px-3 md:px-6" style={{fontSize: 'clamp(2.5rem, 8vw, 4rem)', lineHeight: '1.0'}}>
-            <div className="flex justify-between w-full">
-              <span style={{transform: 'scaleX(1.3)', transformOrigin: 'left'}}>Por</span>
-              <span style={{transform: 'scaleX(1.4)', transformOrigin: 'center'}}>que</span>
-              <span style={{transform: 'scaleX(0.85)', transformOrigin: 'right'}}>empresas</span>
-            </div>
-            <div className="flex justify-between w-full">
-              <span style={{transform: 'scaleX(1.6)', transformOrigin: 'left'}}>nos</span>
-              <span style={{transform: 'scaleX(1.2)', transformOrigin: 'center'}}>EUA</span>
-              <span style={{transform: 'scaleX(0.9)', transformOrigin: 'right'}}>estão</span>
-            </div>
-            <div className="flex justify-between w-full">
-              <span style={{transform: 'scaleX(0.9)', transformOrigin: 'left'}}>usando</span>
-              <span className="text-warm glow-text" style={{transform: 'scaleX(1.15)', transformOrigin: 'center'}}>FOOH</span>
-              <span className="text-warm glow-text" style={{transform: 'scaleX(1.3)', transformOrigin: 'right'}}>3D?</span>
-            </div>
+          <h1 className="font-black mb-4 md:mb-8 text-gradient leading-tight drop-shadow-2xl px-3 md:px-6" style={{
+            fontSize: 'clamp(2.5rem, 8vw, 4rem)', 
+            lineHeight: '1.2',
+            fontWeight: '900',
+            textAlign: 'justify',
+            textAlignLast: 'justify',
+            textJustify: 'inter-word',
+            wordSpacing: 'clamp(0.1em, 2vw, 0.3em)',
+            letterSpacing: 'clamp(-0.02em, 0.1vw, 0.02em)',
+            fontStretch: 'normal',
+            hyphens: 'none',
+            textRendering: 'optimizeLegibility',
+            fontKerning: 'auto',
+            fontVariantLigatures: 'common-ligatures'
+          }}>
+            Por que empresas<br/>
+            nos EUA estão<br/>
+            usando <span className="text-warm glow-text">FOOH 3D?</span>
           </h1>
         </div>
 
