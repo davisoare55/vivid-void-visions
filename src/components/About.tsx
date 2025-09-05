@@ -37,11 +37,11 @@ const About = () => {
                 <img 
                   src="/perfil.png" 
                   alt="Davi Soares - FOOH CGI Specialist" 
-                  className="w-full h-full object-cover rounded-2xl shadow-2xl"
+                  className="w-full h-full object-cover object-top rounded-2xl shadow-2xl"
                   style={{ 
                     backgroundColor: 'transparent',
-                    minHeight: '300px',
-                    maxHeight: '600px'
+                    minHeight: '200px',
+                    maxHeight: '400px'
                   }}
                   onError={(e) => {
                     console.log('Image failed to load:', e);
