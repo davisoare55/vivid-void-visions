@@ -100,18 +100,18 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
       <div className="max-w-7xl mx-auto relative z-20">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 text-gradient leading-tight drop-shadow-2xl text-center">
+          <h1 className="text-2xl sm:text-3xl md:text-6xl lg:text-7xl font-bold mb-8 text-gradient leading-tight drop-shadow-2xl text-center">
             Por que empresas nos EUA<br/>estão usando <span className="text-warm glow-text">FOOH CGI?</span>
           </h1>
         </div>
 
         {/* Featured Video */}
         <div className="mb-20">
-            <div className="relative max-w-6xl mx-auto px-4">
-              <div className="card-3d rounded-lg p-4 sm:p-6 md:p-8 mb-8">
+            <div className="relative max-w-6xl mx-auto px-0 md:px-4">
+              <div className="card-3d rounded-none md:rounded-lg p-0 md:p-4 lg:p-6 xl:p-8 mb-8">
                 <div 
                   ref={videoContainerRef}
-                  className="relative w-full rounded-lg overflow-hidden bg-background-tertiary border border-border/50"
+                  className="relative w-full rounded-none md:rounded-lg overflow-hidden bg-background-tertiary border-0 md:border border-border/50"
                   style={{ 
                     aspectRatio: '16/9',
                     minHeight: '250px',
