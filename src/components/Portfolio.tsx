@@ -100,33 +100,12 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
       <div className="max-w-7xl mx-auto relative z-20">
         {/* Header */}
         <div className="text-center mb-8 md:mb-16">
-          {/* Desktop: Text headline */}
-          <h1 className="hidden md:block font-black mb-4 md:mb-8 text-gradient leading-tight drop-shadow-2xl px-3 md:px-6" style={{
-            fontSize: 'clamp(2.5rem, 8vw, 4rem)', 
-            lineHeight: '1.2',
-            fontWeight: '900',
-            textAlign: 'justify',
-            textAlignLast: 'justify',
-            textJustify: 'inter-word',
-            wordSpacing: 'clamp(0.1em, 2vw, 0.3em)',
-            letterSpacing: 'clamp(-0.02em, 0.1vw, 0.02em)',
-            fontStretch: 'normal',
-            hyphens: 'none',
-            textRendering: 'optimizeLegibility',
-            fontKerning: 'auto',
-            fontVariantLigatures: 'common-ligatures'
-          }}>
-            Por que empresas<br/>
-            nos EUA estão<br/>
-            usando <span className="text-warm glow-text">FOOH 3D?</span>
-          </h1>
-
-          {/* Mobile: Custom PNG headline */}
-          <div className="block md:hidden mb-4 px-3">
+          {/* Custom PNG headline for all devices */}
+          <div className="mb-4 md:mb-8 px-3 md:px-6">
             <img 
               src="/headline-mobile.png" 
               alt="Por que empresas nos EUA estão usando FOOH 3D?" 
-              className="w-full h-auto max-w-sm mx-auto drop-shadow-2xl"
+              className="w-full h-auto max-w-sm md:max-w-4xl mx-auto drop-shadow-2xl"
               style={{filter: 'drop-shadow(0 25px 25px rgb(0 0 0 / 0.15))'}}
             />
           </div>
