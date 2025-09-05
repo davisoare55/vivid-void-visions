@@ -54,13 +54,15 @@ const Exclusividade = () => {
           </div>
 
           {/* CTA */}
-          <Button
-            onClick={scrollToContact}
-            className="btn-hero px-12 py-6 text-xl font-bold interactive rounded-2xl min-w-[300px] shadow-2xl"
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSfadJIhA1H410Cj_6Mxs8kEj6bupPDbivUqiWZPR0_pqt7wlQ/viewform?usp=header"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-hero px-12 py-6 text-xl font-bold interactive rounded-2xl min-w-[300px] shadow-2xl inline-block text-center"
             style={{ fontFamily: 'var(--font-display)' }}
           >
             Entrar no processo seletivo
-          </Button>
+          </a>
         </div>
 
         {/* Additional Info */}
