@@ -27,19 +27,20 @@ const Hero = () => {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
-          <Button
+          <button
             onClick={scrollToPortfolio}
             className="btn-hero px-8 py-4 text-lg interactive"
           >
             Ver Portfolio
-          </Button>
-          <Button
-            variant="outline"
-            className="border-primary/50 text-primary hover:bg-primary/10 interactive px-8 py-4 text-lg"
-            onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
+          </button>
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSfadJIhA1H410Cj_6Mxs8kEj6bupPDbivUqiWZPR0_pqt7wlQ/viewform?usp=header"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="border-primary/50 text-primary hover:bg-primary/10 interactive px-8 py-4 text-lg border rounded-md inline-block text-center"
           >
             Entrar em Contato
-          </Button>
+          </a>
         </div>
 
         {/* Subtle Scroll Indicator */}

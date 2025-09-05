@@ -54,12 +54,14 @@ const Navigation = () => {
                 {item.label}
               </button>
             ))}
-            <Button
-              onClick={() => scrollToSection('contato')}
-              className="btn-hero px-6 py-2 interactive"
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSfadJIhA1H410Cj_6Mxs8kEj6bupPDbivUqiWZPR0_pqt7wlQ/viewform?usp=header"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-hero px-6 py-2 interactive inline-block text-center"
             >
               Garantir minha vaga agora
-            </Button>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}

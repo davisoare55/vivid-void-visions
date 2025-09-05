@@ -124,9 +124,15 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
               </div>
               {showFullSite && (
                 <div className="flex justify-center mt-12">
-                  <button className="btn-hero px-12 py-4 rounded-lg font-bold text-lg transition-colors duration-300 min-w-[250px]" style={{ fontFamily: 'var(--font-display)' }}>
+                  <a 
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSfadJIhA1H410Cj_6Mxs8kEj6bupPDbivUqiWZPR0_pqt7wlQ/viewform?usp=header"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-hero px-12 py-4 rounded-lg font-bold text-lg transition-colors duration-300 min-w-[250px] inline-block text-center"
+                    style={{ fontFamily: 'var(--font-display)' }}
+                  >
                     Garantir minha vaga agora
-                  </button>
+                  </a>
                 </div>
               )}
             </div>
