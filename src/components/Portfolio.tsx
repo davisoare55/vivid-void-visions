@@ -115,8 +115,8 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
 
         {/* Featured Video */}
         <div className="mb-20">
-            <div className="relative w-full md:max-w-6xl md:mx-auto px-0 md:px-4">
-              <div className="rounded-lg p-0 md:p-4 lg:p-6 xl:p-8 mb-4">
+            <div className="relative w-full md:max-w-6xl md:mx-auto px-0 md:px-0">
+              <div className="rounded-lg p-0 md:p-0 lg:p-0 xl:p-0 mb-4 md:mb-4">
                 <div 
                   ref={videoContainerRef}
                   className="relative w-full rounded-none md:rounded-lg overflow-hidden bg-background-tertiary border-0 md:border border-border/50"
