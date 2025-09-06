@@ -122,7 +122,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                   className="relative w-full rounded-none md:rounded-lg overflow-hidden bg-background-tertiary border-0 md:border border-border/50"
                   style={{ 
                     aspectRatio: '16/9',
-                    minHeight: '300px',
+                    minHeight: '400px',
                     maxHeight: '600px'
                   }}
                   dangerouslySetInnerHTML={{
