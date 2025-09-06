@@ -58,7 +58,7 @@ const Navigation = () => {
               href="https://docs.google.com/forms/d/e/1FAIpQLSfadJIhA1H410Cj_6Mxs8kEj6bupPDbivUqiWZPR0_pqt7wlQ/viewform?usp=header"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-hero px-6 py-2 interactive inline-block text-center"
+              className="btn-hero px-6 py-2 interactive inline-block text-center whitespace-nowrap"
             >
               Garantir minha vaga agora
             </a>
@@ -90,7 +90,7 @@ const Navigation = () => {
                 href="https://docs.google.com/forms/d/e/1FAIpQLSfadJIhA1H410Cj_6Mxs8kEj6bupPDbivUqiWZPR0_pqt7wlQ/viewform?usp=header"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-hero w-full py-2 mt-4 interactive inline-block text-center"
+                className="btn-hero w-full py-2 mt-4 interactive inline-block text-center whitespace-nowrap"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Garantir minha vaga agora
