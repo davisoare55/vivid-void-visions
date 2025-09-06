@@ -20,23 +20,11 @@ const Index = () => {
     // Mobile: 2 minutes (120 seconds), Desktop: 2 minutes 15 seconds (135 seconds)
     const delay = isMobile ? 120000 : 135000;
     
-    console.log('Timer started:', { isMobile, delay: delay / 1000 + 's' });
-    
     const timer = setTimeout(() => {
-      console.log('Timer fired, showing full site');
       setShowFullSite(true);
     }, delay);
 
-    // Debug: Show site after 10 seconds for testing
-    const debugTimer = setTimeout(() => {
-      console.log('Debug timer fired (10s)');
-      setShowFullSite(true);
-    }, 10000);
-
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(debugTimer);
-    };
+    return () => clearTimeout(timer);
   }, []);
 
   return (
