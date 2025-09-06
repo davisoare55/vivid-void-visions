@@ -114,7 +114,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
         </div>
 
         {/* Featured Video */}
-        <div className="mb-20">
+        <div className="mb-8">
             <div className="relative w-full md:max-w-6xl md:mx-auto px-0 md:px-4">
               <div className="rounded-lg p-0 md:p-4 lg:p-6 xl:p-8 mb-0">
                 <div 
@@ -131,7 +131,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                 />
               </div>
               {showFullSite && (
-                <div className="flex justify-center mt-2">
+                <div className="flex justify-center mt-4">
                   <a 
                     href="https://docs.google.com/forms/d/e/1FAIpQLSfadJIhA1H410Cj_6Mxs8kEj6bupPDbivUqiWZPR0_pqt7wlQ/viewform?usp=header"
                     target="_blank"
