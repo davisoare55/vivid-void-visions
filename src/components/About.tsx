@@ -14,34 +14,35 @@ const About = () => {
         </div>
 
         <div className="relative mb-20">
-          <div className="flex flex-col md:flex-row gap-6 sm:gap-8 md:gap-12 items-center md:items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
             {/* Profile Text */}
-            <div className="flex-1 order-2 md:order-1">
-              <div className="p-4 sm:p-6 md:p-8 h-full flex flex-col justify-center border-2 border-white rounded-2xl bg-transparent interactive group hover:scale-105 transition-all duration-300" style={{boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 md:mb-6 text-warm">Davi Soares</h3>
-                <p className="text-muted-foreground leading-relaxed mb-4 md:mb-6 text-base sm:text-lg md:text-xl">
-                  13 anos criando o que nenhuma IA ou editor genérico consegue. Especialista em FOOH CGI com técnicas de cinema, transformando marcas através de efeitos visuais impossíveis de ignorar.
-                </p>
-                <p className="text-muted-foreground leading-relaxed mb-4 md:mb-6 text-base sm:text-lg md:text-xl">
-                  Trabalho com gigantes como Nike, Marvel, Fanta e iFood, entregando campanhas que geram +100M de views e ROAS entre 15-30x.
-                </p>
-                <p className="text-muted-foreground leading-relaxed text-base sm:text-lg md:text-xl">
-                  Cada projeto é uma obra artesanal, combinando estratégia viral com execução cinematográfica para criar conteúdo que marca época.
-                </p>
+            <div className="order-2 md:order-1">
+              <div className="p-6 md:p-8 border-2 border-white rounded-2xl bg-transparent interactive group hover:scale-105 transition-all duration-300 max-w-2xl" style={{boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
+                <h3 className="text-2xl md:text-3xl font-bold mb-6 text-warm">Davi Soares</h3>
+                <div className="space-y-4">
+                  <p className="text-muted-foreground leading-relaxed text-lg md:text-xl">
+                    13 anos criando o que nenhuma IA ou editor genérico consegue. Especialista em FOOH CGI com técnicas de cinema, transformando marcas através de efeitos visuais impossíveis de ignorar.
+                  </p>
+                  <p className="text-muted-foreground leading-relaxed text-lg md:text-xl">
+                    Trabalho com gigantes como Nike, Marvel, Fanta e iFood, entregando campanhas que geram +100M de views e ROAS entre 15-30x.
+                  </p>
+                  <p className="text-muted-foreground leading-relaxed text-lg md:text-xl">
+                    Cada projeto é uma obra artesanal, combinando estratégia viral com execução cinematográfica para criar conteúdo que marca época.
+                  </p>
+                </div>
               </div>
             </div>
 
             {/* Personal Image */}
-            <div className="flex-1 order-1 md:order-2 max-w-md md:max-w-none mx-auto">
-              <div className="h-full flex items-center justify-center relative">
+            <div className="order-1 md:order-2 flex justify-center md:justify-end">
+              <div className="relative max-w-sm md:max-w-md">
                 <img 
                   src="/perfil.png" 
                   alt="Davi Soares - FOOH CGI Specialist" 
-                  className="w-full h-auto object-cover object-top rounded-2xl shadow-2xl"
+                  className="w-full h-auto object-cover object-center rounded-2xl shadow-2xl"
                   style={{ 
                     backgroundColor: 'transparent',
-                    minHeight: '300px',
-                    maxHeight: '500px',
+                    maxHeight: '600px',
                     aspectRatio: '3/4'
                   }}
                   onError={(e) => {
