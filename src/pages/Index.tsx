@@ -15,31 +15,14 @@ const Index = () => {
   const [showFullSite, setShowFullSite] = useState(false);
 
   useEffect(() => {
-    // VTurb delay code integration
-    const initializeVTurbDelay = () => {
-      const player = document.querySelector("vturb-smartplayer");
-      if (player) {
-        player.addEventListener("player:ready", function() {
-          // Check if mobile device
-          const isMobile = window.innerWidth <= 768;
-          // Mobile: 2 minutes (120 seconds), Desktop: 2 minutes 15 seconds (135 seconds)
-          const delaySeconds = isMobile ? 120 : 135;
-          
-          (player as any).displayHiddenElements(delaySeconds, [".full-site-content"], { persist: true });
-        });
-      }
-    };
-
-    // Fallback timer in case VTurb player is not available
+    // Check if mobile device
     const isMobile = window.innerWidth <= 768;
+    // Mobile: 2 minutes (120 seconds), Desktop: 2 minutes 15 seconds (135 seconds)
     const delay = isMobile ? 120000 : 135000;
     
     const timer = setTimeout(() => {
       setShowFullSite(true);
     }, delay);
-
-    // Try to initialize VTurb delay
-    initializeVTurbDelay();
 
     return () => clearTimeout(timer);
   }, []);
