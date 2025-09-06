@@ -149,48 +149,42 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
         {/* Projects Carousel - Only show when full site is visible */}
         {showFullSite && (
           <div className="relative overflow-hidden py-8">
-            <div className="flex justify-center">
-              <div className="w-64 sm:w-80 md:w-96">
-                <div className="carousel-container relative">
-                  {projects.map((project, index) => (
-                    <div
-                      key={index}
-                      className={`carousel-item absolute inset-0 transition-opacity duration-1000 ${
-                        index === 0 ? 'opacity-100' : 'opacity-0'
-                      }`}
-                      style={{
-                        animationDelay: `${index * 4}s`,
-                        animation: `fadeInOut ${projects.length * 4}s infinite`
-                      }}
-                    >
-                      <div className="card-3d p-4 rounded-lg">
-                        <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-4 bg-background-tertiary border border-border/50">
-                          <video
-                            className="w-full h-full object-cover"
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            preload="metadata"
-                            onEnded={(e) => {
-                              const video = e.target as HTMLVideoElement;
-                              video.currentTime = 0;
-                              video.play();
-                            }}
-                          >
-                            <source src={`/portfolio/${project.videoFile}`} type="video/webm" />
-                            <source src={`/portfolio/${project.fallback}`} type="video/mp4" />
-                          </video>
-                        </div>
-                        <div className="text-center">
-                          <h4 className="font-bold text-base md:text-lg mb-1 text-foreground tracking-wider">{project.client}</h4>
-                          <p className="text-primary font-semibold text-sm md:text-base">{project.views}</p>
-                        </div>
+            <div className="carousel-track flex transition-transform duration-1000 ease-in-out" style={{
+              animation: 'carouselSlide 24s infinite linear'
+            }}>
+              {projects.map((project, index) => (
+                <div
+                  key={index}
+                  className="carousel-slide flex-shrink-0 w-full flex justify-center"
+                >
+                  <div className="w-64 sm:w-80 md:w-96">
+                    <div className="card-3d p-4 rounded-lg">
+                      <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-4 bg-background-tertiary border border-border/50">
+                        <video
+                          className="w-full h-full object-cover"
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          preload="metadata"
+                          onEnded={(e) => {
+                            const video = e.target as HTMLVideoElement;
+                            video.currentTime = 0;
+                            video.play();
+                          }}
+                        >
+                          <source src={`/portfolio/${project.videoFile}`} type="video/webm" />
+                          <source src={`/portfolio/${project.fallback}`} type="video/mp4" />
+                        </video>
+                      </div>
+                      <div className="text-center">
+                        <h4 className="font-bold text-base md:text-lg mb-1 text-foreground tracking-wider">{project.client}</h4>
+                        <p className="text-primary font-semibold text-sm md:text-base">{project.views}</p>
                       </div>
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         )}
