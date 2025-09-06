@@ -47,10 +47,8 @@ const About = () => {
                       aspectRatio: '3/4'
                     }}
                     onError={(e) => {
-                      console.log('Image failed to load:', e);
                       e.currentTarget.style.display = 'none';
                     }}
-                    onLoad={() => console.log('Image loaded successfully')}
                   />
                   {/* Bottom fade gradient */}
                   <div 
