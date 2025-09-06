@@ -471,6 +471,14 @@
   }
 }
 
+/* Video player responsive styles */
+@media (min-width: 768px) {
+  .video-container {
+    min-height: auto !important;
+    max-height: 600px !important;
+  }
+}
+
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 8px;

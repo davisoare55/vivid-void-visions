@@ -119,7 +119,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
               <div className="rounded-lg p-0 md:p-4 lg:p-6 xl:p-8 mb-4">
                 <div 
                   ref={videoContainerRef}
-                  className="relative w-full rounded-none md:rounded-lg overflow-hidden bg-background-tertiary border-0 md:border border-border/50"
+                  className="relative w-full rounded-none md:rounded-lg overflow-hidden bg-background-tertiary border-0 md:border border-border/50 video-container"
                   style={{ 
                     aspectRatio: '16/9',
                     minHeight: '75vh',
