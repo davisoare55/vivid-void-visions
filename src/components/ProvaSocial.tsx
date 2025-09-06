@@ -47,7 +47,7 @@ const ProvaSocial = () => {
 
         {/* Brands */}
         <div className="text-center">
-          <h3 className="text-2xl font-bold mb-8 text-foreground">Confiado por marcas como</h3>
+          <h3 className="text-2xl font-bold mb-8 text-foreground whitespace-nowrap">Confiado por marcas como</h3>
           <div className="flex justify-center">
             <div className="max-w-4xl">
               <img 

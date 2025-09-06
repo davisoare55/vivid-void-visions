@@ -15,10 +15,10 @@ const Index = () => {
   const [showFullSite, setShowFullSite] = useState(false);
 
   useEffect(() => {
-    // Show full site after 30 seconds
+    // Show full site after 2 minutes and 15 seconds (135 seconds)
     const timer = setTimeout(() => {
       setShowFullSite(true);
-    }, 30000); // 30 seconds
+    }, 135000); // 2 minutes and 15 seconds (135 seconds)
 
     return () => clearTimeout(timer);
   }, []);

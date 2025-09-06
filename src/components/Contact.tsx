@@ -37,8 +37,8 @@ const Contact = () => {
         </div>
 
         {/* Urgency Timer */}
-        <div className="p-4 sm:p-6 md:p-8 mb-12 border-2 border-white rounded-lg interactive group hover:scale-105 transition-all duration-300" style={{background: 'linear-gradient(145deg, #000000 0%, #0a0a0a 30%, #1a1a1a 70%, #2a2a2a 100%)', boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
-          <div className="text-center">
+        <div className="p-4 sm:p-6 md:p-8 mb-12 border-2 border-white rounded-lg interactive group hover:scale-105 transition-all duration-300 flex justify-center" style={{background: 'linear-gradient(145deg, #000000 0%, #0a0a0a 30%, #1a1a1a 70%, #2a2a2a 100%)', boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
+          <div className="text-center max-w-md w-full">
             <div className="mb-6">
               <h3 className="text-xl sm:text-2xl font-bold text-primary mb-2">Oferta por Tempo Limitado</h3>
               <p className="text-base sm:text-lg text-muted-foreground mb-4">

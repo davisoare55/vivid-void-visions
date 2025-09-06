@@ -131,7 +131,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                 />
               </div>
               {showFullSite && (
-                <div className="flex justify-center mt-12">
+                <div className="flex justify-center mt-6">
                   <a 
                     href="https://docs.google.com/forms/d/e/1FAIpQLSfadJIhA1H410Cj_6Mxs8kEj6bupPDbivUqiWZPR0_pqt7wlQ/viewform?usp=header"
                     target="_blank"
@@ -155,7 +155,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
               {/* Right fade gradient */}
               <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div>
               <div className="flex animate-scroll gap-6">
-              {[...projects, ...projects].map((project, index) => (
+              {[...projects, ...projects, ...projects].map((project, index) => (
                 <div
                   key={index}
                   className="flex-shrink-0 w-48 sm:w-64 md:w-80 card-3d p-2 sm:p-3 md:p-4 rounded-lg"
