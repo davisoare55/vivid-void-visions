@@ -15,14 +15,31 @@ const Index = () => {
   const [showFullSite, setShowFullSite] = useState(false);
 
   useEffect(() => {
-    // Check if mobile device
+    // VTurb delay code integration
+    const initializeVTurbDelay = () => {
+      const player = document.querySelector("vturb-smartplayer");
+      if (player) {
+        player.addEventListener("player:ready", function() {
+          // Check if mobile device
+          const isMobile = window.innerWidth <= 768;
+          // Mobile: 2 minutes (120 seconds), Desktop: 2 minutes 15 seconds (135 seconds)
+          const delaySeconds = isMobile ? 120 : 135;
+          
+          (player as any).displayHiddenElements(delaySeconds, [".full-site-content"], { persist: true });
+        });
+      }
+    };
+
+    // Fallback timer in case VTurb player is not available
     const isMobile = window.innerWidth <= 768;
-    // Mobile: 2 minutes (120 seconds), Desktop: 2 minutes 15 seconds (135 seconds)
     const delay = isMobile ? 120000 : 135000;
     
     const timer = setTimeout(() => {
       setShowFullSite(true);
     }, delay);
+
+    // Try to initialize VTurb delay
+    initializeVTurbDelay();
 
     return () => clearTimeout(timer);
   }, []);
@@ -34,7 +51,7 @@ const Index = () => {
       <main className="w-full max-w-full overflow-x-hidden">
         <Portfolio showFullSite={showFullSite} />
         {showFullSite && (
-          <div className="w-full max-w-full overflow-x-hidden">
+          <div className="w-full max-w-full overflow-x-hidden full-site-content">
             <ScrollRevealSection>
               <ProvaSocial />
             </ScrollRevealSection>
