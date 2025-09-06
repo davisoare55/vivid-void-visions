@@ -122,8 +122,8 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                   className="relative w-full rounded-none md:rounded-lg overflow-hidden bg-background-tertiary border-0 md:border border-border/50"
                   style={{ 
                     aspectRatio: '16/9',
-                    minHeight: '400px',
-                    maxHeight: '600px'
+                    minHeight: '500px',
+                    maxHeight: '700px'
                   }}
                   dangerouslySetInnerHTML={{
                     __html: '<vturb-smartplayer id="vid-68b8aa58e2667294be3e13eb" style="display: block; margin: 0 auto; width: 100%; height: 100%;"></vturb-smartplayer>'
