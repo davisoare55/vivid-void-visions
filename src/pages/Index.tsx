@@ -15,10 +15,14 @@ const Index = () => {
   const [showFullSite, setShowFullSite] = useState(false);
 
   useEffect(() => {
-    // Show full site after 2 minutes and 15 seconds (135 seconds)
+    // Check if mobile device
+    const isMobile = window.innerWidth <= 768;
+    // Mobile: 2 minutes (120 seconds), Desktop: 2 minutes 15 seconds (135 seconds)
+    const delay = isMobile ? 120000 : 135000;
+    
     const timer = setTimeout(() => {
       setShowFullSite(true);
-    }, 135000); // 2 minutes and 15 seconds (135 seconds)
+    }, delay);
 
     return () => clearTimeout(timer);
   }, []);
