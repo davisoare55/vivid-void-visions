@@ -148,42 +148,48 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
 
         {/* Projects Carousel - Only show when full site is visible */}
         {showFullSite && (
-          <div className="relative overflow-hidden">
-            <div className="relative">
-              {/* Left fade gradient */}
-              <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"></div>
-              {/* Right fade gradient */}
-              <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div>
-              <div className="flex animate-scroll gap-6">
-              {[...projects, ...projects, ...projects].map((project, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 w-48 sm:w-64 md:w-80 card-3d p-2 sm:p-3 md:p-4 rounded-lg"
-                >
-                  <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-1 sm:mb-2 md:mb-4 bg-background-tertiary border border-border/50">
-                    <video
-                      className="w-full h-full object-cover"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="metadata"
-                      onEnded={(e) => {
-                        const video = e.target as HTMLVideoElement;
-                        video.currentTime = 0;
-                        video.play();
+          <div className="relative overflow-hidden py-8">
+            <div className="flex justify-center">
+              <div className="w-64 sm:w-80 md:w-96">
+                <div className="carousel-container relative">
+                  {projects.map((project, index) => (
+                    <div
+                      key={index}
+                      className={`carousel-item absolute inset-0 transition-opacity duration-1000 ${
+                        index === 0 ? 'opacity-100' : 'opacity-0'
+                      }`}
+                      style={{
+                        animationDelay: `${index * 4}s`,
+                        animation: `fadeInOut ${projects.length * 4}s infinite`
                       }}
                     >
-                      <source src={`/portfolio/${project.videoFile}`} type="video/webm" />
-                      <source src={`/portfolio/${project.fallback}`} type="video/mp4" />
-                    </video>
-                  </div>
-                  <div className="text-center">
-                    <h4 className="font-bold text-sm sm:text-base md:text-lg mb-0.5 md:mb-1 text-foreground tracking-wider">{project.client}</h4>
-                    <p className="text-primary font-semibold text-xs sm:text-sm md:text-base">{project.views}</p>
-                  </div>
+                      <div className="card-3d p-4 rounded-lg">
+                        <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-4 bg-background-tertiary border border-border/50">
+                          <video
+                            className="w-full h-full object-cover"
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            preload="metadata"
+                            onEnded={(e) => {
+                              const video = e.target as HTMLVideoElement;
+                              video.currentTime = 0;
+                              video.play();
+                            }}
+                          >
+                            <source src={`/portfolio/${project.videoFile}`} type="video/webm" />
+                            <source src={`/portfolio/${project.fallback}`} type="video/mp4" />
+                          </video>
+                        </div>
+                        <div className="text-center">
+                          <h4 className="font-bold text-base md:text-lg mb-1 text-foreground tracking-wider">{project.client}</h4>
+                          <p className="text-primary font-semibold text-sm md:text-base">{project.views}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
               </div>
             </div>
           </div>

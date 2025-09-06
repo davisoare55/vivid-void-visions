@@ -471,6 +471,21 @@
   }
 }
 
+/* Carousel fade animation */
+@keyframes fadeInOut {
+  0%, 20% { opacity: 1; }
+  25%, 95% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.carousel-container {
+  height: 400px;
+}
+
+.carousel-item {
+  animation-fill-mode: both;
+}
+
 /* Video player responsive styles */
 @media (min-width: 768px) {
   .video-container {
