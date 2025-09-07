@@ -114,7 +114,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
         </div>
 
         {/* Featured Video */}
-        <div className="mb-8">
+        <div className="mb-0 md:mb-8">
             <div className="relative w-full md:max-w-6xl md:mx-auto px-0 md:px-4">
               <div className="rounded-lg p-0">
                 <div 
@@ -130,20 +130,20 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                   }}
                 />
               </div>
-              {showFullSite && (
-                <div className="flex justify-center -mt-2 px-4">
-                  <a 
-                    href="https://docs.google.com/forms/d/e/1FAIpQLSfadJIhA1H410Cj_6Mxs8kEj6bupPDbivUqiWZPR0_pqt7wlQ/viewform?usp=header"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-hero px-8 py-3 rounded-lg font-bold text-base md:text-lg transition-colors duration-300 w-full max-w-xs text-center whitespace-nowrap"
-                    style={{ fontFamily: 'var(--font-display)' }}
-                  >
-                    Garantir minha vaga agora
-                  </a>
-                </div>
-              )}
             </div>
+            {showFullSite && (
+              <div className="flex justify-center px-4 -mt-1">
+                <a 
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSfadJIhA1H410Cj_6Mxs8kEj6bupPDbivUqiWZPR0_pqt7wlQ/viewform?usp=header"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-hero px-8 py-3 rounded-lg font-bold text-base md:text-lg transition-colors duration-300 w-full max-w-xs text-center whitespace-nowrap"
+                  style={{ fontFamily: 'var(--font-display)' }}
+                >
+                  Garantir minha vaga agora
+                </a>
+              </div>
+            )}
         </div>
 
         {/* Projects Carousel - Only show when full site is visible */}
