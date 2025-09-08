@@ -473,17 +473,7 @@
 
 /* Custom carousel styles */
 .carousel-item {
-  min-height: 500px;
-}
-
-.carousel-item.block {
-  opacity: 1;
-  visibility: visible;
-}
-
-.carousel-item.hidden {
-  opacity: 0;
-  visibility: hidden;
+  min-height: auto;
 }
 
 /* Video player responsive styles */

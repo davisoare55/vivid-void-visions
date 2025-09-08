@@ -30,34 +30,19 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
       const startAutoplay = () => {
         autoplayInterval = setInterval(() => {
           if (carouselRef.current) {
-            const slides = carouselRef.current.querySelectorAll('.carousel-item');
-            const totalSlides = slides.length;
-            
-            // Hide current slide
-            slides[currentSlide].classList.add('hidden');
-            slides[currentSlide].classList.remove('block');
+            const totalSlides = projects.length;
             
             // Move to next slide
             currentSlide = (currentSlide + 1) % totalSlides;
             
-            // Show next slide
-            slides[currentSlide].classList.remove('hidden');
-            slides[currentSlide].classList.add('block');
+            // Apply transform to show next slide
+            carouselRef.current.style.transform = `translateX(-${currentSlide * (100 / projects.length)}%)`;
           }
-        }, 4000);
+        }, 3000);
       };
 
-      // Initialize first slide
-      const slides = carouselRef.current.querySelectorAll('.carousel-item');
-      slides.forEach((slide, index) => {
-        if (index === 0) {
-          slide.classList.add('block');
-          slide.classList.remove('hidden');
-        } else {
-          slide.classList.add('hidden');
-          slide.classList.remove('block');
-        }
-      });
+      // Initialize carousel position
+      carouselRef.current.style.transform = 'translateX(0%)';
 
       startAutoplay();
 
@@ -196,17 +181,18 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
 
         {/* Projects Carousel - Only show when full site is visible */}
         {showFullSite && (
-          <div className="relative py-8 overflow-hidden">
-            <div ref={carouselRef} className="relative w-full h-auto">
-              {projects.map((project, index) => (
-                <div 
-                  key={index} 
-                  className="carousel-item absolute inset-0 transition-opacity duration-500 ease-in-out hidden"
-                >
-                  <div className="flex justify-center items-center h-full">
-                    <div className="w-64 sm:w-80 md:w-96">
-                      <div className="card-3d p-4 rounded-lg">
-                        <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-4 bg-background-tertiary border border-border/50">
+          <div className="relative py-8">
+            <div className="overflow-hidden">
+              <div ref={carouselRef} className="flex transition-transform duration-500 ease-in-out" style={{ width: `${projects.length * 100}%` }}>
+                {projects.map((project, index) => (
+                  <div 
+                    key={index} 
+                    className="carousel-item flex-shrink-0 flex justify-center"
+                    style={{ width: `${100 / projects.length}%` }}
+                  >
+                    <div className="w-48 sm:w-64 md:w-80 lg:w-96 max-w-full mx-4">
+                      <div className="card-3d p-3 sm:p-4 rounded-lg h-full">
+                        <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-3 sm:mb-4 bg-background-tertiary border border-border/50">
                           <video
                             className="w-full h-full object-cover"
                             autoPlay
@@ -225,14 +211,14 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                           </video>
                         </div>
                         <div className="text-center">
-                          <h4 className="font-bold text-base md:text-lg mb-1 text-foreground tracking-wider">{project.client}</h4>
-                          <p className="text-primary font-semibold text-sm md:text-base">{project.views}</p>
+                          <h4 className="font-bold text-sm sm:text-base md:text-lg mb-1 text-foreground tracking-wider">{project.client}</h4>
+                          <p className="text-primary font-semibold text-xs sm:text-sm md:text-base">{project.views}</p>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
             
             {/* Carousel Indicators */}
@@ -243,16 +229,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                   className="w-3 h-3 rounded-full bg-gray-300 hover:bg-primary transition-colors duration-200"
                   onClick={() => {
                     if (carouselRef.current) {
-                      const slides = carouselRef.current.querySelectorAll('.carousel-item');
-                      slides.forEach((slide, i) => {
-                        if (i === index) {
-                          slide.classList.remove('hidden');
-                          slide.classList.add('block');
-                        } else {
-                          slide.classList.add('hidden');
-                          slide.classList.remove('block');
-                        }
-                      });
+                      carouselRef.current.style.transform = `translateX(-${index * (100 / projects.length)}%)`;
                     }
                   }}
                 />
