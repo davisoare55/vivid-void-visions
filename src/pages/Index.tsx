@@ -15,16 +15,8 @@ const Index = () => {
   const [showFullSite, setShowFullSite] = useState(false);
 
   useEffect(() => {
-    // Check if mobile device
-    const isMobile = window.innerWidth <= 768;
-    // Mobile: 2 minutes (120 seconds), Desktop: 2 minutes 15 seconds (135 seconds)
-    const delay = isMobile ? 120000 : 135000;
-    
-    const timer = setTimeout(() => {
-      setShowFullSite(true);
-    }, delay);
-
-    return () => clearTimeout(timer);
+    // Load everything immediately for testing
+    setShowFullSite(true);
   }, []);
 
   return (
