@@ -190,9 +190,9 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                     className="carousel-item flex-shrink-0 flex justify-center px-4"
                     style={{ width: '50%' }}
                   >
-                    <div className="w-48 sm:w-64 md:w-80 lg:w-96 max-w-full">
-                      <div className="card-3d p-3 sm:p-4 rounded-lg h-full">
-                        <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-3 sm:mb-4 bg-background-tertiary border border-border/50">
+                    <div className="w-72 sm:w-96 md:w-[28rem] lg:w-[32rem] xl:w-[36rem] max-w-full">
+                      <div className="card-3d p-6 sm:p-8 rounded-lg h-full">
+                        <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-6 sm:mb-8 bg-background-tertiary border border-border/50">
                           <video
                             className="w-full h-full object-cover"
                             autoPlay
@@ -211,8 +211,8 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                           </video>
                         </div>
                         <div className="text-center">
-                          <h4 className="font-bold text-sm sm:text-base md:text-lg mb-1 text-foreground tracking-wider">{project.client}</h4>
-                          <p className="text-primary font-semibold text-xs sm:text-sm md:text-base">{project.views}</p>
+                          <h4 className="font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl mb-2 sm:mb-3 text-foreground tracking-wider">{project.client}</h4>
+                          <p className="text-primary font-semibold text-base sm:text-lg md:text-xl lg:text-2xl">{project.views}</p>
                         </div>
                       </div>
                     </div>
