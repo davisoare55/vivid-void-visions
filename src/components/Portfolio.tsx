@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
@@ -9,8 +10,9 @@ interface PortfolioProps {
 
 const Portfolio = ({ showFullSite }: PortfolioProps) => {
   const videoContainerRef = useRef<HTMLDivElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
   const [gradientPosition, setGradientPosition] = useState({ x: 0, y: 0 });
-  const [showArrows, setShowArrows] = useState(true);
+  const [showArrows, setShowArrows] = useState(false);
 
   useEffect(() => {
     // Inject the video script
@@ -19,6 +21,52 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
     script.src = 'https://scripts.converteai.net/1207b016-5c31-47e2-ba8e-a8059d7a99ff/players/68b8aa58e2667294be3e13eb/v4/player.js';
     script.async = true;
     document.head.appendChild(script);
+
+    // Initialize custom carousel functionality
+    let currentSlide = 0;
+    let autoplayInterval: NodeJS.Timeout;
+
+    if (showFullSite && carouselRef.current) {
+      const startAutoplay = () => {
+        autoplayInterval = setInterval(() => {
+          if (carouselRef.current) {
+            const slides = carouselRef.current.querySelectorAll('.carousel-item');
+            const totalSlides = slides.length;
+            
+            // Hide current slide
+            slides[currentSlide].classList.add('hidden');
+            slides[currentSlide].classList.remove('block');
+            
+            // Move to next slide
+            currentSlide = (currentSlide + 1) % totalSlides;
+            
+            // Show next slide
+            slides[currentSlide].classList.remove('hidden');
+            slides[currentSlide].classList.add('block');
+          }
+        }, 4000);
+      };
+
+      // Initialize first slide
+      const slides = carouselRef.current.querySelectorAll('.carousel-item');
+      slides.forEach((slide, index) => {
+        if (index === 0) {
+          slide.classList.add('block');
+          slide.classList.remove('hidden');
+        } else {
+          slide.classList.add('hidden');
+          slide.classList.remove('block');
+        }
+      });
+
+      startAutoplay();
+
+      return () => {
+        if (autoplayInterval) {
+          clearInterval(autoplayInterval);
+        }
+      };
+    }
 
     // Mouse tracking for gradient effect - instant response
     const handleMouseMove = (e: MouseEvent) => {
@@ -148,36 +196,66 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
 
         {/* Projects Carousel - Only show when full site is visible */}
         {showFullSite && (
-          <div className="relative overflow-hidden py-8">
-            <div className="flex animate-scroll gap-6">
-              {[...projects, ...projects, ...projects].map((project, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 w-48 sm:w-64 md:w-80 card-3d p-2 sm:p-3 md:p-4 rounded-lg"
+          <div className="relative py-8 overflow-hidden">
+            <div ref={carouselRef} className="relative w-full h-auto">
+              {projects.map((project, index) => (
+                <div 
+                  key={index} 
+                  className="carousel-item absolute inset-0 transition-opacity duration-500 ease-in-out hidden"
                 >
-                  <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-1 sm:mb-2 md:mb-4 bg-background-tertiary border border-border/50">
-                    <video
-                      className="w-full h-full object-cover"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="metadata"
-                      onEnded={(e) => {
-                        const video = e.target as HTMLVideoElement;
-                        video.currentTime = 0;
-                        video.play();
-                      }}
-                    >
-                      <source src={`/portfolio/${project.videoFile}`} type="video/webm" />
-                      <source src={`/portfolio/${project.fallback}`} type="video/mp4" />
-                    </video>
-                  </div>
-                  <div className="text-center">
-                    <h4 className="font-bold text-sm sm:text-base md:text-lg mb-0.5 md:mb-1 text-foreground tracking-wider">{project.client}</h4>
-                    <p className="text-primary font-semibold text-xs sm:text-sm md:text-base">{project.views}</p>
+                  <div className="flex justify-center items-center h-full">
+                    <div className="w-64 sm:w-80 md:w-96">
+                      <div className="card-3d p-4 rounded-lg">
+                        <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-4 bg-background-tertiary border border-border/50">
+                          <video
+                            className="w-full h-full object-cover"
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            preload="metadata"
+                            onEnded={(e) => {
+                              const video = e.target as HTMLVideoElement;
+                              video.currentTime = 0;
+                              video.play();
+                            }}
+                          >
+                            <source src={`/portfolio/${project.videoFile}`} type="video/webm" />
+                            <source src={`/portfolio/${project.fallback}`} type="video/mp4" />
+                          </video>
+                        </div>
+                        <div className="text-center">
+                          <h4 className="font-bold text-base md:text-lg mb-1 text-foreground tracking-wider">{project.client}</h4>
+                          <p className="text-primary font-semibold text-sm md:text-base">{project.views}</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
+              ))}
+            </div>
+            
+            {/* Carousel Indicators */}
+            <div className="flex justify-center mt-6 space-x-2">
+              {projects.map((_, index) => (
+                <button
+                  key={index}
+                  className="w-3 h-3 rounded-full bg-gray-300 hover:bg-primary transition-colors duration-200"
+                  onClick={() => {
+                    if (carouselRef.current) {
+                      const slides = carouselRef.current.querySelectorAll('.carousel-item');
+                      slides.forEach((slide, i) => {
+                        if (i === index) {
+                          slide.classList.remove('hidden');
+                          slide.classList.add('block');
+                        } else {
+                          slide.classList.add('hidden');
+                          slide.classList.remove('block');
+                        }
+                      });
+                    }
+                  }}
+                />
               ))}
             </div>
           </div>
