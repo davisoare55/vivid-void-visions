@@ -235,9 +235,9 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                           </video>
                         </div>
                         
-                        <div className="text-center">
-                          <h4 className="font-bold text-xs sm:text-xl md:text-2xl lg:text-3xl mb-1 sm:mb-3 text-foreground tracking-wider">{project.client}</h4>
-                          <p className="text-primary font-semibold text-sm sm:text-lg md:text-xl lg:text-2xl">{project.views}</p>
+                        <div className="text-center px-2 sm:px-0">
+                          <h4 className="font-bold text-xs sm:text-xl md:text-2xl lg:text-3xl mb-1 sm:mb-3 text-foreground tracking-wider break-words">{project.client}</h4>
+                          <p className="text-primary font-semibold text-sm sm:text-lg md:text-xl lg:text-2xl break-words">{project.views}</p>
                         </div>
                       </div>
                     </div>
