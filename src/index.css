@@ -246,8 +246,8 @@
 
   /* Refined Hero Button */
   .btn-hero {
-    background: linear-gradient(135deg, #FF8C00, #FF7F50);
-    color: black;
+    background: linear-gradient(135deg, #FF8C00, #FF7F50) !important;
+    color: black !important;
     position: relative;
     overflow: hidden;
     box-shadow: 0 0 30px rgba(255, 140, 0, 0.3);
@@ -256,7 +256,8 @@
   }
 
   .btn-hero:hover {
-    background: linear-gradient(135deg, #FF7F50, #FF6347);
+    background: linear-gradient(135deg, #FF7F50, #FF6347) !important;
+    color: black !important;
     box-shadow: 0 0 40px rgba(255, 140, 0, 0.5);
     transform: translateY(-2px);
   }
@@ -483,9 +484,10 @@
   }
 }
 
-/* VTurb player container minimal padding */
+/* VTurb player container - no background or padding */
 .video-container {
-  padding: 2px !important;
+  padding: 0 !important;
+  background: transparent !important;
 }
 
 .video-container > * {

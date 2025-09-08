@@ -23,37 +23,6 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
     script.async = true;
     document.head.appendChild(script);
 
-    // Initialize custom carousel functionality
-    let autoplayInterval: NodeJS.Timeout;
-
-    if (showFullSite && carouselRef.current) {
-      const startAutoplay = () => {
-        autoplayInterval = setInterval(() => {
-          if (carouselRef.current) {
-            const totalSlides = projects.length;
-            
-            // Move to next slide
-            const nextSlide = (currentSlide + 1) % totalSlides;
-            setCurrentSlide(nextSlide);
-            
-            // Apply transform to show next slide (100vw per slide for perfect centering)
-            carouselRef.current.style.transform = `translateX(-${nextSlide * 100}vw)`;
-          }
-        }, 3000);
-      };
-
-      // Initialize carousel position
-      carouselRef.current.style.transform = `translateX(-${currentSlide * 100}vw)`;
-
-      startAutoplay();
-
-      return () => {
-        if (autoplayInterval) {
-          clearInterval(autoplayInterval);
-        }
-      };
-    }
-
     // Mouse tracking for gradient effect - instant response
     const handleMouseMove = (e: MouseEvent) => {
       setGradientPosition({ x: e.clientX, y: e.clientY });
@@ -80,20 +49,48 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  // Separate useEffect for carousel autoplay
+  useEffect(() => {
+    let autoplayInterval: NodeJS.Timeout;
+
+    if (showFullSite && carouselRef.current) {
+      // Initialize carousel position
+      carouselRef.current.style.transform = `translateX(-${currentSlide * 50}%)`;
+
+      // Start autoplay
+      autoplayInterval = setInterval(() => {
+        setCurrentSlide(prevSlide => {
+          const nextSlide = (prevSlide + 1) % 5; // Updated to 5 projects
+          if (carouselRef.current) {
+            carouselRef.current.style.transform = `translateX(-${nextSlide * 50}%)`;
+          }
+          return nextSlide;
+        });
+      }, 3000);
+
+      return () => {
+        if (autoplayInterval) {
+          clearInterval(autoplayInterval);
+        }
+      };
+    }
+  }, [showFullSite]);
+  
   const projects = [
-    { client: 'CAPITECH', views: '2.3M visualizações', videoFile: 'CAPITECH.webm', fallback: 'CAPITECH.webm' },
-    { client: 'DRA MARCELA', views: '1.8M visualizações', videoFile: 'DRA MARCELA.webm', fallback: 'DRA MARCELA.webm' },
-    { client: 'NIKE', views: '8.5M visualizações', videoFile: 'NIKE.webm', fallback: 'NIKE.mp4' },
-    { client: 'FANTA', views: '2.7M visualizações', videoFile: 'FANTA.webm', fallback: 'FANTA.webm' },
-    { client: 'MEMPHIS', views: '14M visualizações', videoFile: 'MEMPHIS.webm', fallback: 'MEMPHIS.webm' },
-    { client: 'LETIZIO', views: '4.6M visualizações', videoFile: 'letizio.webm', fallback: 'letizio.webm' }
+    { client: '@capitechoficial', views: '1,3M visualizações', videoFile: 'CAPITECH.webm', fallback: 'CAPITECH.webm' },
+    { client: '@dramarcellabirtche', views: '136K visualizações', videoFile: 'DRA MARCELA.webm', fallback: 'DRA MARCELA.webm' },
+    { client: '@nike', views: '1,3M visualizações orgânicas', videoFile: 'NIKE.webm', fallback: 'NIKE.webm' },
+    { client: '@fanta', views: '63M visualizações', videoFile: 'FANTA.webm', fallback: 'FANTA.webm' },
+    { client: '@memphisdepay', views: '5,5M visualizações', videoFile: 'MEMPHIS.webm', fallback: 'MEMPHIS.webm' },
+    { client: '@clinicanelsonletizio', views: '12M visualizações', videoFile: 'letizio.webm', fallback: 'letizio.webm' }
   ];
 
   const nextSlide = () => {
     const newSlide = (currentSlide + 1) % projects.length;
     setCurrentSlide(newSlide);
     if (carouselRef.current) {
-      carouselRef.current.style.transform = `translateX(-${newSlide * 100}vw)`;
+      carouselRef.current.style.transform = `translateX(-${newSlide * 50}%)`;
     }
   };
 
@@ -101,7 +98,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
     const newSlide = currentSlide === 0 ? projects.length - 1 : currentSlide - 1;
     setCurrentSlide(newSlide);
     if (carouselRef.current) {
-      carouselRef.current.style.transform = `translateX(-${newSlide * 100}vw)`;
+      carouselRef.current.style.transform = `translateX(-${newSlide * 50}%)`;
     }
   };
 
@@ -134,53 +131,49 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
         </div>
 
         {/* Featured Video */}
-        <div className="mb-0 md:mb-8">
-            <div className="rounded-lg p-0 mb-0">
-              <div className="relative w-full md:max-w-6xl md:mx-auto px-0">
-                <div 
-                  ref={videoContainerRef}
-                  className="relative w-full rounded-none md:rounded-lg overflow-hidden bg-background-tertiary border-0 md:border border-border/50 video-container"
-                  style={{ 
-                    aspectRatio: '16/9',
-                    minHeight: '75vh',
-                    maxHeight: '95vh',
-                    padding: '2px'
-                  }}
-                  dangerouslySetInnerHTML={{
-                    __html: '<vturb-smartplayer id="vid-68b8aa58e2667294be3e13eb" style="display: block; margin: 0 auto; width: 100%; height: 100%;"></vturb-smartplayer>'
-                  }}
-                />
-              </div>
-            </div>
-            {showFullSite && (
-              <div className="flex justify-center px-4 -mt-1">
-                <a 
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSfadJIhA1H410Cj_6Mxs8kEj6bupPDbivUqiWZPR0_pqt7wlQ/viewform?usp=header"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-hero px-8 py-3 rounded-lg font-bold text-base md:text-lg transition-colors duration-300 w-full max-w-xs text-center whitespace-nowrap"
-                  style={{ fontFamily: 'var(--font-display)' }}
-                >
-                  Garantir minha vaga agora
-                </a>
-              </div>
-            )}
+        <div className="relative w-full md:max-w-6xl md:mx-auto">
+          <div 
+            ref={videoContainerRef}
+            className="relative w-full rounded-2xl overflow-hidden video-container"
+            style={{ 
+              aspectRatio: '16/9',
+              minHeight: '75vh',
+              maxHeight: '95vh'
+            }}
+            dangerouslySetInnerHTML={{
+              __html: '<vturb-smartplayer id="vid-68b8aa58e2667294be3e13eb" style="display: block; margin: 0 auto; width: 100%; height: 100%;"></vturb-smartplayer>'
+            }}
+          />
         </div>
+        {showFullSite && (
+          <div className="flex justify-center px-4" style={{ marginTop: '-30rem' }}>
+            <a 
+              href="https://docs.google.com/forms/d/e/1FAIpQLSfadJIhA1H410Cj_6Mxs8kEj6bupPDbivUqiWZPR0_pqt7wlQ/viewform?usp=header"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-hero px-8 py-3 rounded-lg font-bold text-base md:text-lg transition-colors duration-300 w-full max-w-xs text-center whitespace-nowrap"
+              style={{ fontFamily: 'var(--font-display)' }}
+            >
+              Garantir minha vaga agora
+            </a>
+          </div>
+        )}
 
         {/* Projects Carousel - Only show when full site is visible */}
         {showFullSite && (
-          <div className="relative py-8">
-            <div className="overflow-hidden">
-              <div ref={carouselRef} className="flex transition-transform duration-500 ease-in-out" style={{ transform: 'translateX(10%)' }}>
+          <div className="relative py-12">
+            <div className="overflow-hidden px-4 md:px-16">
+              <div ref={carouselRef} className="flex transition-transform duration-500 ease-in-out">
                 {projects.map((project, index) => (
                   <div 
                     key={index} 
-                    className="carousel-item flex-shrink-0 flex justify-center"
-                    style={{ width: '100vw' }}
+                    className="carousel-item flex-shrink-0 flex justify-center px-2 md:px-4"
+                    style={{ width: '50%' }}
                   >
-                    <div className="w-[22.5rem] sm:w-[20rem] md:w-[25rem] lg:w-[30rem] xl:w-[35rem] max-w-full">
-                      <div className="card-3d p-6 sm:p-6 rounded-lg h-full">
-                        <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-6 sm:mb-6 bg-background-tertiary border border-border/50">
+                    <div className="w-[85vw] sm:w-[30rem] md:w-[37.5rem] lg:w-[45rem] xl:w-[52.5rem] max-w-full">
+                      <div className="card-3d p-6 sm:p-4 rounded-lg h-full">
+                        {/* Mobile video container */}
+                        <div className="relative rounded-lg overflow-hidden mb-4 bg-background-tertiary border border-border/50 block sm:hidden" style={{ height: '45vh', width: '150%', marginLeft: '-25%' }}>
                           <video
                             className="w-full h-full object-cover"
                             autoPlay
@@ -188,9 +181,16 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                             muted
                             playsInline
                             preload="auto"
-                            onLoadStart={(e) => {
+                            controls={false}
+                            onLoadedData={(e) => {
                               const video = e.target as HTMLVideoElement;
-                              video.load();
+                              video.play().catch(() => {
+                                setTimeout(() => video.play(), 100);
+                              });
+                            }}
+                            onCanPlay={(e) => {
+                              const video = e.target as HTMLVideoElement;
+                              video.play().catch(() => {});
                             }}
                             onEnded={(e) => {
                               const video = e.target as HTMLVideoElement;
@@ -202,8 +202,41 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                             <source src={`/portfolio/${project.fallback}`} type="video/mp4" />
                           </video>
                         </div>
+                        
+                        {/* Desktop video container */}
+                        <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-4 bg-background-tertiary border border-border/50 hidden sm:block">
+                          <video
+                            className="w-full h-full object-cover"
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            preload="auto"
+                            controls={false}
+                            onLoadedData={(e) => {
+                              const video = e.target as HTMLVideoElement;
+                              video.play().catch(() => {
+                                // Fallback for mobile autoplay restrictions
+                                setTimeout(() => video.play(), 100);
+                              });
+                            }}
+                            onCanPlay={(e) => {
+                              const video = e.target as HTMLVideoElement;
+                              video.play().catch(() => {});
+                            }}
+                            onEnded={(e) => {
+                              const video = e.target as HTMLVideoElement;
+                              video.currentTime = 0;
+                              video.play();
+                            }}
+                          >
+                            <source src={`/portfolio/${project.videoFile}`} type="video/webm" />
+                            <source src={`/portfolio/${project.fallback}`} type="video/mp4" />
+                          </video>
+                        </div>
+                        
                         <div className="text-center">
-                          <h4 className="font-bold text-base sm:text-xl md:text-2xl lg:text-3xl mb-1 sm:mb-3 text-foreground tracking-wider">{project.client}</h4>
+                          <h4 className="font-bold text-xs sm:text-xl md:text-2xl lg:text-3xl mb-1 sm:mb-3 text-foreground tracking-wider">{project.client}</h4>
                           <p className="text-primary font-semibold text-sm sm:text-lg md:text-xl lg:text-2xl">{project.views}</p>
                         </div>
                       </div>
@@ -216,14 +249,22 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
             {/* Navigation Arrows */}
             <button
               onClick={prevSlide}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-primary hover:bg-primary/80 text-white rounded-full p-3 shadow-lg transition-all duration-200 z-20"
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-orange-500 hover:bg-orange-600 text-white rounded-full p-3 transition-all duration-200 z-20"
+              style={{ 
+                boxShadow: '0 0 20px rgba(251, 146, 60, 0.6), 0 0 40px rgba(251, 146, 60, 0.4), 0 0 60px rgba(251, 146, 60, 0.2)',
+                filter: 'drop-shadow(0 0 10px rgba(251, 146, 60, 0.8))'
+              }}
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
             
             <button
               onClick={nextSlide}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-primary hover:bg-primary/80 text-white rounded-full p-3 shadow-lg transition-all duration-200 z-20"
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-orange-500 hover:bg-orange-600 text-white rounded-full p-3 transition-all duration-200 z-20"
+              style={{ 
+                boxShadow: '0 0 20px rgba(251, 146, 60, 0.6), 0 0 40px rgba(251, 146, 60, 0.4), 0 0 60px rgba(251, 146, 60, 0.2)',
+                filter: 'drop-shadow(0 0 10px rgba(251, 146, 60, 0.8))'
+              }}
             >
               <ChevronRight className="w-6 h-6" />
             </button>
@@ -239,7 +280,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                   onClick={() => {
                     setCurrentSlide(index);
                     if (carouselRef.current) {
-                      carouselRef.current.style.transform = `translateX(-${index * 100}vw)`;
+                      carouselRef.current.style.transform = `translateX(-${index * 50}%)`;
                     }
                   }}
                 />

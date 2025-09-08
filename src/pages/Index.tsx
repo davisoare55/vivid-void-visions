@@ -15,8 +15,12 @@ const Index = () => {
   const [showFullSite, setShowFullSite] = useState(false);
 
   useEffect(() => {
-    // Load everything immediately for testing
-    setShowFullSite(true);
+    // Timer to show full site after 2:15 minutes (135 seconds)
+    const timer = setTimeout(() => {
+      setShowFullSite(true);
+    }, 135000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (

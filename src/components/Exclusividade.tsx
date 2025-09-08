@@ -10,8 +10,8 @@ const Exclusividade = () => {
     <section id="exclusividade" className="py-3 md:py-12 px-4 md:px-6 bg-background-secondary w-full max-w-full overflow-x-hidden">
       <div className="max-w-5xl mx-auto text-center">
         {/* Header */}
-        <div className="mb-2 md:mb-8">
-          <h2 className="text-2xl sm:text-3xl md:text-6xl font-bold mb-1 md:mb-4 text-gradient">
+        <div className="mb-6 md:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-6xl font-bold mb-4 md:mb-8 text-gradient">
             Exclusividade real
           </h2>
         </div>
