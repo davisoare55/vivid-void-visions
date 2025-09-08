@@ -35,8 +35,8 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
             // Move to next slide
             currentSlide = (currentSlide + 1) % totalSlides;
             
-            // Apply transform to show next slide
-            carouselRef.current.style.transform = `translateX(-${currentSlide * (100 / projects.length)}%)`;
+            // Apply transform to show next slide (50% per slide to show half cards)
+            carouselRef.current.style.transform = `translateX(-${currentSlide * 50}%)`;
           }
         }, 3000);
       };
@@ -182,15 +182,15 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
         {/* Projects Carousel - Only show when full site is visible */}
         {showFullSite && (
           <div className="relative py-8">
-            <div className="overflow-hidden">
-              <div ref={carouselRef} className="flex transition-transform duration-500 ease-in-out" style={{ width: `${projects.length * 100}%` }}>
+            <div className="overflow-hidden px-16 md:px-24">
+              <div ref={carouselRef} className="flex transition-transform duration-500 ease-in-out">
                 {projects.map((project, index) => (
                   <div 
                     key={index} 
-                    className="carousel-item flex-shrink-0 flex justify-center"
-                    style={{ width: `${100 / projects.length}%` }}
+                    className="carousel-item flex-shrink-0 flex justify-center px-4"
+                    style={{ width: '50%' }}
                   >
-                    <div className="w-48 sm:w-64 md:w-80 lg:w-96 max-w-full mx-4">
+                    <div className="w-48 sm:w-64 md:w-80 lg:w-96 max-w-full">
                       <div className="card-3d p-3 sm:p-4 rounded-lg h-full">
                         <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-3 sm:mb-4 bg-background-tertiary border border-border/50">
                           <video
@@ -229,7 +229,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                   className="w-3 h-3 rounded-full bg-gray-300 hover:bg-primary transition-colors duration-200"
                   onClick={() => {
                     if (carouselRef.current) {
-                      carouselRef.current.style.transform = `translateX(-${index * (100 / projects.length)}%)`;
+                      carouselRef.current.style.transform = `translateX(-${index * 50}%)`;
                     }
                   }}
                 />
