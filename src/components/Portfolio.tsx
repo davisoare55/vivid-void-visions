@@ -36,14 +36,14 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
             const nextSlide = (currentSlide + 1) % totalSlides;
             setCurrentSlide(nextSlide);
             
-            // Apply transform to show next slide (80% per slide for larger cards)
-            carouselRef.current.style.transform = `translateX(-${nextSlide * 80}%)`;
+            // Apply transform to show next slide (100vw per slide for perfect centering)
+            carouselRef.current.style.transform = `translateX(-${nextSlide * 100}vw)`;
           }
         }, 3000);
       };
 
       // Initialize carousel position
-      carouselRef.current.style.transform = `translateX(-${currentSlide * 80}%)`;
+      carouselRef.current.style.transform = `translateX(-${currentSlide * 100}vw)`;
 
       startAutoplay();
 
@@ -93,7 +93,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
     const newSlide = (currentSlide + 1) % projects.length;
     setCurrentSlide(newSlide);
     if (carouselRef.current) {
-      carouselRef.current.style.transform = `translateX(-${newSlide * 80}%)`;
+      carouselRef.current.style.transform = `translateX(-${newSlide * 100}vw)`;
     }
   };
 
@@ -101,7 +101,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
     const newSlide = currentSlide === 0 ? projects.length - 1 : currentSlide - 1;
     setCurrentSlide(newSlide);
     if (carouselRef.current) {
-      carouselRef.current.style.transform = `translateX(-${newSlide * 80}%)`;
+      carouselRef.current.style.transform = `translateX(-${newSlide * 100}vw)`;
     }
   };
 
@@ -169,13 +169,13 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
         {/* Projects Carousel - Only show when full site is visible */}
         {showFullSite && (
           <div className="relative py-8">
-            <div className="overflow-hidden px-4 md:px-8">
-              <div ref={carouselRef} className="flex transition-transform duration-500 ease-in-out">
+            <div className="overflow-hidden">
+              <div ref={carouselRef} className="flex transition-transform duration-500 ease-in-out" style={{ transform: 'translateX(10%)' }}>
                 {projects.map((project, index) => (
                   <div 
                     key={index} 
-                    className="carousel-item flex-shrink-0 flex justify-center px-2"
-                    style={{ width: '80%' }}
+                    className="carousel-item flex-shrink-0 flex justify-center"
+                    style={{ width: '100vw' }}
                   >
                     <div className="w-[30rem] sm:w-[40rem] md:w-[50rem] lg:w-[60rem] xl:w-[70rem] max-w-full">
                       <div className="card-3d p-8 sm:p-12 rounded-lg h-full">
@@ -234,7 +234,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                   onClick={() => {
                     setCurrentSlide(index);
                     if (carouselRef.current) {
-                      carouselRef.current.style.transform = `translateX(-${index * 80}%)`;
+                      carouselRef.current.style.transform = `translateX(-${index * 100}vw)`;
                     }
                   }}
                 />
