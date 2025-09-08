@@ -13,6 +13,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [gradientPosition, setGradientPosition] = useState({ x: 0, y: 0 });
   const [showArrows, setShowArrows] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     // Inject the video script
@@ -23,7 +24,6 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
     document.head.appendChild(script);
 
     // Initialize custom carousel functionality
-    let currentSlide = 0;
     let autoplayInterval: NodeJS.Timeout;
 
     if (showFullSite && carouselRef.current) {
@@ -33,16 +33,17 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
             const totalSlides = projects.length;
             
             // Move to next slide
-            currentSlide = (currentSlide + 1) % totalSlides;
+            const nextSlide = (currentSlide + 1) % totalSlides;
+            setCurrentSlide(nextSlide);
             
             // Apply transform to show next slide (50% per slide to show half cards)
-            carouselRef.current.style.transform = `translateX(-${currentSlide * 50}%)`;
+            carouselRef.current.style.transform = `translateX(-${nextSlide * 50}%)`;
           }
         }, 3000);
       };
 
       // Initialize carousel position
-      carouselRef.current.style.transform = 'translateX(0%)';
+      carouselRef.current.style.transform = `translateX(-${currentSlide * 50}%)`;
 
       startAutoplay();
 
@@ -80,43 +81,29 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
     };
   }, []);
   const projects = [
-    {
-      client: "@fanta",
-      views: "63 M views",
-      videoFile: "FANTA.webm",
-      fallback: "FANTA.mp4",
-    },
-    {
-      client: "@dramarcellabirtche",
-      views: "136 k views",
-      videoFile: "DRA MARCELA.webm",
-      fallback: "DRA MARCELA.mp4",
-    },
-    {
-      client: "@capitechoficial",
-      views: "1,3 M views",
-      videoFile: "CAPITECH.webm",
-      fallback: "CAPITECH.mp4",
-    },
-    {
-      client: "@clinicanelsonletizio",
-      views: "12 × views",
-      videoFile: "letizio.webm",
-      fallback: "letizio.mp4",
-    },
-    {
-      client: "@memphisdepay",
-      views: "5,5 M views",
-      videoFile: "MEMPHIS.webm",
-      fallback: "MEMPHIS.mp4",
-    },
-    {
-      client: "@nike",
-      views: "2,1 M views",
-      videoFile: "NIKE.webm",
-      fallback: "NIKE.mp4",
-    },
+    { client: 'CAPITECH', views: '2.3M visualizações', videoFile: 'CAPITECH.webm', fallback: 'CAPITECH.mp4' },
+    { client: 'DRA MARCELA', views: '1.8M visualizações', videoFile: 'DRA MARCELA.webm', fallback: 'DRA MARCELA.mp4' },
+    { client: 'GRUPO PRIMO', views: '3.1M visualizações', videoFile: 'GRUPO PRIMO.webm', fallback: 'GRUPO PRIMO.mp4' },
+    { client: 'IMOBILIÁRIA PREMIUM', views: '2.7M visualizações', videoFile: 'IMOBILIÁRIA PREMIUM.webm', fallback: 'IMOBILIÁRIA PREMIUM.mp4' },
+    { client: 'LOJA DE ROUPAS', views: '4.2M visualizações', videoFile: 'LOJA DE ROUPAS.webm', fallback: 'LOJA DE ROUPAS.mp4' },
+    { client: 'RESTAURANTE GOURMET', views: '1.9M visualizações', videoFile: 'RESTAURANTE GOURMET.webm', fallback: 'RESTAURANTE GOURMET.mp4' }
   ];
+
+  const nextSlide = () => {
+    const newSlide = (currentSlide + 1) % projects.length;
+    setCurrentSlide(newSlide);
+    if (carouselRef.current) {
+      carouselRef.current.style.transform = `translateX(-${newSlide * 50}%)`;
+    }
+  };
+
+  const prevSlide = () => {
+    const newSlide = currentSlide === 0 ? projects.length - 1 : currentSlide - 1;
+    setCurrentSlide(newSlide);
+    if (carouselRef.current) {
+      carouselRef.current.style.transform = `translateX(-${newSlide * 50}%)`;
+    }
+  };
 
   return (
     <section 
@@ -190,9 +177,9 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                     className="carousel-item flex-shrink-0 flex justify-center px-4"
                     style={{ width: '50%' }}
                   >
-                    <div className="w-72 sm:w-96 md:w-[28rem] lg:w-[32rem] xl:w-[36rem] max-w-full">
-                      <div className="card-3d p-6 sm:p-8 rounded-lg h-full">
-                        <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-6 sm:mb-8 bg-background-tertiary border border-border/50">
+                    <div className="w-[30rem] sm:w-[40rem] md:w-[50rem] lg:w-[60rem] xl:w-[70rem] max-w-full">
+                      <div className="card-3d p-8 sm:p-12 rounded-lg h-full">
+                        <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-8 sm:mb-12 bg-background-tertiary border border-border/50">
                           <video
                             className="w-full h-full object-cover"
                             autoPlay
@@ -221,13 +208,31 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
               </div>
             </div>
             
+            {/* Navigation Arrows */}
+            <button
+              onClick={prevSlide}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-primary hover:bg-primary/80 text-white rounded-full p-3 shadow-lg transition-all duration-200 z-20"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            
+            <button
+              onClick={nextSlide}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-primary hover:bg-primary/80 text-white rounded-full p-3 shadow-lg transition-all duration-200 z-20"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+            
             {/* Carousel Indicators */}
             <div className="flex justify-center mt-6 space-x-2">
               {projects.map((_, index) => (
                 <button
                   key={index}
-                  className="w-3 h-3 rounded-full bg-gray-300 hover:bg-primary transition-colors duration-200"
+                  className={`w-3 h-3 rounded-full transition-colors duration-200 ${
+                    index === currentSlide ? 'bg-primary' : 'bg-gray-300 hover:bg-primary/50'
+                  }`}
                   onClick={() => {
+                    setCurrentSlide(index);
                     if (carouselRef.current) {
                       carouselRef.current.style.transform = `translateX(-${index * 50}%)`;
                     }
