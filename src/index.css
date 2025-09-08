@@ -483,23 +483,13 @@
   }
 }
 
-/* Remove VTurb safe area on mobile */
-@media (max-width: 767px) {
-  vturb-smartplayer {
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
-  }
-  
-  vturb-smartplayer * {
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
-  }
-  
-  .video-container vturb-smartplayer {
-    display: block !important;
-    height: 100% !important;
-    overflow: hidden !important;
-  }
+/* VTurb player container minimal padding */
+.video-container {
+  padding: 2px !important;
+}
+
+.video-container > * {
+  border-radius: 8px;
 }
 
 /* Scrollbar Styling */

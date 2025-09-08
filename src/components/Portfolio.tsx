@@ -135,15 +135,16 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
 
         {/* Featured Video */}
         <div className="mb-0 md:mb-8">
-            <div className="relative w-full md:max-w-6xl md:mx-auto px-0 md:px-4">
-              <div className="rounded-lg p-0">
+            <div className="rounded-lg p-0 mb-0">
+              <div className="relative w-full md:max-w-6xl md:mx-auto px-0">
                 <div 
                   ref={videoContainerRef}
                   className="relative w-full rounded-none md:rounded-lg overflow-hidden bg-background-tertiary border-0 md:border border-border/50 video-container"
                   style={{ 
                     aspectRatio: '16/9',
                     minHeight: '75vh',
-                    maxHeight: '95vh'
+                    maxHeight: '95vh',
+                    padding: '2px'
                   }}
                   dangerouslySetInnerHTML={{
                     __html: '<vturb-smartplayer id="vid-68b8aa58e2667294be3e13eb" style="display: block; margin: 0 auto; width: 100%; height: 100%;"></vturb-smartplayer>'
@@ -177,9 +178,9 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                     className="carousel-item flex-shrink-0 flex justify-center"
                     style={{ width: '100vw' }}
                   >
-                    <div className="w-[22.5rem] sm:w-[40rem] md:w-[50rem] lg:w-[60rem] xl:w-[70rem] max-w-full">
-                      <div className="card-3d p-6 sm:p-12 rounded-lg h-full">
-                        <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-6 sm:mb-12 bg-background-tertiary border border-border/50">
+                    <div className="w-[22.5rem] sm:w-[20rem] md:w-[25rem] lg:w-[30rem] xl:w-[35rem] max-w-full">
+                      <div className="card-3d p-6 sm:p-6 rounded-lg h-full">
+                        <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-6 sm:mb-6 bg-background-tertiary border border-border/50">
                           <video
                             className="w-full h-full object-cover"
                             autoPlay
