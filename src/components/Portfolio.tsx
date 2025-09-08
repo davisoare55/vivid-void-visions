@@ -81,12 +81,12 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
     };
   }, []);
   const projects = [
-    { client: 'CAPITECH', views: '2.3M visualizações', videoFile: 'CAPITECH.webm', fallback: 'CAPITECH.mp4' },
-    { client: 'DRA MARCELA', views: '1.8M visualizações', videoFile: 'DRA MARCELA.webm', fallback: 'DRA MARCELA.mp4' },
-    { client: 'GRUPO PRIMO', views: '3.1M visualizações', videoFile: 'GRUPO PRIMO.webm', fallback: 'GRUPO PRIMO.mp4' },
-    { client: 'IMOBILIÁRIA PREMIUM', views: '2.7M visualizações', videoFile: 'IMOBILIÁRIA PREMIUM.webm', fallback: 'IMOBILIÁRIA PREMIUM.mp4' },
-    { client: 'LOJA DE ROUPAS', views: '4.2M visualizações', videoFile: 'LOJA DE ROUPAS.webm', fallback: 'LOJA DE ROUPAS.mp4' },
-    { client: 'RESTAURANTE GOURMET', views: '1.9M visualizações', videoFile: 'RESTAURANTE GOURMET.webm', fallback: 'RESTAURANTE GOURMET.mp4' }
+    { client: 'CAPITECH', views: '2.3M visualizações', videoFile: 'CAPITECH.webm', fallback: 'CAPITECH.webm' },
+    { client: 'DRA MARCELA', views: '1.8M visualizações', videoFile: 'DRA MARCELA.webm', fallback: 'DRA MARCELA.webm' },
+    { client: 'NIKE', views: '8.5M visualizações', videoFile: 'NIKE.webm', fallback: 'NIKE.mp4' },
+    { client: 'FANTA', views: '2.7M visualizações', videoFile: 'FANTA.webm', fallback: 'FANTA.webm' },
+    { client: 'MEMPHIS', views: '14M visualizações', videoFile: 'MEMPHIS.webm', fallback: 'MEMPHIS.webm' },
+    { client: 'LETIZIO', views: '4.6M visualizações', videoFile: 'letizio.webm', fallback: 'letizio.webm' }
   ];
 
   const nextSlide = () => {
@@ -186,7 +186,11 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                             loop
                             muted
                             playsInline
-                            preload="metadata"
+                            preload="auto"
+                            onLoadStart={(e) => {
+                              const video = e.target as HTMLVideoElement;
+                              video.load();
+                            }}
                             onEnded={(e) => {
                               const video = e.target as HTMLVideoElement;
                               video.currentTime = 0;
