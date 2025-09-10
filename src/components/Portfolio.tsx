@@ -144,7 +144,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
               href="https://docs.google.com/forms/d/e/1FAIpQLSfadJIhA1H410Cj_6Mxs8kEj6bupPDbivUqiWZPR0_pqt7wlQ/viewform?usp=header"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-hero px-8 py-3 rounded-lg font-bold text-base md:text-lg transition-colors duration-300 w-full max-w-xs text-center whitespace-nowrap"
+              className="btn-hero px-8 py-3 rounded-lg font-bold text-base md:text-lg transition-colors duration-300 w-full max-w-xs text-center whitespace-nowrap flex items-center justify-center"
               style={{ fontFamily: 'var(--font-display)' }}
             >
               Garantir minha vaga agora
@@ -185,6 +185,13 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                               const video = e.target as HTMLVideoElement;
                               video.play().catch(() => {});
                             }}
+                            ref={(video) => {
+                              if (video) {
+                                video.play().catch(() => {
+                                  setTimeout(() => video.play(), 50);
+                                });
+                              }
+                            }}
                             onEnded={(e) => {
                               const video = e.target as HTMLVideoElement;
                               video.currentTime = 0;
@@ -212,6 +219,13 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                                 // Fallback for mobile autoplay restrictions
                                 setTimeout(() => video.play(), 100);
                               });
+                            }}
+                            ref={(video) => {
+                              if (video) {
+                                video.play().catch(() => {
+                                  setTimeout(() => video.play(), 50);
+                                });
+                              }
                             }}
                             onCanPlay={(e) => {
                               const video = e.target as HTMLVideoElement;
