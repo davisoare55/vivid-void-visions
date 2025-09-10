@@ -146,7 +146,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
           />
         </div>
         {showFullSite && (
-          <div className="flex justify-center px-4" style={{ marginTop: '2px' }}>
+          <div className="flex justify-center px-4 -mt-6">
             <a 
               href="https://docs.google.com/forms/d/e/1FAIpQLSfadJIhA1H410Cj_6Mxs8kEj6bupPDbivUqiWZPR0_pqt7wlQ/viewform?usp=header"
               target="_blank"
