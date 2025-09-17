@@ -55,7 +55,7 @@ const Contact = () => {
 
             <div className="flex justify-center">
               <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSfadJIhA1H410Cj_6Mxs8kEj6bupPDbivUqiWZPR0_pqt7wlQ/viewform?usp=header"
+                href="https://wa.me/5511982603777"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-hero px-8 sm:px-12 py-4 sm:py-6 text-lg sm:text-xl font-bold interactive rounded-2xl min-w-[280px] sm:min-w-[300px] shadow-2xl inline-block text-center whitespace-nowrap flex items-center justify-center"

@@ -34,7 +34,7 @@ const Hero = () => {
             Ver Portfolio
           </button>
           <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLSfadJIhA1H410Cj_6Mxs8kEj6bupPDbivUqiWZPR0_pqt7wlQ/viewform?usp=header"
+            href="https://wa.me/5511982603777"
             target="_blank"
             rel="noopener noreferrer"
             className="border-primary/50 text-primary hover:bg-primary/10 interactive px-8 py-4 text-lg border rounded-md inline-block text-center"
