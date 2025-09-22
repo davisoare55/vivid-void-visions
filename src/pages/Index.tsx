@@ -12,16 +12,7 @@ import Exclusividade from '@/components/Exclusividade';
 import ScrollRevealSection from '@/components/ScrollRevealSection';
 
 const Index = () => {
-  const [showFullSite, setShowFullSite] = useState(false);
-
-  useEffect(() => {
-    // Timer to show full site after 2:15 minutes (135 seconds)
-    const timer = setTimeout(() => {
-      setShowFullSite(true);
-    }, 135000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const [showFullSite, setShowFullSite] = useState(true);
 
   return (
     <div className="min-h-screen bg-background w-full max-w-full overflow-x-hidden">

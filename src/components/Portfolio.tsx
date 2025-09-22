@@ -13,16 +13,8 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [gradientPosition, setGradientPosition] = useState({ x: 0, y: 0 });
   const [showArrows, setShowArrows] = useState(false);
-  const [showFullSiteState, setShowFullSiteState] = useState(false);
+  const [showFullSiteState, setShowFullSiteState] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowFullSiteState(true);
-    }, 110000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     // Inject the video script
@@ -144,7 +136,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
           ref={videoContainerRef}
           className="relative w-full md:max-w-6xl md:mx-auto"
           dangerouslySetInnerHTML={{
-            __html: '<vturb-smartplayer id="vid-68b8aa58e2667294be3e13eb" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script"); s.src="https://scripts.converteai.net/1207b016-5c31-47e2-ba8e-a8059d7a99ff/players/68b8aa58e2667294be3e13eb/v4/player.js", s.async=!0,document.head.appendChild(s);</script><style>.esconder { display: none; }</style><script>var delaySeconds = 110; var player = document.querySelector("vturb-smartplayer"); player.addEventListener("player:ready", function() { player.displayHiddenElements(delaySeconds, [".esconder"], { persist: true }); });</script>'
+            __html: '<vturb-smartplayer id="vid-68b8aa58e2667294be3e13eb" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script"); s.src="https://scripts.converteai.net/1207b016-5c31-47e2-ba8e-a8059d7a99ff/players/68b8aa58e2667294be3e13eb/v4/player.js", s.async=!0,document.head.appendChild(s);</script>'
           }}
         />
         {showFullSite && (
