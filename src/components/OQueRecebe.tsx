@@ -13,9 +13,9 @@ const OQueRecebe = () => {
       icon: <img src="/portfolio/preto/publicacao-foguete.png" alt="Tráfego" className="w-12 h-12" />
     },
     {
-      title: "Peça FOOH CGI exclusiva",
+      title: "Peça IA+VFX exclusiva",
       description: "Criada especificamente para sua marca, impossível de copiar",
-      icon: <img src="/portfolio/preto/exclusividade-diamante.png" alt="FOOH CGI" className="w-12 h-12" />
+      icon: <img src="/portfolio/preto/exclusividade-diamante.png" alt="IA+VFX" className="w-12 h-12" />
     }
   ];
 

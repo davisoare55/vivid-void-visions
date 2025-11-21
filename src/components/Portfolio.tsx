@@ -17,10 +17,14 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
-    // Inject the video script
+    // Remove any existing VTurb scripts to prevent caching conflicts
+    const existingScripts = document.querySelectorAll('script[src*="converteai.net"]');
+    existingScripts.forEach(s => s.remove());
+
+    // Inject the new video script
     const script = document.createElement('script');
     script.type = 'text/javascript';
-    script.src = 'https://scripts.converteai.net/1207b016-5c31-47e2-ba8e-a8059d7a99ff/players/68b8aa58e2667294be3e13eb/v4/player.js';
+    script.src = 'https://scripts.converteai.net/1207b016-5c31-47e2-ba8e-a8059d7a99ff/players/691ff975813dc92a81d530e2/v4/player.js';
     script.async = true;
     document.head.appendChild(script);
 
@@ -41,11 +45,9 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
     window.addEventListener('scroll', handleScroll);
 
     return () => {
-      // Cleanup script when component unmounts
-      const existingScript = document.querySelector(`script[src="${script.src}"]`);
-      if (existingScript) {
-        document.head.removeChild(existingScript);
-      }
+      // Cleanup all VTurb scripts when component unmounts
+      const allScripts = document.querySelectorAll('script[src*="converteai.net"]');
+      allScripts.forEach(s => s.remove());
       document.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('scroll', handleScroll);
     };
@@ -62,7 +64,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
       // Start autoplay
       autoplayInterval = setInterval(() => {
         setCurrentSlide(prevSlide => {
-          const nextSlide = (prevSlide + 1) % 5; // Updated to 5 projects
+          const nextSlide = (prevSlide + 1) % projects.length; // Updated to 5 projects
           if (carouselRef.current) {
             carouselRef.current.style.transform = `translateX(-${nextSlide * 50}%)`;
           }
@@ -81,10 +83,8 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
   const projects = [
     { client: '@capitechoficial', views: '1,3M visualizações', videoFile: 'CAPITECH.webm', fallback: 'CAPITECH.webm' },
     { client: '@dramarcellabirtche', views: '136K visualizações', videoFile: 'DRA MARCELA.webm', fallback: 'DRA MARCELA.webm' },
-    { client: '@nike', views: '1,3M visualizações orgânicas', videoFile: 'NIKE.webm', fallback: 'NIKE.webm' },
-    { client: '@fanta', views: '63M visualizações', videoFile: 'FANTA.webm', fallback: 'FANTA.webm' },
-    { client: '@memphisdepay', views: '5,5M visualizações', videoFile: 'MEMPHIS.webm', fallback: 'MEMPHIS.webm' },
-    { client: '@clinicanelsonletizio', views: '12M visualizações', videoFile: 'letizio.webm', fallback: 'letizio.webm' }
+    { client: '@clinicanelsonletizio', views: '80k visualizações', videoFile: 'letizio.webm', fallback: 'letizio.webm' },
+    { client: '@fanta', views: '63M visualizações', videoFile: 'FANTA.webm', fallback: 'FANTA.webm' }
   ];
 
   const nextSlide = () => {
@@ -116,29 +116,26 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
         }}
       />
       <div className="max-w-7xl mx-auto relative z-20">
-        {/* Header */}
-        <div className="text-center mb-8 md:mb-16">
-          {/* Custom PNG headline for all devices */}
-          <div className="mb-4 md:mb-8 px-3 md:px-6">
-            <img 
-              src="/headline-mobile.png" 
-              alt="Por que empresas nos EUA estão usando FOOH 3D?" 
-              className="w-full h-auto max-w-sm md:max-w-4xl mx-auto drop-shadow-2xl"
-              style={{
-                filter: 'drop-shadow(0 25px 25px rgb(0 0 0 / 0.15)) drop-shadow(0 0 20px rgba(251, 146, 60, 0.3)) drop-shadow(0 0 40px rgba(251, 146, 60, 0.1))'
-              }}
-            />
-          </div>
-        </div>
-
         {/* Featured Video */}
         <div 
           ref={videoContainerRef}
-          className="relative w-full md:max-w-6xl md:mx-auto"
-          dangerouslySetInnerHTML={{
-            __html: '<vturb-smartplayer id="vid-68b8aa58e2667294be3e13eb" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script"); s.src="https://scripts.converteai.net/1207b016-5c31-47e2-ba8e-a8059d7a99ff/players/68b8aa58e2667294be3e13eb/v4/player.js", s.async=!0,document.head.appendChild(s);</script>'
-          }}
-        />
+          className="mx-auto max-w-[420px] sm:max-w-[480px] md:max-w-[600px] lg:max-w-[720px] xl:max-w-[800px]"
+        >
+          <div
+            dangerouslySetInnerHTML={{
+              __html: '<vturb-smartplayer id="vid-691ff975813dc92a81d530e2" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer> <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/1207b016-5c31-47e2-ba8e-a8059d7a99ff/players/691ff975813dc92a81d530e2/v4/player.js", s.async=!0,document.head.appendChild(s); </script>'
+            }}
+          />
+        </div>
+
+        {/* Single-line Title below video */}
+        <div className="text-center mt-6 md:mt-8">
+          <h1
+            className="uppercase text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gradient leading-tight drop-shadow-2xl tracking-tight"
+          >
+            meu lucro é só no seu resultado
+          </h1>
+        </div>
         {showFullSite && (
           <div className="flex justify-center px-4 mt-6">
             <a 

@@ -22,7 +22,7 @@ const About = () => {
                   <h3 className="text-2xl md:text-3xl font-bold mb-6 text-warm">Davi Soares</h3>
                   <div className="space-y-4">
                     <p className="text-muted-foreground leading-relaxed text-lg md:text-xl">
-                      13 anos criando o que nenhuma IA ou editor genérico consegue. Especialista em FOOH CGI com técnicas de cinema, transformando marcas através de efeitos visuais impossíveis de ignorar.
+                      13 anos criando o que nenhuma IA ou editor genérico consegue. Especialista em IA+VFX com técnicas de cinema, transformando marcas através de efeitos visuais impossíveis de ignorar.
                     </p>
                     <p className="text-muted-foreground leading-relaxed text-lg md:text-xl">
                       Trabalho com gigantes como Nike, Marvel, Fanta e iFood, entregando campanhas que geram +100M de views e ROAS entre 15-30x.
@@ -39,7 +39,7 @@ const About = () => {
                 <div className="relative max-w-sm md:max-w-md">
                   <img 
                     src="/perfil.png" 
-                    alt="Davi Soares - FOOH CGI Specialist" 
+                    alt="Davi Soares - IA+VFX Specialist" 
                     className="w-full h-auto object-cover object-center rounded-2xl shadow-2xl"
                     style={{ 
                       backgroundColor: 'transparent',

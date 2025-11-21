@@ -22,7 +22,7 @@ const Hero = () => {
             <span className="text-warm">VISUAL</span>
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed px-4">
-            Especialista em edição de vídeos, VFX e CGI. Transformando ideias em experiências visuais únicas e impactantes.
+            Especialista em edição de vídeos e IA+VFX. Transformando ideias em experiências visuais únicas e impactantes.
           </p>
         </div>
 

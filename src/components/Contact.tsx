@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 
 const Contact = () => {
   const [timeLeft, setTimeLeft] = useState(7 * 60); // 7 minutes in seconds
-  const [spotsLeft] = useState(2);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -41,9 +40,6 @@ const Contact = () => {
           <div className="text-center max-w-md w-full">
             <div className="mb-6">
               <h3 className="text-xl sm:text-2xl font-bold text-primary mb-2">Oferta por Tempo Limitado</h3>
-              <p className="text-base sm:text-lg text-muted-foreground mb-4">
-                Apenas <span className="text-primary font-bold">{spotsLeft} vagas restantes</span> para este mês
-              </p>
             </div>
             
             <div className="mb-8">

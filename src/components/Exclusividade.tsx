@@ -23,20 +23,13 @@ const Exclusividade = () => {
               <img src="/portfolio/branco/exclusividade-diamante-branco.png" alt="Exclusividade" className="w-8 h-8 sm:w-10 sm:h-10 md:w-16 md:h-16" />
             </div>
             <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground leading-relaxed mb-8">
-              Para manter a qualidade artesanal, atendo apenas <span className="text-primary font-bold">4 projetos por mês</span>.<br/>
+              Para manter a qualidade artesanal, atendo apenas <span className="text-primary font-bold">10 projetos por mês</span>.<br/>
               As vagas são preenchidas por processo seletivo.
             </p>
           </div>
 
           {/* Exclusivity Features */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            <div className="p-6 text-center border-2 border-gray-300 rounded-lg interactive group hover:scale-105 transition-all duration-300" style={{background: 'linear-gradient(145deg, #ffffff 0%, #f5f5f5 25%, #e5e5e5 50%, #d5d5d5 75%, #c5c5c5 100%)', boxShadow: '0 10px 30px rgba(255, 255, 255, 0.2)'}}>
-              <div className="mb-3 flex justify-center group-hover:scale-110 transition-transform duration-300">
-                <img src="/portfolio/preto/PRAZO PADRÃO.png" alt="Prazo" className="w-8 h-8" />
-              </div>
-              <h3 className="font-bold text-lg mb-2 text-black">Prazo padrão</h3>
-              <p className="text-gray-800">1 a 3 semanas</p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
             <div className="p-6 text-center border-2 border-gray-300 rounded-lg interactive group hover:scale-105 transition-all duration-300" style={{background: 'linear-gradient(145deg, #ffffff 0%, #f5f5f5 25%, #e5e5e5 50%, #d5d5d5 75%, #c5c5c5 100%)', boxShadow: '0 10px 30px rgba(255, 255, 255, 0.2)'}}>
               <div className="mb-3 flex justify-center group-hover:scale-110 transition-transform duration-300">
                 <img src="/portfolio/preto/contrato-documento.png" alt="Contrato" className="w-8 h-8" />
@@ -46,9 +39,9 @@ const Exclusividade = () => {
             </div>
             <div className="p-6 text-center border-2 border-gray-300 rounded-lg interactive group hover:scale-105 transition-all duration-300" style={{background: 'linear-gradient(145deg, #ffffff 0%, #f5f5f5 25%, #e5e5e5 50%, #d5d5d5 75%, #c5c5c5 100%)', boxShadow: '0 10px 30px rgba(255, 255, 255, 0.2)'}}>
               <div className="mb-3 flex justify-center group-hover:scale-110 transition-transform duration-300">
-                <img src="/portfolio/preto/4 VAGAS.png" alt="4 Vagas" className="w-8 h-8" />
+                <img src="/portfolio/preto/4 VAGAS.png" alt="10 Vagas" className="w-8 h-8" />
               </div>
-              <h3 className="font-bold text-lg mb-2 text-black">4 vagas/mês</h3>
+              <h3 className="font-bold text-lg mb-2 text-black">10 vagas/mês</h3>
               <p className="text-gray-800">Exclusividade garantida</p>
             </div>
           </div>

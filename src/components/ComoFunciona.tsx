@@ -17,7 +17,7 @@ const ComoFunciona = () => {
     {
       number: "03",
       title: "Produção artesanal",
-      description: "CGI + VFX + cor + som com estética de grandes campanhas.",
+      description: "IA+VFX + cor + som com estética de grandes campanhas.",
       icon: <img src="/portfolio/branco/producao-cinema-brancoo.png" alt="Produção" className="w-12 h-12" />
     },
     {
