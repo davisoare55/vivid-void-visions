@@ -23,38 +23,20 @@
       href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="./styles.css" />
     <title>Reunião de Avaliação | Projeto Lucro no seu Resultado</title>
   </head>
   <body>
     <div class="page-wrapper">
       <section class="hero-banner fade-section" aria-label="Apresentação visual do projeto">
-        <img src="/public/HEAD.png" alt="Davi Soares apresentando" loading="lazy" />
+        <img src="./public/HEAD.png" alt="Davi Soares apresentando" loading="lazy" />
       </section>
 
       <section class="hero-title fade-section" aria-label="Identificação da sessão">
         <h1>Reunião de Avaliação</h1>
-        
-        <!-- Form for user data -->
-        <form id="userForm" class="user-form" style="margin-bottom: 20px;">
-          <div class="form-group">
-            <input type="text" id="name" name="name" placeholder="Seu nome completo" required />
-          </div>
-          <div class="form-group">
-            <input type="email" id="email" name="email" placeholder="Seu melhor e-mail" required />
-          </div>
-          <div class="form-group">
-            <input type="tel" id="phone" name="phone" placeholder="WhatsApp (opcional)" />
-          </div>
-        </form>
-        
-        <button class="cta-button" id="ctaButton" type="button" onclick="initMercadoPago()">
+        <a href="https://mpago.li/26LHPRS" target="_blank" class="cta-button">
           Garantir Minha Vaga por R$37
-        </button>
-        <div class="wallet-container" id="walletContainer" aria-live="polite" aria-label="Checkout Mercado Pago">
-          <!-- O componente Wallet do Mercado Pago aparecerá aqui -->
-        </div>
-        <p class="feedback" id="feedbackMessage" role="status"></p>
+        </a>
       </section>
 
       <header class="hero section fade-section">
@@ -72,7 +54,7 @@
         <div class="hero__media">
           <figure>
             <img
-              src="/public/RESULTADOS-CLIENTES-CLINICAS.png"
+              src="./public/RESULTADOS-CLIENTES-CLINICAS.png"
               alt="Cards de resultados consolidados"
               loading="lazy"
             />
@@ -91,14 +73,19 @@
       <section class="traffic section fade-section" aria-label="Resultados de tráfego pago">
         <div class="traffic__intro"></div>
         <figure class="traffic__visual">
-          <img src="/public/TRÁFEGO.png" alt="Dashboard detalhado das campanhas de tráfego" loading="lazy" />
+          <img src="./public/TRÁFEGO.png" alt="Dashboard detalhado das campanhas de tráfego" loading="lazy" />
         </figure>
       </section>
 
-      
+      <section class="risk section fade-section" aria-label="Modelo de risco compartilhado">
+        <figure class="risk__visual">
+          <img src="./public/RISCO-100%-MEU.png" alt="Quadro Risco 100 por cento meu" loading="lazy" />
+        </figure>
+      </section>
+
       <section class="steps-visual section fade-section" aria-label="Fluxo de implementação">
         <div class="steps-visual__content">
-          <img src="/public/PASSOS.png" alt="Passos estratégicos da operação" loading="lazy" />
+          <img src="./public/PASSOS.png" alt="Passos estratégicos da operação" loading="lazy" />
         </div>
       </section>
     </div>
@@ -116,25 +103,10 @@
       rel="noopener noreferrer"
       aria-label="Falar no WhatsApp"
     >
-      <img src="/public/icon%20whats.png" alt="WhatsApp" width="32" height="32" />
+      <img src="./public/icon%20whats.png" alt="WhatsApp" width="32" height="32" />
     </a>
 
     <script src="https://sdk.mercadopago.com/js/v2"></script>
-    <script>
-      // Check if Mercado Pago SDK loaded
-      window.addEventListener('load', () => {
-        setTimeout(() => {
-          if (!window.MercadoPago) {
-            console.error('Mercado Pago SDK failed to load');
-            const feedback = document.getElementById('feedbackMessage');
-            if (feedback) {
-              feedback.textContent = 'Erro ao carregar sistema de pagamento. Recarregue a página.';
-              feedback.classList.add('feedback--error');
-            }
-          }
-        }, 3000);
-      });
-    </script>
-    <script src="/script.js" defer></script>
+    <script src="./script.js" defer></script>
   </body>
 </html>
