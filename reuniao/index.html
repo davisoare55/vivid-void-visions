@@ -119,6 +119,21 @@
     </a>
 
     <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <script>
+      // Check if Mercado Pago SDK loaded
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          if (!window.MercadoPago) {
+            console.error('Mercado Pago SDK failed to load');
+            const feedback = document.getElementById('feedbackMessage');
+            if (feedback) {
+              feedback.textContent = 'Erro ao carregar sistema de pagamento. Recarregue a página.';
+              feedback.classList.add('feedback--error');
+            }
+          }
+        }, 3000);
+      });
+    </script>
     <script src="./script.js" defer></script>
   </body>
 </html>

@@ -1,4 +1,26 @@
-const MP_PUBLIC_KEY = 'TEST-7a5b8a8d-9c3f-4d6e-8f2a-1b4c6d8e9f0a'; // TODO: Replace with your real Mercado Pago public key
+const MP_PUBLIC_KEY = 'APP_USR-7a5b8a8d-9c3f-4d6e-8f2a-1b4c6d8e9f0a'; // TODO: Replace with your real Mercado Pago public key
+
+// Wait for Mercado Pago SDK to load
+const waitForMercadoPago = () => {
+  return new Promise((resolve, reject) => {
+    if (window.MercadoPago) {
+      resolve();
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      reject(new Error('Mercado Pago SDK failed to load'));
+    }, 10000);
+
+    const checkInterval = setInterval(() => {
+      if (window.MercadoPago) {
+        clearTimeout(timeout);
+        clearInterval(checkInterval);
+        resolve();
+      }
+    }, 100);
+  });
+};
 
 const ctaButton = document.getElementById('ctaButton');
 const feedbackMessage = document.getElementById('feedbackMessage');
@@ -52,15 +74,19 @@ const createMercadoPagoPreference = async (formData) => {
 };
 
 const createMercadoPagoWallet = async () => {
-  if (!window.MercadoPago) {
-    throw new Error('SDK do Mercado Pago não carregou.');
-  }
+  try {
+    // Wait for SDK to be available
+    await waitForMercadoPago();
+    
+    if (!window.MercadoPago) {
+      throw new Error('SDK do Mercado Pago não carregou.');
+    }
 
-  if (!mercadoPagoInstance) {
-    mercadoPagoInstance = new window.MercadoPago(MP_PUBLIC_KEY, {
-      locale: 'pt-BR',
-    });
-  }
+    if (!mercadoPagoInstance) {
+      mercadoPagoInstance = new window.MercadoPago(MP_PUBLIC_KEY, {
+        locale: 'pt-BR',
+      });
+    }
 
   const bricksBuilder = mercadoPagoInstance.bricks();
 
