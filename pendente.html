@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pagamento em Processamento | Projeto Lucro no seu Resultado</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Rajdhani', sans-serif;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        color: #ffffff;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .container {
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+        padding: 40px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+      }
+      .pending-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 30px;
+        background: linear-gradient(145deg, #ffaa00, #ff8800);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        color: #ffffff;
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+      h1 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        background: linear-gradient(145deg, #ffaa00, #ff8800);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      p {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        color: #cccccc;
+      }
+      .payment-info {
+        background: rgba(255, 170, 0, 0.1);
+        border: 1px solid rgba(255, 170, 0, 0.3);
+        border-radius: 15px;
+        padding: 20px;
+        margin: 30px 0;
+      }
+      .payment-info h2 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+        color: #ffaa00;
+      }
+      .check-btn {
+        background: linear-gradient(145deg, #ffaa00, #ff8800);
+        color: #000000;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        margin: 15px 0;
+        transition: all 0.3s ease;
+      }
+      .check-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 170, 0, 0.4);
+      }
+      .spinner {
+        width: 30px;
+        height: 30px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top: 3px solid #ffaa00;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+        display: none;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .status-message {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        display: none;
+      }
+      .status-success {
+        background: rgba(0, 255, 136, 0.1);
+        border: 1px solid rgba(0, 255, 136, 0.3);
+        color: #00ff88;
+      }
+      .status-pending {
+        background: rgba(255, 170, 0, 0.1);
+        border: 1px solid rgba(255, 170, 0, 0.3);
+        color: #ffaa00;
+      }
+      .status-error {
+        background: rgba(255, 68, 68, 0.1);
+        border: 1px solid rgba(255, 68, 68, 0.3);
+        color: #ff4444;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="pending-icon">⏳</div>
+      <h1>Pagamento em Processamento</h1>
+      <p>Seu pagamento está sendo processado pelo Mercado Pago. Isso pode levar alguns minutos.</p>
+      
+      <div class="payment-info">
+        <h2>Informações do Pagamento</h2>
+        <p><strong>ID do Pagamento:</strong> <span id="payment-id">-</span></p>
+        <p><strong>Status:</strong> <span id="payment-status">-</span></p>
+        <p><strong>Referência:</strong> <span id="external-reference">-</span></p>
+        
+        <button class="check-btn" onclick="checkPaymentStatus()">Verificar Status</button>
+        <div class="spinner" id="spinner"></div>
+        
+        <div id="status-message" class="status-message"></div>
+      </div>
+      
+      <p>Assim que seu pagamento for aprovado, você receberá seu link de acesso exclusivo.</p>
+      <p>Em caso de dúvidas, entre em contato: <a href="mailto:suporte@tonycrow.com" style="color: #ffaa00;">suporte@tonycrow.com</a></p>
+    </div>
+
+    <script>
+      // Get URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const paymentId = urlParams.get('payment_id');
+      const externalReference = urlParams.get('external_reference');
+      const status = urlParams.get('status');
+
+      // Display initial payment info
+      document.getElementById('payment-id').textContent = paymentId || '-';
+      document.getElementById('payment-status').textContent = status || '-';
+      document.getElementById('external-reference').textContent = externalReference || '-';
+
+      // Function to check payment status
+      async function checkPaymentStatus() {
+        const spinner = document.getElementById('spinner');
+        const statusMessage = document.getElementById('status-message');
+        const checkBtn = document.querySelector('.check-btn');
+        
+        spinner.style.display = 'block';
+        checkBtn.disabled = true;
+        statusMessage.style.display = 'none';
+
+        try {
+          const response = await fetch(`/api/mp/status?payment_id=${paymentId}`);
+          const data = await response.json();
+          
+          spinner.style.display = 'none';
+          checkBtn.disabled = false;
+          
+          if (data.success) {
+            if (data.status === 'approved') {
+              // Redirect to success page
+              window.location.href = `sucesso.html?payment_id=${paymentId}&external_reference=${externalReference}&status=approved`;
+            } else {
+              statusMessage.className = 'status-message status-pending';
+              statusMessage.textContent = `Pagamento ainda em processamento. Status atual: ${data.status}`;
+              statusMessage.style.display = 'block';
+            }
+          } else {
+            throw new Error(data.error || 'Erro ao verificar status');
+          }
+        } catch (error) {
+          console.error('Error checking status:', error);
+          spinner.style.display = 'none';
+          checkBtn.disabled = false;
+          statusMessage.className = 'status-message status-error';
+          statusMessage.textContent = 'Erro ao verificar status. Tente novamente em alguns instantes.';
+          statusMessage.style.display = 'block';
+        }
+      }
+
+      // Auto-check every 30 seconds
+      setInterval(() => {
+        if (document.querySelector('.check-btn').disabled === false) {
+          checkPaymentStatus();
+        }
+      }, 30000);
+
+      // Initial check if status is pending
+      if (status === 'pending' || status === 'in_process') {
+        setTimeout(checkPaymentStatus, 5000); // Check after 5 seconds
+      }
+    </script>
+  </body>
+</html>
