@@ -46,6 +46,70 @@ body::before {
   z-index: 0;
 }
 
+/* Form styles */
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group input {
+  padding: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.form-group input::placeholder {
+  color: var(--color-gray-medium);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 20px var(--color-glow);
+}
+
+.form-group input:invalid {
+  border-color: #ff4444;
+}
+
+.wallet-container {
+  margin-top: 20px;
+  min-height: 200px;
+}
+
+.wallet-container.is-visible {
+  display: block;
+}
+
+.feedback {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 14px;
+  min-height: 20px;
+}
+
+.feedback--error {
+  color: #ff4444;
+}
+
+.feedback--success {
+  color: var(--color-gold);
+}
+
 .page-wrapper {
   position: relative;
   z-index: 1;

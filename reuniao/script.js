@@ -1,6 +1,4 @@
-const CALENDLY_URL = '[URL_DO_CALENDLY]';
-const MP_PUBLIC_KEY = 'SUA_PUBLIC_KEY_MERCADO_PAGO'; // TODO: Insira aqui a Public Key do Mercado Pago
-const MP_PREFERENCE_ID = 'SUA_PREFERENCE_ID_R37'; // TODO: Preferência configurada para o valor de R$37
+const MP_PUBLIC_KEY = 'TEST-7a5b8a8d-9c3f-4d6e-8f2a-1b4c6d8e9f0a'; // TODO: Replace with your real Mercado Pago public key
 
 const ctaButton = document.getElementById('ctaButton');
 const feedbackMessage = document.getElementById('feedbackMessage');
@@ -22,7 +20,35 @@ const toggleButtonState = (shouldDisable, label) => {
 };
 
 const redirectToCalendly = () => {
-  window.location.assign(CALENDLY_URL);
+  // This function is no longer needed as we use Mercado Pago redirects
+  console.log('Payment flow handled by Mercado Pago');
+};
+
+const createMercadoPagoPreference = async (formData) => {
+  try {
+    const response = await fetch('/.netlify/functions/mp/create-preference', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: formData.email,
+        name: formData.name,
+        phone: formData.phone
+      })
+    });
+
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to create payment preference');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Error creating preference:', error);
+    throw error;
+  }
 };
 
 const createMercadoPagoWallet = async () => {
@@ -42,41 +68,51 @@ const createMercadoPagoWallet = async () => {
     walletBrickController.unmount();
   }
 
-  walletContainer.classList.add('is-visible');
+  // Get form data
+  const email = document.getElementById('email')?.value || '';
+  const name = document.getElementById('name')?.value || '';
+  const phone = document.getElementById('phone')?.value || '';
 
-  walletBrickController = await bricksBuilder.create('wallet', 'walletContainer', {
-    initialization: {
-      preferenceId: MP_PREFERENCE_ID,
-    },
-    callbacks: {
-      onReady: () => {
-        toggleButtonState(false, 'Garantir Minha Vaga por R$37');
-        setFeedback('Selecione o método de pagamento preferido para liberar o calendário.');
-      },
-      onSubmit: ({ formData }) => {
-        isProcessing = true;
-        toggleButtonState(true, 'Processando...');
-        setFeedback('Processando seu pagamento com segurança...');
+  if (!email || !name) {
+    throw new Error('Por favor, preencha nome e email para continuar.');
+  }
 
-        return new Promise((resolve) => {
-          // TODO: Realize aqui a validação do pagamento (ex.: webhook ou backend)
-          setTimeout(() => {
-            isProcessing = false;
-            toggleButtonState(false, 'Garantir Minha Vaga por R$37');
-            setFeedback('Pagamento confirmado! Redirecionando para o calendário...', false);
-            redirectToCalendly();
-            resolve();
-          }, 1500);
-        });
+  try {
+    // Create payment preference dynamically
+    const preferenceData = await createMercadoPagoPreference({ email, name, phone });
+    
+    walletContainer.classList.add('is-visible');
+
+    walletBrickController = await bricksBuilder.create('wallet', 'walletContainer', {
+      initialization: {
+        preferenceId: preferenceData.preference_id,
       },
-      onError: (error) => {
-        console.error('Mercado Pago error:', error);
-        isProcessing = false;
-        toggleButtonState(false, 'Garantir Minha Vaga por R$37');
-        setFeedback('Não conseguimos processar seu pagamento. Tente novamente.', true);
+      callbacks: {
+        onReady: () => {
+          toggleButtonState(false, 'Garantir Minha Vaga - R$997');
+          setFeedback('Selecione o método de pagamento para garantir sua vaga exclusiva.');
+        },
+        onSubmit: async (formData) => {
+          isProcessing = true;
+          toggleButtonState(true, 'Processando...');
+          setFeedback('Processando seu pagamento com segurança...');
+
+          // Payment will be handled by Mercado Pago redirect
+          // The success/pending/failure pages will handle the rest
+          return Promise.resolve();
+        },
+        onError: (error) => {
+          console.error('Mercado Pago error:', error);
+          isProcessing = false;
+          toggleButtonState(false, 'Garantir Minha Vaga - R$997');
+          setFeedback('Não conseguimos processar seu pagamento. Tente novamente.', true);
+        },
       },
-    },
-  });
+    });
+  } catch (error) {
+    console.error('Error creating preference:', error);
+    throw error;
+  }
 };
 
 window.initMercadoPago = async () => {
