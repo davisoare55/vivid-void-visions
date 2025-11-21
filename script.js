@@ -49,7 +49,7 @@ const redirectToCalendly = () => {
 const createMercadoPagoPreference = async (formData) => {
   try {
     console.log('Creating preference with data:', formData);
-    const response = await fetch('/api/mp/create-preference', {
+    const response = await fetch('/.netlify/functions/mp/create-preference', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
