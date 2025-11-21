@@ -115,7 +115,7 @@ const createMercadoPagoWallet = async () => {
       },
       callbacks: {
         onReady: () => {
-          toggleButtonState(false, 'Garantir Minha Vaga - R$997');
+          toggleButtonState(false, 'Garantir Minha Vaga - R$37');
           setFeedback('Selecione o método de pagamento para garantir sua vaga exclusiva.');
         },
         onSubmit: async (formData) => {
@@ -130,7 +130,7 @@ const createMercadoPagoWallet = async () => {
         onError: (error) => {
           console.error('Mercado Pago error:', error);
           isProcessing = false;
-          toggleButtonState(false, 'Garantir Minha Vaga - R$997');
+          toggleButtonState(false, 'Garantir Minha Vaga - R$37');
           setFeedback('Não conseguimos processar seu pagamento. Tente novamente.', true);
         },
       },
