@@ -48,24 +48,26 @@ const redirectToCalendly = () => {
 
 const createMercadoPagoPreference = async (formData) => {
   try {
-    const response = await fetch('/.netlify/functions/mp/create-preference', {
+    console.log('Creating preference with data:', formData);
+    const response = await fetch('/api/mp/create-preference', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        email: formData.email,
-        name: formData.name,
-        phone: formData.phone
-      })
+      body: JSON.stringify(formData),
     });
 
-    const data = await response.json();
-    
+    console.log('Response status:', response.status);
+    console.log('Response headers:', response.headers);
+
     if (!response.ok) {
-      throw new Error(data.error || 'Failed to create payment preference');
+      const errorText = await response.text();
+      console.error('Error response:', errorText);
+      throw new Error(`HTTP ${response.status}: ${errorText}`);
     }
 
+    const data = await response.json();
+    console.log('Preference data received:', data);
     return data;
   } catch (error) {
     console.error('Error creating preference:', error);
