@@ -141,7 +141,11 @@ const createMercadoPagoWallet = async () => {
 };
 
 window.initMercadoPago = async () => {
+  console.log('initMercadoPago called');
+  console.log('window.MercadoPago available:', !!window.MercadoPago);
+  
   if (isProcessing) {
+    console.log('Already processing, returning');
     return;
   }
 
@@ -149,9 +153,11 @@ window.initMercadoPago = async () => {
   toggleButtonState(true, 'Carregando...');
 
   try {
+    console.log('Creating Mercado Pago wallet...');
     await createMercadoPagoWallet();
+    console.log('Wallet created successfully');
   } catch (error) {
-    console.error(error);
+    console.error('Error in initMercadoPago:', error);
     toggleButtonState(false, 'Garantir Minha Vaga por R$37');
     setFeedback('Erro ao inicializar o Mercado Pago. Verifique sua conexão e tente novamente.', true);
   }
