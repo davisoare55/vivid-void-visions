@@ -1,4 +1,4 @@
-const MP_PUBLIC_KEY = 'APP_USR-7a5b8a8d-9c3f-4d6e-8f2a-1b4c6d8e9f0a'; // TODO: Replace with your real Mercado Pago public key
+const MP_PUBLIC_KEY = 'APP_USR-8fc405f8-33c6-4d0a-9309-5ade3f6ab470'; // TODO: Replace with your real Mercado Pago public key
 
 // Wait for Mercado Pago SDK to load
 const waitForMercadoPago = () => {
