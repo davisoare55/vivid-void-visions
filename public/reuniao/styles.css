@@ -279,11 +279,11 @@ body::before {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  background: linear-gradient(135deg, #d4af37, #f7c948, #e7981a);
+  background: transparent;
   padding: 12px 20px;
   border-radius: 12px;
   margin-bottom: 16px;
-  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+  box-shadow: none;
   border: 3px solid #d4af37;
 }
 
