@@ -298,8 +298,8 @@ body::before {
 }
 
 .seal {
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
   animation: pulse 2s infinite;
 }
