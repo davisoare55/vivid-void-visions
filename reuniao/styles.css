@@ -211,8 +211,8 @@ body::before {
   height: 60px;
   border: none;
   border-radius: 999px;
-  font-size: 1.05rem;
-  letter-spacing: 0.2em;
+  font-size: 1.15rem;
+  letter-spacing: 0.05em;
   font-weight: 900;
   cursor: pointer;
   color: #000;
@@ -225,6 +225,8 @@ body::before {
   align-items: center;
   justify-content: center;
   text-align: center;
+  text-decoration: none;
+  font-family: 'Orbitron', sans-serif;
 }
 
 
