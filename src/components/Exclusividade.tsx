@@ -48,9 +48,7 @@ const Exclusividade = () => {
 
           {/* CTA */}
           <a
-            href="https://wa.me/5511982603777"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/reuniao/"
             className="btn-hero px-12 py-6 text-xl font-bold interactive rounded-2xl min-w-[300px] shadow-2xl inline-block text-center"
             style={{ fontFamily: 'var(--font-display)' }}
           >

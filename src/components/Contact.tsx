@@ -51,9 +51,7 @@ const Contact = () => {
 
             <div className="flex justify-center">
               <a
-                href="https://wa.me/5511982603777"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/reuniao/"
                 className="btn-hero px-8 sm:px-12 py-4 sm:py-6 text-lg sm:text-xl font-bold interactive rounded-2xl min-w-[280px] sm:min-w-[300px] shadow-2xl inline-block text-center whitespace-nowrap flex items-center justify-center"
                 style={{ fontFamily: 'var(--font-display)' }}
               >
