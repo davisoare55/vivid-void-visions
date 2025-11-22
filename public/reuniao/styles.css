@@ -534,29 +534,28 @@ body::before {
 
 @media (min-width: 900px) {
   .hero {
-    grid-template-columns: minmax(0, 1fr) clamp(320px, 30vw, 420px) minmax(0, 1fr);
+    grid-template-columns: 1fr 1fr;
     align-items: center;
-    gap: 4px;
+    gap: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   .hero__content {
     text-align: left;
     max-width: 100%;
-    margin-left: 0;
-    margin-right: -10px;
-    justify-self: end;
-  }
-
-  .hero__value {
-    text-align: left;
-    max-width: 100%;
-    margin-right: -10px;
-    margin-left: 0;
+    margin: 0;
     justify-self: start;
   }
 
   .hero__media {
     justify-content: center;
+    justify-self: end;
+  }
+
+  .hero__media img {
+    width: 100%;
+    max-width: 500px;
   }
 }
 
