@@ -611,6 +611,21 @@ body::before {
 
   .cta-infos {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .guarantee-badge {
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto 16px auto;
+    max-width: fit-content;
+  }
+
+  .guarantee-badge h3 {
+    text-align: center;
   }
 
   .hero__divider {
