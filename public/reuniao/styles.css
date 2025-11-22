@@ -468,8 +468,8 @@ body::before {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  width: 64px;
-  height: 64px;
+  width: 80px;
+  height: 80px;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -481,8 +481,8 @@ body::before {
 }
 
 .contact-fab img {
-  width: 64px;
-  height: 64px;
+  width: 80px;
+  height: 80px;
   display: block;
 }
 
