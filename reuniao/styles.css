@@ -284,7 +284,7 @@ body::before {
   border-radius: 12px;
   margin-bottom: 16px;
   box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 3px solid #d4af37;
 }
 
 .guarantee-badge h3 {
