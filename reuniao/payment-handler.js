@@ -13,9 +13,9 @@ document.addEventListener('DOMContentLoaded', function() {
         saveUserDataBeforePayment(email, name);
         
         // Adicionar parâmetros ao link do Mercado Pago
-        const baseUrl = 'https://mpago.li/26LHPRS';
+        const baseUrl = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=316482683-b4a76dc8-74a4-46d0-84e7-548e5135cdd5';
         const successUrl = window.location.origin + '/reuniao/success.html';
-        const paymentLink = `${baseUrl}?success_url=${encodeURIComponent(successUrl)}`;
+        const paymentLink = `${baseUrl}&success_url=${encodeURIComponent(successUrl)}`;
         
         // Atualizar href do botão
         this.href = paymentLink;
