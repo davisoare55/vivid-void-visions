@@ -4,17 +4,15 @@ document.addEventListener('DOMContentLoaded', function() {
   const urlParams = new URLSearchParams(window.location.search);
   const paymentId = urlParams.get('payment_id') || 'MP-' + Date.now();
   
-  // Pedir dados do usuário (se não tiver)
-  const email = prompt('Para enviar o link do Calendly, digite seu email:') || '';
-  const name = prompt('Seu nome:') || email.split('@')[0];
+  // Tentar obter dados do localStorage ou sessionStorage
+  const userData = JSON.parse(sessionStorage.getItem('userData') || '{}');
   
-  if (email && name) {
-    // Enviar dados e redirecionar
-    sendCalendlyLink(email, name, paymentId);
-  } else {
-    // Mostrar link do Calendly diretamente
-    showCalendlyLink('https://calendly.com/soaresfooh/30min');
-  }
+  // Dados padrão caso não encontre
+  const email = userData.email || prompt('Para enviar o link do Calendly, digite seu email:') || 'cliente@example.com';
+  const name = userData.name || email.split('@')[0];
+  
+  // Enviar dados e redirecionar
+  sendCalendlyLink(email, name, paymentId);
 });
 
 async function sendCalendlyLink(email, name, paymentId) {
@@ -110,4 +108,15 @@ function showNotification(message, type) {
       notification.parentNode.removeChild(notification);
     }
   }, 5000);
+}
+
+// Salvar dados antes do redirecionamento (na página principal)
+function saveUserDataBeforePayment(email, name) {
+  const userData = {
+    email: email,
+    name: name,
+    timestamp: new Date().toISOString()
+  };
+  sessionStorage.setItem('userData', JSON.stringify(userData));
+  localStorage.setItem('userData', JSON.stringify(userData)); // Backup
 }
