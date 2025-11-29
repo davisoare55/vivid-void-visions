@@ -24,6 +24,23 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '812619754954290');
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=812619754954290&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
     <title>Reunião de Avaliação | Projeto Lucro no seu Resultado</title>
   </head>
   <body>
@@ -35,13 +52,31 @@
       <section class="hero-title fade-section" aria-label="Identificação da sessão">
         <h1>Reunião de Avaliação</h1>
         <a
-          href="https://www.mercadopago.com.br/checkout/v1/payment/redirect/3ba9c39a-d99d-4789-8d32-348536c754e1/review/?preference-id=316482683-b4a76dc8-74a4-46d0-84e7-548e5135cdd5&router-request-id=4b906f71-5d04-4f79-ba6a-8035c3ad965a&p=1bf15bc2ec133cf523852d9f5a8d74e0"
+          id="cta-agendar"
+          href="https://pay.kiwify.com.br/5oJ3mJH"
           target="_blank"
           rel="noopener noreferrer"
           class="cta-button"
         >
-          Garantir Minha Vaga por R$37,90
+          Garantir Minha Vaga por R$47
         </a>
+
+        <div class="hero-steps" aria-label="Etapas do agendamento">
+          <article class="hero-step">
+            <img src="../passo-1.png" alt="Passo 1" loading="lazy" />
+            <div>
+              <p class="hero-step__label">Passo 1</p>
+              <p class="hero-step__text">Clique no botão e faça o pagamento seguro.</p>
+            </div>
+          </article>
+          <article class="hero-step">
+            <img src="../passo-2.png" alt="Passo 2" loading="lazy" />
+            <div>
+              <p class="hero-step__label">Passo 2</p>
+              <p class="hero-step__text">Calendário é liberado imediatamente após a confirmação.</p>
+            </div>
+          </article>
+        </div>
       </section>
 
       <header class="hero section fade-section">
@@ -102,6 +137,18 @@
       <img src="./public/icon%20whats.png" alt="WhatsApp" width="32" height="32" />
     </a>
 
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const cta = document.getElementById('cta-agendar');
+        if (cta) {
+          cta.addEventListener('click', () => {
+            if (window.fbq) {
+              fbq('track', 'Lead', { content_name: 'Agendar Reunião R$47' });
+            }
+          });
+        }
+      });
+    </script>
     <script src="./script.js" defer></script>
   </body>
 </html>
