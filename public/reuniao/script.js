@@ -1,6 +1,6 @@
 const CALENDLY_URL = '[URL_DO_CALENDLY]';
 const MP_PUBLIC_KEY = 'SUA_PUBLIC_KEY_MERCADO_PAGO'; // TODO: Insira aqui a Public Key do Mercado Pago
-const MP_PREFERENCE_ID = 'SUA_PREFERENCE_ID_R17_50'; // TODO: Preferência configurada para o valor de R$17,50
+const MP_PREFERENCE_ID = 'SUA_PREFERENCE_ID_R14_99'; // TODO: Preferência configurada para o valor de R$14,99
 
 const ctaButton = document.getElementById('ctaButton');
 const feedbackMessage = document.getElementById('feedbackMessage');
@@ -50,7 +50,7 @@ const createMercadoPagoWallet = async () => {
     },
     callbacks: {
       onReady: () => {
-        toggleButtonState(false, 'Garantir Minha Vaga por R$17,50');
+        toggleButtonState(false, 'Garantir Minha Vaga por R$14,99');
         setFeedback('Selecione o método de pagamento preferido para liberar o calendário.');
       },
       onSubmit: ({ formData }) => {
@@ -62,7 +62,7 @@ const createMercadoPagoWallet = async () => {
           // TODO: Realize aqui a validação do pagamento (ex.: webhook ou backend)
           setTimeout(() => {
             isProcessing = false;
-            toggleButtonState(false, 'Garantir Minha Vaga por R$17,50');
+            toggleButtonState(false, 'Garantir Minha Vaga por R$14,99');
             setFeedback('Pagamento confirmado! Redirecionando para o calendário...', false);
             redirectToCalendly();
             resolve();
@@ -72,7 +72,7 @@ const createMercadoPagoWallet = async () => {
       onError: (error) => {
         console.error('Mercado Pago error:', error);
         isProcessing = false;
-        toggleButtonState(false, 'Garantir Minha Vaga por R$35');
+        toggleButtonState(false, 'Garantir Minha Vaga por R$14,99');
         setFeedback('Não conseguimos processar seu pagamento. Tente novamente.', true);
       },
     },
