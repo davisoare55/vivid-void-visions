@@ -119,6 +119,7 @@ body::before {
   color: var(--color-gold);
   padding: 10px 0;
   text-align: center;
+  font-weight: 700;
 }
 
 .hero-step img {
