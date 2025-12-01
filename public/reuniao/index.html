@@ -124,7 +124,11 @@
         if (cta) {
           cta.addEventListener('click', () => {
             if (window.fbq) {
-              fbq('track', 'Lead', { content_name: 'Agendar Reunião R$150' });
+              fbq('track', 'InitiateCheckout', {
+                value: 150,
+                currency: 'BRL',
+                content_name: 'Agendar Reunião'
+              });
             }
           });
         }
