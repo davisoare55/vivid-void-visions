@@ -130,7 +130,7 @@ body::before {
 
 .hero-title h1 {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
   letter-spacing: 0.08em;
   margin: 0;
   text-transform: uppercase;
@@ -606,6 +606,13 @@ body::before {
     gap: 60px;
     max-width: 1200px;
     margin: 0 auto;
+  }
+
+  .hero-title .cta-button {
+    width: clamp(360px, 40vw, 520px);
+    height: 80px;
+    font-size: 1.35rem;
+    letter-spacing: 0.18em;
   }
 
   .hero__content {
