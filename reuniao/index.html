@@ -51,15 +51,10 @@
 
       <section class="hero-title fade-section" aria-label="Identificação da sessão">
         <h1>Reunião de avaliação (15min)</h1>
-        <a
-          id="cta-agendar"
-          href="https://calendly.com/davisoaresvfx/30min"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="cta-button"
-        >
-          AGENDAR AGORA
-        </a>
+
+        <!-- Widget em linha do Calendly - início -->
+        <div class="calendly-inline-widget" data-url="https://calendly.com/davisoaresvfx/30min" style="min-width:320px;height:700px;"></div>
+        <!-- Widget em linha do Calendly - fim -->
       </section>
 
     </div>
@@ -80,22 +75,7 @@
       <img src="./public/icon%20whats.png" alt="WhatsApp" width="32" height="32" />
     </a>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const cta = document.getElementById('cta-agendar');
-        if (cta) {
-          cta.addEventListener('click', () => {
-            if (window.fbq) {
-              fbq('track', 'InitiateCheckout', {
-                value: 7.5,
-                currency: 'BRL',
-                content_name: 'Agendar Reunião'
-              });
-            }
-          });
-        }
-      });
-    </script>
+    <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
     <script src="./script.js" defer></script>
   </body>
 </html>
