@@ -24,7 +24,7 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
     // Inject the new video script
     const script = document.createElement('script');
     script.type = 'text/javascript';
-    script.src = 'https://scripts.converteai.net/1207b016-5c31-47e2-ba8e-a8059d7a99ff/players/691ff975813dc92a81d530e2/v4/player.js';
+    script.src = 'https://scripts.converteai.net/1207b016-5c31-47e2-ba8e-a8059d7a99ff/players/692f0460f8c552246af703ec/v4/player.js';
     script.async = true;
     document.head.appendChild(script);
 
@@ -123,7 +123,8 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
         >
           <div
             dangerouslySetInnerHTML={{
-              __html: '<vturb-smartplayer id="vid-691ff975813dc92a81d530e2" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer> <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/1207b016-5c31-47e2-ba8e-a8059d7a99ff/players/691ff975813dc92a81d530e2/v4/player.js", s.async=!0,document.head.appendChild(s); </script>'
+              __html:
+                '<vturb-smartplayer id="vid-692f0460f8c552246af703ec" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer> <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/1207b016-5c31-47e2-ba8e-a8059d7a99ff/players/692f0460f8c552246af703ec/v4/player.js", s.async=!0,document.head.appendChild(s); </script>'
             }}
           />
         </div>
