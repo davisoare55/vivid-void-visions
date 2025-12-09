@@ -1,13 +1,44 @@
 import { ArrowRight } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useBooking } from '@/context/BookingContext';
 
 const Hero = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { openBooking } = useBooking();
+  const [vslLoaded, setVslLoaded] = useState(false);
+  const vslContainerRef = useRef<HTMLDivElement>(null);
+
+  // Detect if mobile
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   useEffect(() => {
-    // Inject the VTurb script if it doesn't exist
+    // On desktop, load immediately
+    if (!isMobile) {
+      loadVturbScript();
+      setVslLoaded(true);
+      return;
+    }
+
+    // On mobile, use IntersectionObserver to lazy load
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !vslLoaded) {
+          loadVturbScript();
+          setVslLoaded(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1, rootMargin: '200px' }
+    );
+
+    if (vslContainerRef.current) {
+      observer.observe(vslContainerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isMobile, vslLoaded]);
+
+  const loadVturbScript = () => {
     const scriptId = 'vturb-script-692f0460f8c552246af703ec';
     if (!document.getElementById(scriptId)) {
       const script = document.createElement('script');
@@ -17,11 +48,7 @@ const Hero = () => {
       script.async = true;
       document.head.appendChild(script);
     }
-
-    return () => {
-      // document.head.removeChild(script);
-    };
-  }, []);
+  };
 
   const testimonials = [
     { src: "/depoimentos/Camada 2.webp", srcMobile: "/depoimentos/Camada 2-mobile.webp" },
@@ -110,13 +137,24 @@ const Hero = () => {
           </div>
 
           {/* VSL Player Container - Vertical Aspect Ratio */}
-          <div className="relative z-10 w-full max-w-[400px] rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(212,175,55,0.15)] border border-white/10 bg-black aspect-[9/16] section-fade visible" style={{ animationDelay: '0.3s' }}>
-            <div
-              dangerouslySetInnerHTML={{
-                __html:
-                  '<vturb-smartplayer id="vid-692f0460f8c552246af703ec" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>'
-              }}
-            />
+          <div
+            ref={vslContainerRef}
+            className="relative z-10 w-full max-w-[400px] rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(212,175,55,0.15)] border border-white/10 bg-black aspect-[9/16] section-fade visible"
+            style={{ animationDelay: '0.3s' }}
+          >
+            {vslLoaded && (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html:
+                    '<vturb-smartplayer id="vid-692f0460f8c552246af703ec" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>'
+                }}
+              />
+            )}
+            {!vslLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black">
+                <div className="w-12 h-12 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+              </div>
+            )}
           </div>
 
           {/* Mobile: Vertical Stack Below Video */}
