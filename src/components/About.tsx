@@ -11,7 +11,14 @@ const About = () => {
             <div className="aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 relative">
               {/* Placeholder for Davi's image if available, otherwise using a generic premium placeholder or gradient */}
               <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent" />
-              <img src="/portfolio/PERFIL RETRATO.png" alt="Davi Soares" className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-500" />
+              <img
+                src="/portfolio/PERFIL RETRATO.png"
+                alt="Davi Soares"
+                width="600"
+                height="750"
+                loading="lazy"
+                className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-500"
+              />
             </div>
             {/* Floating Badge */}
             <div className="absolute -bottom-6 -right-6 bg-background-secondary border border-white/10 p-6 rounded-xl shadow-2xl">

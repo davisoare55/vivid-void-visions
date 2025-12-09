@@ -5,7 +5,7 @@ const ComparisonSection = () => {
     const { openBooking } = useBooking();
 
     return (
-        <section className="py-24 bg-background-secondary relative border-y border-white/5">
+        <section id="diferenciais" className="py-24 bg-background-secondary relative border-y border-white/5">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white font-display">

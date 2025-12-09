@@ -24,9 +24,9 @@ const Navigation = () => {
 
   const navItems = [
     { id: 'home', label: 'Início' },
-    { id: 'prova-social', label: 'Resultados' },
-    { id: 'como-funciona', label: 'Metodologia' },
-    { id: 'exclusividade', label: 'Diferenciais' },
+    { id: 'nossos-feitos', label: 'Resultados' },
+    { id: 'como-ajudamos', label: 'Metodologia' },
+    { id: 'diferenciais', label: 'Diferenciais' },
     { id: 'sobre', label: 'Sobre' }
   ];
 

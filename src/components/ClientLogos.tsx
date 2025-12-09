@@ -18,6 +18,7 @@ const ClientLogos = () => {
                             alt="Clientes: Nike, Marvel, Fanta, iFood"
                             width="800"
                             height="200"
+                            loading="lazy"
                             className="h-16 md:h-24 w-auto object-contain"
                         />
                     </div>

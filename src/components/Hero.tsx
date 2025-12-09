@@ -98,6 +98,9 @@ const Hero = () => {
                     <img
                       src={item.src}
                       alt="Depoimento"
+                      width="300"
+                      height="400"
+                      loading="lazy"
                       className={`w-full h-auto transition-all duration-500 ${isActive ? 'drop-shadow-[0_0_15px_rgba(212,175,55,0.6)]' : 'drop-shadow-none'}`}
                     />
                   </div>
@@ -123,7 +126,14 @@ const Hero = () => {
                 key={index}
                 className="w-full"
               >
-                <img src={item.src} alt="Depoimento" className="w-full h-auto drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]" />
+                <img
+                  src={item.src}
+                  alt="Depoimento"
+                  width="300"
+                  height="400"
+                  loading="lazy"
+                  className="w-full h-full object-cover drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]"
+                />
               </div>
             ))}
           </div>

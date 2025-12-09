@@ -8,6 +8,41 @@ interface PortfolioProps {
   showFullSite: boolean;
 }
 
+const VideoPlayer = ({ src, fallback, isVisible }: { src: string, fallback: string, isVisible: boolean }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isVisible) {
+        // Force play promise handling
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Auto-play was prevented
+          });
+        }
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [isVisible]);
+
+  return (
+    <video
+      ref={videoRef}
+      className="w-full h-full object-cover"
+      loop
+      muted
+      playsInline
+      preload="none"
+      controls={false}
+    >
+      <source src={src} type="video/webm" />
+      <source src={fallback} type="video/mp4" />
+    </video>
+  );
+};
+
 const Portfolio = ({ showFullSite }: PortfolioProps) => {
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -172,50 +207,20 @@ const Portfolio = ({ showFullSite }: PortfolioProps) => {
                         <div className="card-3d p-6 sm:p-4 rounded-lg h-full">
                           {/* Mobile video container */}
                           <div className="relative rounded-lg overflow-hidden mb-4 bg-background-tertiary border border-border/50 block sm:hidden" style={{ height: '45vh', width: '150%', marginLeft: '-25%' }}>
-                            <video
-                              className="w-full h-full object-cover"
-                              loop
-                              muted
-                              playsInline
-                              preload="none"
-                              controls={false}
-                              ref={(video) => {
-                                if (video) {
-                                  if (isVisible) {
-                                    video.play().catch(() => { });
-                                  } else {
-                                    video.pause();
-                                  }
-                                }
-                              }}
-                            >
-                              <source src={`/portfolio/${project.videoFile}`} type="video/webm" />
-                              <source src={`/portfolio/${project.fallback}`} type="video/mp4" />
-                            </video>
+                            <VideoPlayer
+                              src={`/portfolio/${project.videoFile}`}
+                              fallback={`/portfolio/${project.fallback}`}
+                              isVisible={isVisible}
+                            />
                           </div>
 
                           {/* Desktop video container */}
                           <div className="relative aspect-[9/16] rounded-lg overflow-hidden mb-4 bg-background-tertiary border border-border/50 hidden sm:block">
-                            <video
-                              className="w-full h-full object-cover"
-                              loop
-                              muted
-                              playsInline
-                              preload="none"
-                              controls={false}
-                              ref={(video) => {
-                                if (video) {
-                                  if (isVisible) {
-                                    video.play().catch(() => { });
-                                  } else {
-                                    video.pause();
-                                  }
-                                }
-                              }}
-                            >
-                              <source src={`/portfolio/${project.videoFile}`} type="video/webm" />
-                              <source src={`/portfolio/${project.fallback}`} type="video/mp4" />
-                            </video>
+                            <VideoPlayer
+                              src={`/portfolio/${project.videoFile}`}
+                              fallback={`/portfolio/${project.fallback}`}
+                              isVisible={isVisible}
+                            />
                           </div>
 
                           <div className="text-center px-2 sm:px-0">

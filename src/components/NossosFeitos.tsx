@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 const NossosFeitos = () => {
     const videos = [
@@ -40,30 +40,56 @@ const NossosFeitos = () => {
 
                 {/* Video Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {videos.map((video, index) => (
-                        <div
-                            key={index}
-                            className="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 aspect-[9/16]"
-                        >
-                            <video
-                                className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
+                    {videos.map((video, index) => {
+                        const videoRef = useRef<HTMLVideoElement>(null);
+                        const [isPlaying, setIsPlaying] = useState(false);
+
+                        useEffect(() => {
+                            const observer = new IntersectionObserver(
+                                ([entry]) => {
+                                    if (entry.isIntersecting) {
+                                        setIsPlaying(true);
+                                        videoRef.current?.play().catch(() => { });
+                                    } else {
+                                        setIsPlaying(false);
+                                        videoRef.current?.pause();
+                                    }
+                                },
+                                { threshold: 0.2 }
+                            );
+
+                            if (videoRef.current) {
+                                observer.observe(videoRef.current);
+                            }
+
+                            return () => observer.disconnect();
+                        }, []);
+
+                        return (
+                            <div
+                                key={index}
+                                className="group relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 aspect-[9/16]"
                             >
-                                <source src={`/portfolio/${video.file}`} type="video/webm" />
-                                {/* Fallback for MP4 if needed, but assuming webm is primary based on file list */}
-                            </video>
+                                <video
+                                    ref={videoRef}
+                                    className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                                    loop
+                                    muted
+                                    playsInline
+                                    preload="none"
+                                >
+                                    <source src={`/portfolio/${video.file}`} type="video/webm" />
+                                </video>
 
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-100 transition-opacity duration-300" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-100 transition-opacity duration-300" />
 
-                            <div className="absolute bottom-0 left-0 w-full p-6">
-                                <h3 className="text-xl font-bold text-white mb-1">{video.client}</h3>
-                                <p className="text-primary font-medium text-sm">{video.stats}</p>
+                                <div className="absolute bottom-0 left-0 w-full p-6">
+                                    <h3 className="text-xl font-bold text-white mb-1">{video.client}</h3>
+                                    <p className="text-primary font-medium text-sm">{video.stats}</p>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 {/* Stats Summary Bar Removed as per user request */}
