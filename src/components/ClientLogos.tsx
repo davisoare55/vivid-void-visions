@@ -16,6 +16,8 @@ const ClientLogos = () => {
                         <img
                             src="/portfolio/LOGOS SEM FUNDO.png"
                             alt="Clientes: Nike, Marvel, Fanta, iFood"
+                            width="800"
+                            height="200"
                             className="h-16 md:h-24 w-auto object-contain"
                         />
                     </div>

@@ -7,12 +7,16 @@ const Hero = () => {
   const { openBooking } = useBooking();
 
   useEffect(() => {
-    // Inject the VTurb script
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = 'https://scripts.converteai.net/1207b016-5c31-47e2-ba8e-a8059d7a99ff/players/692f0460f8c552246af703ec/v4/player.js';
-    script.async = true;
-    document.head.appendChild(script);
+    // Inject the VTurb script if it doesn't exist
+    const scriptId = 'vturb-script-692f0460f8c552246af703ec';
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement('script');
+      script.id = scriptId;
+      script.type = 'text/javascript';
+      script.src = 'https://scripts.converteai.net/1207b016-5c31-47e2-ba8e-a8059d7a99ff/players/692f0460f8c552246af703ec/v4/player.js';
+      script.async = true;
+      document.head.appendChild(script);
+    }
 
     return () => {
       // document.head.removeChild(script);
@@ -108,6 +112,8 @@ const Hero = () => {
               <img
                 id="thumb-692f0460f8c552246af703ec"
                 src="https://images.converteai.net/1207b016-5c31-47e2-ba8e-a8059d7a99ff/players/692f0460f8c552246af703ec/thumbnail.jpg"
+                width="400"
+                height="711"
                 style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                 alt="thumbnail"
               />
