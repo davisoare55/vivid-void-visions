@@ -94,14 +94,14 @@ const Hero = () => {
                     filter: isActive ? 'none' : 'blur(1px) grayscale(40%)',
                   }}
                 >
-                  <div className="w-40">
+                  <div className="w-40 aspect-[3/4]">
                     <img
                       src={item.src}
                       alt="Depoimento"
-                      width="300"
-                      height="400"
+                      width="160"
+                      height="213"
                       loading="lazy"
-                      className={`w-full h-auto transition-all duration-500 ${isActive ? 'drop-shadow-[0_0_15px_rgba(212,175,55,0.6)]' : 'drop-shadow-none'}`}
+                      className={`w-full h-full object-cover transition-all duration-500 ${isActive ? 'drop-shadow-[0_0_15px_rgba(212,175,55,0.6)]' : 'drop-shadow-none'}`}
                     />
                   </div>
                 </div>
@@ -124,15 +124,15 @@ const Hero = () => {
             {testimonials.map((item, index) => (
               <div
                 key={index}
-                className="w-full"
+                className="w-full aspect-[3/4] bg-white/5 rounded-lg overflow-hidden"
               >
                 <img
                   src={item.src}
                   alt="Depoimento"
                   width="400"
-                  height="auto"
+                  height="533"
                   loading="lazy"
-                  className="w-full h-auto drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]"
+                  className="w-full h-full object-cover drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]"
                 />
               </div>
             ))}
