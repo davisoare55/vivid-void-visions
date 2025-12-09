@@ -1,8 +1,10 @@
 import { useState, Suspense, lazy } from 'react';
 import Hero from '@/components/Hero';
 import Navigation from '@/components/Navigation';
-import CustomCursor from '@/components/CustomCursor';
-import InteractiveBackground from '@/components/InteractiveBackground';
+
+// Lazy load non-critical components
+const CustomCursor = lazy(() => import('@/components/CustomCursor'));
+const InteractiveBackground = lazy(() => import('@/components/InteractiveBackground'));
 
 // Lazy load below-fold components
 const ProvaSocial = lazy(() => import('@/components/ProvaSocial'));
@@ -22,8 +24,10 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background w-full max-w-full overflow-x-hidden">
-      <InteractiveBackground />
-      <CustomCursor />
+      <Suspense fallback={null}>
+        <InteractiveBackground />
+        <CustomCursor />
+      </Suspense>
       {showFullSite && <Navigation />}
       <main className="w-full max-w-full overflow-x-hidden">
         <Hero />
