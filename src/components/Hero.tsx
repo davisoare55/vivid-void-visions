@@ -96,9 +96,7 @@ const Hero = () => {
                 >
                   <div className="w-40">
                     <img
-                      src={item.src}
-                      srcSet={`${item.srcMobile} 400w, ${item.src} 800w`}
-                      sizes="160px"
+                      src={item.srcMobile}
                       alt="Depoimento"
                       width="160"
                       height="213"
