@@ -40,7 +40,7 @@ const Hero = () => {
   }, [testimonials.length]);
 
   return (
-    <section id="home" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background pt-20 pb-20">
+    <section id="home" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background pt-20 pb-40 md:pb-60">
       {/* Abstract Background Animation */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />

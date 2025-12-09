@@ -10,6 +10,8 @@ const queryClient = new QueryClient();
 
 import { BookingProvider } from "@/context/BookingContext";
 import BookingModal from "@/components/BookingModal";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import FacebookPixel from "@/components/FacebookPixel";
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -18,6 +20,8 @@ const App = () => (
       <Sonner />
       <BookingProvider>
         <BookingModal />
+        <WhatsAppButton />
+        <FacebookPixel />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
