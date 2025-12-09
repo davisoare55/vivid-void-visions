@@ -24,12 +24,12 @@ const Hero = () => {
   }, []);
 
   const testimonials = [
-    { src: "/depoimentos/Camada 2.png" },
-    { src: "/depoimentos/Camada 3.png" },
-    { src: "/depoimentos/Camada 4.png" },
-    { src: "/depoimentos/Camada 5.png" },
-    { src: "/depoimentos/Camada 6.png" },
-    { src: "/depoimentos/Captura de tela 2025-12-05 114436.png" }
+    { src: "/depoimentos/Camada 2.webp" },
+    { src: "/depoimentos/Camada 3.webp" },
+    { src: "/depoimentos/Camada 4.webp" },
+    { src: "/depoimentos/Camada 5.webp" },
+    { src: "/depoimentos/Camada 6.webp" },
+    { src: "/depoimentos/Captura de tela 2025-12-05 114436.webp" }
   ];
 
   useEffect(() => {

@@ -14,7 +14,7 @@ const ClientLogos = () => {
                     {/* Logo Image */}
                     <div className="opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
                         <img
-                            src="/portfolio/LOGOS SEM FUNDO.png"
+                            src="/portfolio/LOGOS SEM FUNDO.webp"
                             alt="Clientes: Nike, Marvel, Fanta, iFood"
                             width="800"
                             height="200"

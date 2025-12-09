@@ -12,7 +12,7 @@ const About = () => {
               {/* Placeholder for Davi's image if available, otherwise using a generic premium placeholder or gradient */}
               <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent" />
               <img
-                src="/portfolio/PERFIL RETRATO.png"
+                src="/portfolio/PERFIL RETRATO.webp"
                 alt="Davi Soares"
                 width="600"
                 height="750"
