@@ -1,8 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Calendar, Clock, Save, Lock, ArrowLeft, Check, X } from 'lucide-react';
+import { Calendar, Clock, Save, ArrowLeft, Check, X } from 'lucide-react';
 
-// Password for admin access
-const ADMIN_PASSWORD = 'soares2024';
+// Allowed email for admin access
+const ALLOWED_EMAIL = 'davmotiondesign@gmail.com';
+
+// Google Client ID - You need to create this at https://console.cloud.google.com/
+// 1. Go to APIs & Services > Credentials
+// 2. Create OAuth 2.0 Client ID (Web application)
+// 3. Add your domain to Authorized JavaScript origins
+const GOOGLE_CLIENT_ID = ''; // Will prompt user to configure
 
 // Default settings
 const DEFAULT_SETTINGS = {
@@ -28,10 +34,8 @@ const DEFAULT_SETTINGS = {
 
 export type CalendarSettings = typeof DEFAULT_SETTINGS;
 
-// Storage key
 const STORAGE_KEY = 'soares_calendar_settings';
 
-// Export function to get settings
 export const getCalendarSettings = (): CalendarSettings => {
     try {
         const stored = localStorage.getItem(STORAGE_KEY);
@@ -44,26 +48,107 @@ export const getCalendarSettings = (): CalendarSettings => {
     return DEFAULT_SETTINGS;
 };
 
+declare global {
+    interface Window {
+        google?: {
+            accounts: {
+                id: {
+                    initialize: (config: any) => void;
+                    renderButton: (element: HTMLElement, config: any) => void;
+                    prompt: () => void;
+                };
+            };
+        };
+    }
+}
+
 const GestaoPage = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [password, setPassword] = useState('');
-    const [passwordError, setPasswordError] = useState(false);
+    const [userEmail, setUserEmail] = useState('');
+    const [authError, setAuthError] = useState('');
     const [settings, setSettings] = useState<CalendarSettings>(DEFAULT_SETTINGS);
     const [saved, setSaved] = useState(false);
+    const [googleLoaded, setGoogleLoaded] = useState(false);
+
+    // Load Google Identity Services
+    useEffect(() => {
+        // Check if already authenticated
+        const storedAuth = sessionStorage.getItem('gestao_auth');
+        if (storedAuth === ALLOWED_EMAIL) {
+            setIsAuthenticated(true);
+            setUserEmail(ALLOWED_EMAIL);
+            return;
+        }
+
+        // Load Google script
+        const script = document.createElement('script');
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+        script.defer = true;
+        script.onload = () => setGoogleLoaded(true);
+        document.head.appendChild(script);
+
+        return () => {
+            document.head.removeChild(script);
+        };
+    }, []);
+
+    // Initialize Google Sign-In
+    useEffect(() => {
+        if (!googleLoaded || !window.google || isAuthenticated) return;
+
+        const buttonDiv = document.getElementById('google-signin-btn');
+        if (!buttonDiv) return;
+
+        try {
+            window.google.accounts.id.initialize({
+                client_id: GOOGLE_CLIENT_ID || '836628462107-placeholder.apps.googleusercontent.com',
+                callback: handleGoogleCallback,
+                auto_select: false,
+            });
+
+            window.google.accounts.id.renderButton(buttonDiv, {
+                theme: 'filled_black',
+                size: 'large',
+                text: 'signin_with',
+                shape: 'rectangular',
+                width: 280,
+            });
+        } catch (e) {
+            console.error('Error initializing Google Sign-In:', e);
+        }
+    }, [googleLoaded, isAuthenticated]);
 
     // Load settings on mount
     useEffect(() => {
-        setSettings(getCalendarSettings());
-    }, []);
-
-    const handleLogin = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (password === ADMIN_PASSWORD) {
-            setIsAuthenticated(true);
-            setPasswordError(false);
-        } else {
-            setPasswordError(true);
+        if (isAuthenticated) {
+            setSettings(getCalendarSettings());
         }
+    }, [isAuthenticated]);
+
+    const handleGoogleCallback = (response: any) => {
+        try {
+            // Decode JWT token
+            const payload = JSON.parse(atob(response.credential.split('.')[1]));
+            const email = payload.email;
+
+            if (email === ALLOWED_EMAIL) {
+                setIsAuthenticated(true);
+                setUserEmail(email);
+                sessionStorage.setItem('gestao_auth', email);
+                setAuthError('');
+            } else {
+                setAuthError(`Acesso negado. Apenas ${ALLOWED_EMAIL} pode acessar.`);
+            }
+        } catch (e) {
+            setAuthError('Erro ao verificar login. Tente novamente.');
+        }
+    };
+
+    const handleLogout = () => {
+        setIsAuthenticated(false);
+        setUserEmail('');
+        sessionStorage.removeItem('gestao_auth');
     };
 
     const handleSave = () => {
@@ -99,33 +184,33 @@ const GestaoPage = () => {
                 <div className="w-full max-w-sm">
                     <div className="text-center mb-8">
                         <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4">
-                            <Lock className="w-8 h-8 text-primary" />
+                            <Calendar className="w-8 h-8 text-primary" />
                         </div>
                         <h1 className="text-2xl font-bold text-white mb-2">Área Restrita</h1>
                         <p className="text-muted-foreground text-sm">Gestão do Calendário</p>
                     </div>
 
-                    <form onSubmit={handleLogin} className="space-y-4">
-                        <div>
-                            <input
-                                type="password"
-                                placeholder="Senha de acesso"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className={`w-full px-4 py-3 bg-white/5 border rounded-lg text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 ${passwordError ? 'border-red-500' : 'border-white/10'
-                                    }`}
-                            />
-                            {passwordError && (
-                                <p className="text-red-500 text-sm mt-2">Senha incorreta</p>
-                            )}
-                        </div>
-                        <button
-                            type="submit"
-                            className="w-full btn-premium py-3 font-bold"
-                        >
-                            Entrar
-                        </button>
-                    </form>
+                    <div className="flex flex-col items-center gap-4">
+                        <div id="google-signin-btn" className="min-h-[44px]"></div>
+
+                        {!GOOGLE_CLIENT_ID && (
+                            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 text-sm">
+                                <p className="text-yellow-500 font-medium mb-2">⚠️ Configuração necessária</p>
+                                <p className="text-muted-foreground text-xs">
+                                    Para ativar o login com Google, você precisa criar um Client ID em{' '}
+                                    <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                        Google Cloud Console
+                                    </a>
+                                </p>
+                            </div>
+                        )}
+
+                        {authError && (
+                            <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-center">
+                                <p className="text-red-400 text-sm">{authError}</p>
+                            </div>
+                        )}
+                    </div>
 
                     <a
                         href="/"
@@ -160,16 +245,24 @@ const GestaoPage = () => {
                             Gestão do Calendário
                         </h1>
                         <p className="text-muted-foreground text-sm mt-1">
-                            Configure a disponibilidade do agendamento
+                            Logado como {userEmail}
                         </p>
                     </div>
-                    <a
-                        href="/"
-                        className="text-muted-foreground hover:text-white flex items-center gap-2 text-sm"
-                    >
-                        <ArrowLeft className="w-4 h-4" />
-                        Voltar
-                    </a>
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={handleLogout}
+                            className="text-muted-foreground hover:text-white text-sm"
+                        >
+                            Sair
+                        </button>
+                        <a
+                            href="/"
+                            className="text-muted-foreground hover:text-white flex items-center gap-2 text-sm"
+                        >
+                            <ArrowLeft className="w-4 h-4" />
+                            Voltar
+                        </a>
+                    </div>
                 </div>
 
                 {/* Settings Form */}
