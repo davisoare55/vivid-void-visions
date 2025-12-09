@@ -1,38 +1,61 @@
 import { X, Calendar, Clock, User, Phone, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useBooking } from '@/context/BookingContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const WEBHOOK_URL = 'https://webhookia.brazilzap.com.br/webhook/davisoares-agendamento';
 
-// Get available business days (next 2 from today)
-const getAvailableDates = () => {
-    const available: Date[] = [];
-    const today = new Date();
-    let daysChecked = 0;
-    let currentDate = new Date(today);
+// Storage key (same as GestaoPage)
+const STORAGE_KEY = 'soares_calendar_settings';
 
-    while (available.length < 2 && daysChecked < 30) {
-        currentDate.setDate(currentDate.getDate() + 1);
-        daysChecked++;
-        const dayOfWeek = currentDate.getDay();
-        // Monday to Saturday (1-6), Sunday is 0
-        if (dayOfWeek !== 0) {
-            available.push(new Date(currentDate));
-        }
+// Default settings
+const DEFAULT_SETTINGS = {
+    diasUteis: 2,
+    diasSemana: {
+        domingo: false,
+        segunda: true,
+        terca: true,
+        quarta: true,
+        quinta: true,
+        sexta: true,
+        sabado: true
+    },
+    horarios: {
+        manha: ['09:00', '09:30', '10:00', '10:30', '11:00'],
+        tarde: ['14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00']
+    },
+    horariosAtivos: {
+        manha: true,
+        tarde: true
     }
-
-    return available;
 };
 
-// Available time slots based on day of week
-const getTimeSlots = (date: Date) => {
-    const day = date.getDay();
-    // Morning: 09:00-11:00, Afternoon: 14:00-18:00
-    const morningSlots = ['09:00', '09:30', '10:00', '10:30', '11:00'];
-    const afternoonSlots = ['14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00'];
+type CalendarSettings = typeof DEFAULT_SETTINGS;
 
-    if (day === 0) return []; // Sunday - unavailable
-    return [...morningSlots, ...afternoonSlots];
+// Get stored settings
+const getCalendarSettings = (): CalendarSettings => {
+    try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+            return JSON.parse(stored);
+        }
+    } catch (e) {
+        console.error('Error reading calendar settings:', e);
+    }
+    return DEFAULT_SETTINGS;
+};
+
+// Map day of week (0-6) to settings key
+const dayIndexToKey = (dayIndex: number): keyof typeof DEFAULT_SETTINGS.diasSemana => {
+    const map: { [key: number]: keyof typeof DEFAULT_SETTINGS.diasSemana } = {
+        0: 'domingo',
+        1: 'segunda',
+        2: 'terca',
+        3: 'quarta',
+        4: 'quinta',
+        5: 'sexta',
+        6: 'sabado'
+    };
+    return map[dayIndex];
 };
 
 const BookingModal = () => {
@@ -42,13 +65,38 @@ const BookingModal = () => {
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [currentMonth, setCurrentMonth] = useState(new Date());
+    const [settings, setSettings] = useState<CalendarSettings>(DEFAULT_SETTINGS);
+    const [availableDates, setAvailableDates] = useState<Date[]>([]);
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
         clinicName: ''
     });
 
-    const availableDates = getAvailableDates();
+    // Load settings and calculate available dates
+    useEffect(() => {
+        const loadedSettings = getCalendarSettings();
+        setSettings(loadedSettings);
+
+        // Calculate available dates based on settings
+        const available: Date[] = [];
+        const today = new Date();
+        let daysChecked = 0;
+        const currentDate = new Date(today);
+
+        while (available.length < loadedSettings.diasUteis && daysChecked < 60) {
+            currentDate.setDate(currentDate.getDate() + 1);
+            daysChecked++;
+            const dayOfWeek = currentDate.getDay();
+            const dayKey = dayIndexToKey(dayOfWeek);
+
+            if (loadedSettings.diasSemana[dayKey]) {
+                available.push(new Date(currentDate));
+            }
+        }
+
+        setAvailableDates(available);
+    }, [isBookingOpen]);
 
     const isDateAvailable = (date: Date) => {
         return availableDates.some(
@@ -57,6 +105,17 @@ const BookingModal = () => {
                 availableDate.getMonth() === date.getMonth() &&
                 availableDate.getFullYear() === date.getFullYear()
         );
+    };
+
+    const getTimeSlots = () => {
+        const slots: string[] = [];
+        if (settings.horariosAtivos.manha) {
+            slots.push(...settings.horarios.manha);
+        }
+        if (settings.horariosAtivos.tarde) {
+            slots.push(...settings.horarios.tarde);
+        }
+        return slots;
     };
 
     const getDaysInMonth = (date: Date) => {
@@ -69,12 +128,10 @@ const BookingModal = () => {
 
         const days: (Date | null)[] = [];
 
-        // Add empty slots for days before the first of the month
         for (let i = 0; i < startingDayOfWeek; i++) {
             days.push(null);
         }
 
-        // Add all days of the month
         for (let day = 1; day <= daysInMonth; day++) {
             days.push(new Date(year, month, day));
         }
@@ -156,20 +213,17 @@ const BookingModal = () => {
 
     const days = getDaysInMonth(currentMonth);
     const weekDays = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'];
-    const timeSlots = selectedDate ? getTimeSlots(selectedDate) : [];
+    const timeSlots = getTimeSlots();
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
-            {/* Backdrop */}
             <div
                 className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
                 onClick={handleClose}
             />
 
-            {/* Modal Content */}
             <div className="relative w-full max-w-md bg-background rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-300 max-h-[90vh]">
 
-                {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-background/50 backdrop-blur-md">
                     <h3 className="text-lg font-bold text-white flex items-center gap-2">
                         <Calendar className="w-5 h-5 text-primary" />
@@ -183,12 +237,9 @@ const BookingModal = () => {
                     </button>
                 </div>
 
-                {/* Content */}
                 <div className="p-4 overflow-y-auto">
-                    {/* Step: Select Date */}
                     {step === 'date' && (
                         <div className="animate-in fade-in duration-300">
-                            {/* Month Navigation */}
                             <div className="flex items-center justify-between mb-4">
                                 <button
                                     onClick={prevMonth}
@@ -205,7 +256,6 @@ const BookingModal = () => {
                                 </button>
                             </div>
 
-                            {/* Week Days Header */}
                             <div className="grid grid-cols-7 gap-1 mb-2">
                                 {weekDays.map((day) => (
                                     <div key={day} className="text-center text-xs text-muted-foreground py-2">
@@ -214,7 +264,6 @@ const BookingModal = () => {
                                 ))}
                             </div>
 
-                            {/* Calendar Grid */}
                             <div className="grid grid-cols-7 gap-1">
                                 {days.map((day, index) => {
                                     if (!day) {
@@ -252,7 +301,6 @@ const BookingModal = () => {
                         </div>
                     )}
 
-                    {/* Step: Select Time */}
                     {step === 'time' && selectedDate && (
                         <div className="animate-in fade-in duration-300">
                             <button
@@ -284,7 +332,6 @@ const BookingModal = () => {
                         </div>
                     )}
 
-                    {/* Step: Form */}
                     {step === 'form' && selectedDate && selectedTime && (
                         <div className="animate-in fade-in duration-300">
                             <button
@@ -359,7 +406,6 @@ const BookingModal = () => {
                         </div>
                     )}
 
-                    {/* Step: Success */}
                     {step === 'success' && (
                         <div className="animate-in fade-in duration-300 text-center py-8">
                             <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
