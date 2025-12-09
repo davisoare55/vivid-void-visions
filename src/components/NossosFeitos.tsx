@@ -5,23 +5,26 @@ const NossosFeitos = () => {
         {
             client: "CapiTech",
             stats: "130k Visualizações",
-            file: "CAPITECH.webm",
-            poster: "/portfolio/preto/capitech-thumb.png" // Assuming thumb exists or just video
+            webm: "CAPITECH.webm",
+            mp4: "CAPITECH.mp4"
         },
         {
             client: "Dra. Marcella",
             stats: "88k Visualizações",
-            file: "DRA MARCELA.webm"
+            webm: "DRA MARCELA.webm",
+            mp4: "DRA MARCELA.mp4"
         },
         {
             client: "Clínica Letizio",
             stats: "1.3mi Visualizações",
-            file: "letizio.webm"
+            webm: "letizio.webm",
+            mp4: "letizio.mp4"
         },
         {
             client: "Fanta",
             stats: "60mi Visualizações",
-            file: "FANTA.webm"
+            webm: "FANTA.webm",
+            mp4: "FANTA.mp4"
         }
     ];
 
@@ -78,7 +81,8 @@ const NossosFeitos = () => {
                                     playsInline
                                     preload="none"
                                 >
-                                    <source src={`/portfolio/${video.file}`} type="video/webm" />
+                                    <source src={`/portfolio/${video.webm}`} type="video/webm" />
+                                    <source src={`/portfolio/${video.mp4}`} type="video/mp4" />
                                 </video>
 
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-100 transition-opacity duration-300" />
