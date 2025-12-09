@@ -129,10 +129,10 @@ const Hero = () => {
                 <img
                   src={item.src}
                   alt="Depoimento"
-                  width="300"
-                  height="400"
+                  width="400"
+                  height="auto"
                   loading="lazy"
-                  className="w-full h-full object-cover drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]"
+                  className="w-full h-auto drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]"
                 />
               </div>
             ))}
