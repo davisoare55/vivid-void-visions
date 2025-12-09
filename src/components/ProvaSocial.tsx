@@ -14,7 +14,7 @@ const ProvaSocial = () => {
             <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
               Sua Agenda <span className="text-gradient-gold">Lotada</span>
             </h2>
-            <p className="text-muted-foreground max-w-4xl mx-auto">
+            <p className="text-muted-foreground max-w-4xl mx-auto md:whitespace-nowrap">
               O resultado de uma estratégia bem executada é o WhatsApp da sua clínica não parar de tocar.
             </p>
           </div>
