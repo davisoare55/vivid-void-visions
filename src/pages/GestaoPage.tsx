@@ -1,14 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Calendar, Clock, Save, ArrowLeft, Check, X } from 'lucide-react';
+import { Calendar, Clock, Save, Lock, ArrowLeft, Check, X } from 'lucide-react';
 
-// Allowed email for admin access
-const ALLOWED_EMAIL = 'davmotiondesign@gmail.com';
-
-// Google Client ID - You need to create this at https://console.cloud.google.com/
-// 1. Go to APIs & Services > Credentials
-// 2. Create OAuth 2.0 Client ID (Web application)
-// 3. Add your domain to Authorized JavaScript origins
-const GOOGLE_CLIENT_ID = ''; // Will prompt user to configure
+// Password for admin access
+const ADMIN_PASSWORD = 'soares2024';
 
 // Default settings
 const DEFAULT_SETTINGS = {
@@ -48,107 +42,25 @@ export const getCalendarSettings = (): CalendarSettings => {
     return DEFAULT_SETTINGS;
 };
 
-declare global {
-    interface Window {
-        google?: {
-            accounts: {
-                id: {
-                    initialize: (config: any) => void;
-                    renderButton: (element: HTMLElement, config: any) => void;
-                    prompt: () => void;
-                };
-            };
-        };
-    }
-}
-
 const GestaoPage = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [userEmail, setUserEmail] = useState('');
-    const [authError, setAuthError] = useState('');
+    const [password, setPassword] = useState('');
+    const [passwordError, setPasswordError] = useState(false);
     const [settings, setSettings] = useState<CalendarSettings>(DEFAULT_SETTINGS);
     const [saved, setSaved] = useState(false);
-    const [googleLoaded, setGoogleLoaded] = useState(false);
 
-    // Load Google Identity Services
     useEffect(() => {
-        // Check if already authenticated
-        const storedAuth = sessionStorage.getItem('gestao_auth');
-        if (storedAuth === ALLOWED_EMAIL) {
-            setIsAuthenticated(true);
-            setUserEmail(ALLOWED_EMAIL);
-            return;
-        }
-
-        // Load Google script
-        const script = document.createElement('script');
-        script.src = 'https://accounts.google.com/gsi/client';
-        script.async = true;
-        script.defer = true;
-        script.onload = () => setGoogleLoaded(true);
-        document.head.appendChild(script);
-
-        return () => {
-            document.head.removeChild(script);
-        };
+        setSettings(getCalendarSettings());
     }, []);
 
-    // Initialize Google Sign-In
-    useEffect(() => {
-        if (!googleLoaded || !window.google || isAuthenticated) return;
-
-        const buttonDiv = document.getElementById('google-signin-btn');
-        if (!buttonDiv) return;
-
-        try {
-            window.google.accounts.id.initialize({
-                client_id: GOOGLE_CLIENT_ID || '836628462107-placeholder.apps.googleusercontent.com',
-                callback: handleGoogleCallback,
-                auto_select: false,
-            });
-
-            window.google.accounts.id.renderButton(buttonDiv, {
-                theme: 'filled_black',
-                size: 'large',
-                text: 'signin_with',
-                shape: 'rectangular',
-                width: 280,
-            });
-        } catch (e) {
-            console.error('Error initializing Google Sign-In:', e);
+    const handleLogin = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (password === ADMIN_PASSWORD) {
+            setIsAuthenticated(true);
+            setPasswordError(false);
+        } else {
+            setPasswordError(true);
         }
-    }, [googleLoaded, isAuthenticated]);
-
-    // Load settings on mount
-    useEffect(() => {
-        if (isAuthenticated) {
-            setSettings(getCalendarSettings());
-        }
-    }, [isAuthenticated]);
-
-    const handleGoogleCallback = (response: any) => {
-        try {
-            // Decode JWT token
-            const payload = JSON.parse(atob(response.credential.split('.')[1]));
-            const email = payload.email;
-
-            if (email === ALLOWED_EMAIL) {
-                setIsAuthenticated(true);
-                setUserEmail(email);
-                sessionStorage.setItem('gestao_auth', email);
-                setAuthError('');
-            } else {
-                setAuthError(`Acesso negado. Apenas ${ALLOWED_EMAIL} pode acessar.`);
-            }
-        } catch (e) {
-            setAuthError('Erro ao verificar login. Tente novamente.');
-        }
-    };
-
-    const handleLogout = () => {
-        setIsAuthenticated(false);
-        setUserEmail('');
-        sessionStorage.removeItem('gestao_auth');
     };
 
     const handleSave = () => {
@@ -177,45 +89,38 @@ const GestaoPage = () => {
         });
     };
 
-    // Login screen
     if (!isAuthenticated) {
         return (
             <div className="min-h-screen bg-background flex items-center justify-center p-4">
                 <div className="w-full max-w-sm">
                     <div className="text-center mb-8">
                         <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4">
-                            <Calendar className="w-8 h-8 text-primary" />
+                            <Lock className="w-8 h-8 text-primary" />
                         </div>
                         <h1 className="text-2xl font-bold text-white mb-2">Área Restrita</h1>
                         <p className="text-muted-foreground text-sm">Gestão do Calendário</p>
                     </div>
 
-                    <div className="flex flex-col items-center gap-4">
-                        <div id="google-signin-btn" className="min-h-[44px]"></div>
+                    <form onSubmit={handleLogin} className="space-y-4">
+                        <div>
+                            <input
+                                type="password"
+                                placeholder="Senha de acesso"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className={`w-full px-4 py-3 bg-white/5 border rounded-lg text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 ${passwordError ? 'border-red-500' : 'border-white/10'
+                                    }`}
+                            />
+                            {passwordError && (
+                                <p className="text-red-500 text-sm mt-2">Senha incorreta</p>
+                            )}
+                        </div>
+                        <button type="submit" className="w-full btn-premium py-3 font-bold">
+                            Entrar
+                        </button>
+                    </form>
 
-                        {!GOOGLE_CLIENT_ID && (
-                            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 text-sm">
-                                <p className="text-yellow-500 font-medium mb-2">⚠️ Configuração necessária</p>
-                                <p className="text-muted-foreground text-xs">
-                                    Para ativar o login com Google, você precisa criar um Client ID em{' '}
-                                    <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                        Google Cloud Console
-                                    </a>
-                                </p>
-                            </div>
-                        )}
-
-                        {authError && (
-                            <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-center">
-                                <p className="text-red-400 text-sm">{authError}</p>
-                            </div>
-                        )}
-                    </div>
-
-                    <a
-                        href="/"
-                        className="flex items-center justify-center gap-2 text-muted-foreground hover:text-white mt-6 text-sm"
-                    >
+                    <a href="/" className="flex items-center justify-center gap-2 text-muted-foreground hover:text-white mt-6 text-sm">
                         <ArrowLeft className="w-4 h-4" />
                         Voltar ao site
                     </a>
@@ -237,37 +142,21 @@ const GestaoPage = () => {
     return (
         <div className="min-h-screen bg-background p-4 md:p-8">
             <div className="max-w-2xl mx-auto">
-                {/* Header */}
                 <div className="flex items-center justify-between mb-8">
                     <div>
                         <h1 className="text-2xl font-bold text-white flex items-center gap-2">
                             <Calendar className="w-6 h-6 text-primary" />
                             Gestão do Calendário
                         </h1>
-                        <p className="text-muted-foreground text-sm mt-1">
-                            Logado como {userEmail}
-                        </p>
+                        <p className="text-muted-foreground text-sm mt-1">Configure a disponibilidade</p>
                     </div>
-                    <div className="flex items-center gap-4">
-                        <button
-                            onClick={handleLogout}
-                            className="text-muted-foreground hover:text-white text-sm"
-                        >
-                            Sair
-                        </button>
-                        <a
-                            href="/"
-                            className="text-muted-foreground hover:text-white flex items-center gap-2 text-sm"
-                        >
-                            <ArrowLeft className="w-4 h-4" />
-                            Voltar
-                        </a>
-                    </div>
+                    <a href="/" className="text-muted-foreground hover:text-white flex items-center gap-2 text-sm">
+                        <ArrowLeft className="w-4 h-4" />
+                        Voltar
+                    </a>
                 </div>
 
-                {/* Settings Form */}
                 <div className="space-y-6">
-                    {/* Dias úteis disponíveis */}
                     <div className="bg-white/5 border border-white/10 rounded-xl p-6">
                         <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
                             <Calendar className="w-5 h-5 text-primary" />
@@ -276,7 +165,7 @@ const GestaoPage = () => {
 
                         <div className="mb-4">
                             <label className="text-sm text-muted-foreground mb-2 block">
-                                Quantos dias úteis mostrar como disponíveis:
+                                Quantos dias úteis mostrar:
                             </label>
                             <select
                                 value={settings.diasUteis}
@@ -292,9 +181,7 @@ const GestaoPage = () => {
                         </div>
 
                         <div>
-                            <label className="text-sm text-muted-foreground mb-3 block">
-                                Dias da semana que você atende:
-                            </label>
+                            <label className="text-sm text-muted-foreground mb-3 block">Dias que você atende:</label>
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                                 {Object.entries(diasSemanaLabels).map(([key, label]) => (
                                     <button
@@ -317,82 +204,52 @@ const GestaoPage = () => {
                         </div>
                     </div>
 
-                    {/* Horários */}
                     <div className="bg-white/5 border border-white/10 rounded-xl p-6">
                         <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
                             <Clock className="w-5 h-5 text-primary" />
-                            Horários de Atendimento
+                            Horários
                         </h2>
 
                         <div className="space-y-4">
-                            {/* Manhã */}
-                            <div>
-                                <button
-                                    onClick={() => togglePeriodo('manha')}
-                                    className={`w-full p-4 rounded-lg border transition-all flex items-center justify-between ${settings.horariosAtivos.manha
-                                            ? 'border-primary bg-primary/10'
-                                            : 'border-white/10 opacity-50'
-                                        }`}
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <div className={`w-4 h-4 rounded border ${settings.horariosAtivos.manha
-                                                ? 'bg-primary border-primary'
-                                                : 'border-white/30'
-                                            }`}>
-                                            {settings.horariosAtivos.manha && <Check className="w-3 h-3 text-black" />}
-                                        </div>
-                                        <span className="text-white font-medium">Manhã</span>
+                            <button
+                                onClick={() => togglePeriodo('manha')}
+                                className={`w-full p-4 rounded-lg border transition-all flex items-center justify-between ${settings.horariosAtivos.manha ? 'border-primary bg-primary/10' : 'border-white/10 opacity-50'
+                                    }`}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <div className={`w-4 h-4 rounded border ${settings.horariosAtivos.manha ? 'bg-primary border-primary' : 'border-white/30'}`}>
+                                        {settings.horariosAtivos.manha && <Check className="w-3 h-3 text-black" />}
                                     </div>
-                                    <span className="text-muted-foreground text-sm">
-                                        {settings.horarios.manha.join(', ')}
-                                    </span>
-                                </button>
-                            </div>
+                                    <span className="text-white font-medium">Manhã</span>
+                                </div>
+                                <span className="text-muted-foreground text-sm">{settings.horarios.manha.join(', ')}</span>
+                            </button>
 
-                            {/* Tarde */}
-                            <div>
-                                <button
-                                    onClick={() => togglePeriodo('tarde')}
-                                    className={`w-full p-4 rounded-lg border transition-all flex items-center justify-between ${settings.horariosAtivos.tarde
-                                            ? 'border-primary bg-primary/10'
-                                            : 'border-white/10 opacity-50'
-                                        }`}
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <div className={`w-4 h-4 rounded border ${settings.horariosAtivos.tarde
-                                                ? 'bg-primary border-primary'
-                                                : 'border-white/30'
-                                            }`}>
-                                            {settings.horariosAtivos.tarde && <Check className="w-3 h-3 text-black" />}
-                                        </div>
-                                        <span className="text-white font-medium">Tarde</span>
+                            <button
+                                onClick={() => togglePeriodo('tarde')}
+                                className={`w-full p-4 rounded-lg border transition-all flex items-center justify-between ${settings.horariosAtivos.tarde ? 'border-primary bg-primary/10' : 'border-white/10 opacity-50'
+                                    }`}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <div className={`w-4 h-4 rounded border ${settings.horariosAtivos.tarde ? 'bg-primary border-primary' : 'border-white/30'}`}>
+                                        {settings.horariosAtivos.tarde && <Check className="w-3 h-3 text-black" />}
                                     </div>
-                                    <span className="text-muted-foreground text-sm">
-                                        {settings.horarios.tarde.join(', ')}
-                                    </span>
-                                </button>
-                            </div>
+                                    <span className="text-white font-medium">Tarde</span>
+                                </div>
+                                <span className="text-muted-foreground text-sm">{settings.horarios.tarde.join(', ')}</span>
+                            </button>
                         </div>
                     </div>
 
-                    {/* Save Button */}
                     <button
                         onClick={handleSave}
-                        className={`w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all ${saved
-                                ? 'bg-green-500 text-white'
-                                : 'btn-premium'
+                        className={`w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all ${saved ? 'bg-green-500 text-white' : 'btn-premium'
                             }`}
                     >
                         {saved ? (
-                            <>
-                                <Check className="w-5 h-5" />
-                                Salvo com sucesso!
-                            </>
+                            <><Check className="w-5 h-5" /> Salvo!</>
                         ) : (
-                            <>
-                                <Save className="w-5 h-5" />
-                                Salvar Configurações
-                            </>
+                            <><Save className="w-5 h-5" /> Salvar Configurações</>
                         )}
                     </button>
                 </div>
