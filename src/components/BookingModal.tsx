@@ -1,28 +1,39 @@
-import { X, Calendar, Clock, User, Phone, CheckCircle } from 'lucide-react';
+import { X, Calendar, Clock, User, Phone, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useBooking } from '@/context/BookingContext';
 import { useState } from 'react';
 
 const WEBHOOK_URL = 'https://webhookia.brazilzap.com.br/webhook/davisoares-agendamento';
 
-// Generate next 14 days
-const generateDates = () => {
-    const dates = [];
+// Get available business days (next 2 from today)
+const getAvailableDates = () => {
+    const available: Date[] = [];
     const today = new Date();
-    for (let i = 1; i <= 14; i++) {
-        const date = new Date(today);
-        date.setDate(today.getDate() + i);
-        // Skip weekends
-        if (date.getDay() !== 0 && date.getDay() !== 6) {
-            dates.push(date);
+    let daysChecked = 0;
+    let currentDate = new Date(today);
+
+    while (available.length < 2 && daysChecked < 30) {
+        currentDate.setDate(currentDate.getDate() + 1);
+        daysChecked++;
+        const dayOfWeek = currentDate.getDay();
+        // Monday to Saturday (1-6), Sunday is 0
+        if (dayOfWeek !== 0) {
+            available.push(new Date(currentDate));
         }
     }
-    return dates.slice(0, 10); // Max 10 days
+
+    return available;
 };
 
-// Available time slots
-const TIME_SLOTS = [
-    '09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00'
-];
+// Available time slots based on day of week
+const getTimeSlots = (date: Date) => {
+    const day = date.getDay();
+    // Morning: 09:00-11:00, Afternoon: 14:00-18:00
+    const morningSlots = ['09:00', '09:30', '10:00', '10:30', '11:00'];
+    const afternoonSlots = ['14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00'];
+
+    if (day === 0) return []; // Sunday - unavailable
+    return [...morningSlots, ...afternoonSlots];
+};
 
 const BookingModal = () => {
     const { isBookingOpen, closeBooking } = useBooking();
@@ -30,13 +41,50 @@ const BookingModal = () => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [currentMonth, setCurrentMonth] = useState(new Date());
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
         clinicName: ''
     });
 
-    const dates = generateDates();
+    const availableDates = getAvailableDates();
+
+    const isDateAvailable = (date: Date) => {
+        return availableDates.some(
+            (availableDate) =>
+                availableDate.getDate() === date.getDate() &&
+                availableDate.getMonth() === date.getMonth() &&
+                availableDate.getFullYear() === date.getFullYear()
+        );
+    };
+
+    const getDaysInMonth = (date: Date) => {
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const daysInMonth = lastDay.getDate();
+        const startingDayOfWeek = firstDay.getDay();
+
+        const days: (Date | null)[] = [];
+
+        // Add empty slots for days before the first of the month
+        for (let i = 0; i < startingDayOfWeek; i++) {
+            days.push(null);
+        }
+
+        // Add all days of the month
+        for (let day = 1; day <= daysInMonth; day++) {
+            days.push(new Date(year, month, day));
+        }
+
+        return days;
+    };
+
+    const formatMonthYear = (date: Date) => {
+        return date.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+    };
 
     const formatDate = (date: Date) => {
         return date.toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric', month: 'short' });
@@ -44,6 +92,21 @@ const BookingModal = () => {
 
     const formatFullDate = (date: Date) => {
         return date.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    };
+
+    const prevMonth = () => {
+        setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
+    };
+
+    const nextMonth = () => {
+        setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
+    };
+
+    const handleDateSelect = (date: Date) => {
+        if (isDateAvailable(date)) {
+            setSelectedDate(date);
+            setStep('time');
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -69,13 +132,12 @@ const BookingModal = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(payload),
-                mode: 'no-cors' // Webhook might not have CORS headers
+                mode: 'no-cors'
             });
 
             setStep('success');
         } catch (error) {
             console.error('Erro ao enviar agendamento:', error);
-            // Still show success since no-cors won't return a proper response
             setStep('success');
         } finally {
             setIsSubmitting(false);
@@ -92,6 +154,10 @@ const BookingModal = () => {
 
     if (!isBookingOpen) return null;
 
+    const days = getDaysInMonth(currentMonth);
+    const weekDays = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'];
+    const timeSlots = selectedDate ? getTimeSlots(selectedDate) : [];
+
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
             {/* Backdrop */}
@@ -101,13 +167,13 @@ const BookingModal = () => {
             />
 
             {/* Modal Content */}
-            <div className="relative w-full max-w-lg bg-background rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-300">
+            <div className="relative w-full max-w-md bg-background rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-300 max-h-[90vh]">
 
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-background/50 backdrop-blur-md">
                     <h3 className="text-lg font-bold text-white flex items-center gap-2">
                         <Calendar className="w-5 h-5 text-primary" />
-                        Agendar Reunião
+                        Escolha uma data e horário
                     </h3>
                     <button
                         onClick={handleClose}
@@ -118,33 +184,71 @@ const BookingModal = () => {
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
+                <div className="p-4 overflow-y-auto">
                     {/* Step: Select Date */}
                     {step === 'date' && (
                         <div className="animate-in fade-in duration-300">
-                            <p className="text-muted-foreground mb-4 text-sm">Escolha uma data disponível:</p>
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                {dates.map((date, index) => (
-                                    <button
-                                        key={index}
-                                        onClick={() => {
-                                            setSelectedDate(date);
-                                            setStep('time');
-                                        }}
-                                        className="p-3 rounded-lg border border-white/10 hover:border-primary/50 hover:bg-primary/10 transition-all text-center"
-                                    >
-                                        <div className="text-xs text-muted-foreground uppercase">
-                                            {date.toLocaleDateString('pt-BR', { weekday: 'short' })}
-                                        </div>
-                                        <div className="text-xl font-bold text-white">
-                                            {date.getDate()}
-                                        </div>
-                                        <div className="text-xs text-muted-foreground">
-                                            {date.toLocaleDateString('pt-BR', { month: 'short' })}
-                                        </div>
-                                    </button>
+                            {/* Month Navigation */}
+                            <div className="flex items-center justify-between mb-4">
+                                <button
+                                    onClick={prevMonth}
+                                    className="p-2 rounded-lg hover:bg-white/10 transition-colors text-muted-foreground hover:text-white"
+                                >
+                                    <ChevronLeft className="w-5 h-5" />
+                                </button>
+                                <span className="text-white font-medium capitalize">{formatMonthYear(currentMonth)}</span>
+                                <button
+                                    onClick={nextMonth}
+                                    className="p-2 rounded-lg hover:bg-white/10 transition-colors text-muted-foreground hover:text-white"
+                                >
+                                    <ChevronRight className="w-5 h-5" />
+                                </button>
+                            </div>
+
+                            {/* Week Days Header */}
+                            <div className="grid grid-cols-7 gap-1 mb-2">
+                                {weekDays.map((day) => (
+                                    <div key={day} className="text-center text-xs text-muted-foreground py-2">
+                                        {day}
+                                    </div>
                                 ))}
                             </div>
+
+                            {/* Calendar Grid */}
+                            <div className="grid grid-cols-7 gap-1">
+                                {days.map((day, index) => {
+                                    if (!day) {
+                                        return <div key={index} className="aspect-square" />;
+                                    }
+
+                                    const isAvailable = isDateAvailable(day);
+                                    const isToday =
+                                        day.getDate() === new Date().getDate() &&
+                                        day.getMonth() === new Date().getMonth() &&
+                                        day.getFullYear() === new Date().getFullYear();
+
+                                    return (
+                                        <button
+                                            key={index}
+                                            onClick={() => handleDateSelect(day)}
+                                            disabled={!isAvailable}
+                                            className={`aspect-square rounded-full flex items-center justify-center text-sm transition-all
+                        ${isAvailable
+                                                    ? 'bg-primary text-black font-bold hover:bg-primary/80 cursor-pointer'
+                                                    : 'text-muted-foreground/50 cursor-not-allowed'
+                                                }
+                        ${isToday && !isAvailable ? 'ring-1 ring-white/30' : ''}
+                      `}
+                                        >
+                                            {day.getDate()}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            <p className="text-xs text-muted-foreground mt-4 text-center">
+                                Horário de Brasília (GMT-3)
+                            </p>
                         </div>
                     )}
 
@@ -155,14 +259,15 @@ const BookingModal = () => {
                                 onClick={() => setStep('date')}
                                 className="text-sm text-primary hover:underline mb-4 flex items-center gap-1"
                             >
-                                ← Voltar
+                                <ChevronLeft className="w-4 h-4" /> Voltar
                             </button>
                             <p className="text-muted-foreground mb-2 text-sm">
-                                Data selecionada: <span className="text-white font-medium">{formatDate(selectedDate)}</span>
+                                Data: <span className="text-white font-medium">{formatDate(selectedDate)}</span>
                             </p>
                             <p className="text-muted-foreground mb-4 text-sm">Escolha um horário:</p>
-                            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-                                {TIME_SLOTS.map((time) => (
+
+                            <div className="grid grid-cols-3 gap-2 max-h-[40vh] overflow-y-auto">
+                                {timeSlots.map((time) => (
                                     <button
                                         key={time}
                                         onClick={() => {
@@ -186,7 +291,7 @@ const BookingModal = () => {
                                 onClick={() => setStep('time')}
                                 className="text-sm text-primary hover:underline mb-4 flex items-center gap-1"
                             >
-                                ← Voltar
+                                <ChevronLeft className="w-4 h-4" /> Voltar
                             </button>
                             <div className="bg-white/5 rounded-lg p-3 mb-4 text-sm">
                                 <p className="text-muted-foreground">
