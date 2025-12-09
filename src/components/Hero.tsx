@@ -24,12 +24,12 @@ const Hero = () => {
   }, []);
 
   const testimonials = [
-    { src: "/depoimentos/Camada 2.webp" },
-    { src: "/depoimentos/Camada 3.webp" },
-    { src: "/depoimentos/Camada 4.webp" },
-    { src: "/depoimentos/Camada 5.webp" },
-    { src: "/depoimentos/Camada 6.webp" },
-    { src: "/depoimentos/Captura de tela 2025-12-05 114436.webp" }
+    { src: "/depoimentos/Camada 2.webp", srcMobile: "/depoimentos/Camada 2-mobile.webp" },
+    { src: "/depoimentos/Camada 3.webp", srcMobile: "/depoimentos/Camada 3-mobile.webp" },
+    { src: "/depoimentos/Camada 4.webp", srcMobile: "/depoimentos/Camada 4-mobile.webp" },
+    { src: "/depoimentos/Camada 5.webp", srcMobile: "/depoimentos/Camada 5-mobile.webp" },
+    { src: "/depoimentos/Camada 6.webp", srcMobile: "/depoimentos/Camada 6-mobile.webp" },
+    { src: "/depoimentos/Captura de tela 2025-12-05 114436.webp", srcMobile: "/depoimentos/Captura-mobile.webp" }
   ];
 
   useEffect(() => {
@@ -97,6 +97,8 @@ const Hero = () => {
                   <div className="w-40">
                     <img
                       src={item.src}
+                      srcSet={`${item.srcMobile} 400w, ${item.src} 800w`}
+                      sizes="160px"
                       alt="Depoimento"
                       width="160"
                       height="213"
@@ -127,7 +129,7 @@ const Hero = () => {
                 className="w-full"
               >
                 <img
-                  src={item.src}
+                  src={item.srcMobile}
                   alt="Depoimento"
                   width="400"
                   height="533"
