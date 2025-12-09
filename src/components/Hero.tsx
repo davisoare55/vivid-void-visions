@@ -108,20 +108,12 @@ const Hero = () => {
 
           {/* VSL Player Container - Vertical Aspect Ratio */}
           <div className="relative z-10 w-full max-w-[400px] rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(212,175,55,0.15)] border border-white/10 bg-black aspect-[9/16] section-fade visible" style={{ animationDelay: '0.3s' }}>
-            <div id="vid-692f0460f8c552246af703ec" style={{ position: 'relative', width: '100%', height: '100%' }}>
-              <img
-                id="thumb-692f0460f8c552246af703ec"
-                src="https://images.converteai.net/1207b016-5c31-47e2-ba8e-a8059d7a99ff/players/692f0460f8c552246af703ec/thumbnail.jpg"
-                width="400"
-                height="711"
-                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                alt="thumbnail"
-              />
-              <div
-                id="backdrop-692f0460f8c552246af703ec"
-                style={{ position: 'absolute', top: 0, width: '100%', height: '100%', backdropFilter: 'blur(5px)', pointerEvents: 'none' }}
-              ></div>
-            </div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html:
+                  '<vturb-smartplayer id="vid-692f0460f8c552246af703ec" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>'
+              }}
+            />
           </div>
 
           {/* Mobile: Vertical Stack Below Video */}
