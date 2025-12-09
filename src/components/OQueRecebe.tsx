@@ -1,58 +1,96 @@
-import { Card } from '@/components/ui/card';
+import { Video, MousePointerClick, TrendingUp } from 'lucide-react';
 
 const OQueRecebe = () => {
-  const deliverables = [
-    {
-      title: "Estratégia viral",
-      description: "Planejada para maximizar alcance e engajamento orgânico",
-      icon: <img src="/portfolio/preto/estrategia-target.png" alt="Estratégia" className="w-12 h-12" />
-    },
-    {
-      title: "Tráfego pago de elite",
-      description: "30 dias de campanha otimizada alinhada ao criativo",
-      icon: <img src="/portfolio/preto/publicacao-foguete.png" alt="Tráfego" className="w-12 h-12" />
-    },
-    {
-      title: "Peça IA+VFX exclusiva",
-      description: "Criada especificamente para sua marca, impossível de copiar",
-      icon: <img src="/portfolio/preto/exclusividade-diamante.png" alt="IA+VFX" className="w-12 h-12" />
-    }
-  ];
-
   return (
-    <section className="py-8 md:py-16 px-4 md:px-6 bg-background relative overflow-hidden w-full max-w-full">
-      <div className="max-w-7xl mx-auto">
+    <section id="como-ajudamos" className="py-24 bg-background relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
-        <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-6xl font-bold mb-6 md:mb-8 text-gradient">
-            Entregáveis
+        <div className="text-center mb-16">
+          <p className="text-sm text-primary uppercase tracking-widest mb-4">Nossos Serviços</p>
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
+            Como Ajudamos Sua Clínica?
           </h2>
         </div>
 
-        {/* Deliverables List */}
-        <div className="space-y-6 md:space-y-8 mb-8 md:mb-12">
-          {deliverables.map((item, index) => (
-            <Card
-              key={index}
-              className="p-2 md:p-6 w-full interactive group border-0 relative overflow-hidden rounded-3xl"
-              style={{ 
-                animationDelay: `${index * 0.1}s`,
-                background: 'linear-gradient(145deg, #ffffff 0%, #f5f5f5 25%, #e5e5e5 50%, #d5d5d5 75%, #c5c5c5 100%)',
-                boxShadow: '0 10px 30px rgba(255, 255, 255, 0.2)'
-              }}
-            >
-              <div className="flex flex-col items-center text-center space-y-6 px-4 py-2">
-                <div className="text-4xl group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
-                  {item.icon}
-                </div>
-                <div className="max-w-full">
-                  <h3 className="text-2xl md:text-3xl font-bold mb-6 text-black">{item.title}</h3>
-                  <p className="text-lg md:text-xl text-gray-800 leading-relaxed px-2">{item.description}</p>
-                </div>
+        {/* Services Grid - Based on Reference */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+
+          {/* Service 1: VFX+IA */}
+          <div className="card-premium p-8 md:p-12 group hover:border-primary/50 transition-all duration-500 relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+              <Video className="w-32 h-32 text-white" />
+            </div>
+
+            <div className="relative z-10">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center mb-8 border border-white/10 group-hover:scale-110 transition-transform duration-500">
+                <Video className="w-8 h-8 text-white" />
               </div>
-            </Card>
-          ))}
+
+              <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white font-display">
+                Vídeos de Alta Atenção <span className="text-gradient-gold">VFX+IA</span>
+              </h3>
+
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                Não fazemos posts estáticos. Criamos experiências visuais cinematográficas que prendem a atenção do paciente em 3 segundos. Usamos Inteligência Artificial e Efeitos Visuais para tornar sua clínica impossível de ser ignorada.
+              </p>
+
+              <ul className="space-y-3">
+                <li className="flex items-center gap-3 text-sm text-white/80">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span>Roteiros de retenção máxima</span>
+                </li>
+                <li className="flex items-center gap-3 text-sm text-white/80">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span>Edição de nível cinematográfico</span>
+                </li>
+                <li className="flex items-center gap-3 text-sm text-white/80">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span>Ativos visuais proprietários</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Service 2: Tráfego Pago */}
+          <div className="card-premium p-8 md:p-12 group hover:border-primary/50 transition-all duration-500 relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+              <MousePointerClick className="w-32 h-32 text-white" />
+            </div>
+
+            <div className="relative z-10">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center mb-8 border border-white/10 group-hover:scale-110 transition-transform duration-500">
+                <TrendingUp className="w-8 h-8 text-white" />
+              </div>
+
+              <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white font-display">
+                Tráfego Pago <span className="text-gradient-gold">Estratégico</span>
+              </h3>
+
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                Não buscamos likes. Buscamos agendamentos. Nossa gestão de tráfego é focada 100% em conversão, levando o paciente qualificado do anúncio direto para o WhatsApp da sua secretária.
+              </p>
+
+              <ul className="space-y-3">
+                <li className="flex items-center gap-3 text-sm text-white/80">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span>Segmentação de alto ticket</span>
+                </li>
+                <li className="flex items-center gap-3 text-sm text-white/80">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span>Otimização diária de campanhas</span>
+                </li>
+                <li className="flex items-center gap-3 text-sm text-white/80">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span>Relatórios de ROI em tempo real</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
         </div>
+
+        {/* Bottom Banner */}
+
 
       </div>
     </section>

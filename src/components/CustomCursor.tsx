@@ -51,7 +51,7 @@ const CustomCursor = () => {
   return (
     <>
       <div
-        className="fixed w-6 h-6 pointer-events-none transition-all duration-200 ease-out"
+        className="fixed w-6 h-6 pointer-events-none transition-all duration-200 ease-out will-change-transform"
         style={{
           left: `${position.x - 12}px`,
           top: `${position.y - 12}px`,

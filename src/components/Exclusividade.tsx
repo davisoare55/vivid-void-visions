@@ -1,68 +1,75 @@
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Diamond, FileText, Users } from 'lucide-react';
+import { useBooking } from '@/context/BookingContext';
 
 const Exclusividade = () => {
-  const scrollToContact = () => {
-    document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const { openBooking } = useBooking();
 
   return (
-    <section id="exclusividade" className="py-3 md:py-12 px-4 md:px-6 bg-background-secondary w-full max-w-full overflow-x-hidden">
-      <div className="max-w-5xl mx-auto text-center">
+    <section id="exclusividade" className="py-24 bg-background-secondary relative border-t border-white/5">
+      <div className="max-w-5xl mx-auto px-6 text-center">
         {/* Header */}
-        <div className="mb-6 md:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-6xl font-bold mb-4 md:mb-8 text-gradient">
-            Exclusividade real
+        <div className="mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-gradient-gold">
+            Exclusividade Real
           </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Não somos uma agência de massa. Somos um atelier de marketing médico.
+          </p>
         </div>
 
         {/* Main Content */}
-        <div className="p-2 sm:p-4 md:p-8 border-2 border-white rounded-3xl bg-transparent interactive group hover:scale-105 transition-all duration-300" style={{boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
-          <div className="mb-2 md:mb-6">
-            <div className="mb-1 md:mb-4 flex justify-center group-hover:scale-110 transition-transform duration-300">
-              <img src="/portfolio/branco/exclusividade-diamante-branco.png" alt="Exclusividade" className="w-8 h-8 sm:w-10 sm:h-10 md:w-16 md:h-16" />
+        <div className="card-premium p-8 md:p-12 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-gold" />
+
+          <div className="mb-10">
+            <div className="mb-6 flex justify-center">
+              <div className="p-4 rounded-full bg-primary/10 animate-pulse">
+                <Diamond className="w-12 h-12 text-primary" />
+              </div>
             </div>
-            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground leading-relaxed mb-8">
-              Para manter a qualidade artesanal, atendo apenas <span className="text-primary font-bold">10 projetos por mês</span>.<br/>
-              As vagas são preenchidas por processo seletivo.
+            <p className="text-xl md:text-2xl text-white leading-relaxed max-w-3xl mx-auto font-display">
+              Para manter a qualidade artesanal, atendo apenas <br className="hidden md:block" />
+              <span className="text-primary font-bold">10 projetos por mês</span>.
+            </p>
+            <p className="text-muted-foreground mt-4">
+              As vagas são preenchidas através de um processo seletivo criterioso.
             </p>
           </div>
 
           {/* Exclusivity Features */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            <div className="p-6 text-center border-2 border-gray-300 rounded-lg interactive group hover:scale-105 transition-all duration-300" style={{background: 'linear-gradient(145deg, #ffffff 0%, #f5f5f5 25%, #e5e5e5 50%, #d5d5d5 75%, #c5c5c5 100%)', boxShadow: '0 10px 30px rgba(255, 255, 255, 0.2)'}}>
-              <div className="mb-3 flex justify-center group-hover:scale-110 transition-transform duration-300">
-                <img src="/portfolio/preto/contrato-documento.png" alt="Contrato" className="w-8 h-8" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 max-w-3xl mx-auto">
+            <div className="p-6 rounded-xl bg-white/5 border border-white/5 hover:border-primary/30 transition-colors">
+              <div className="mb-4 flex justify-center">
+                <FileText className="w-8 h-8 text-primary" />
               </div>
-              <h3 className="font-bold text-lg mb-2 text-black">Contrato & NF</h3>
-              <p className="text-gray-800">Processo transparente</p>
+              <h3 className="font-bold text-lg mb-2 text-white">Contrato & NF</h3>
+              <p className="text-sm text-muted-foreground">Processo 100% transparente e legalizado.</p>
             </div>
-            <div className="p-6 text-center border-2 border-gray-300 rounded-lg interactive group hover:scale-105 transition-all duration-300" style={{background: 'linear-gradient(145deg, #ffffff 0%, #f5f5f5 25%, #e5e5e5 50%, #d5d5d5 75%, #c5c5c5 100%)', boxShadow: '0 10px 30px rgba(255, 255, 255, 0.2)'}}>
-              <div className="mb-3 flex justify-center group-hover:scale-110 transition-transform duration-300">
-                <img src="/portfolio/preto/4 VAGAS.png" alt="10 Vagas" className="w-8 h-8" />
+            <div className="p-6 rounded-xl bg-white/5 border border-white/5 hover:border-primary/30 transition-colors">
+              <div className="mb-4 flex justify-center">
+                <Users className="w-8 h-8 text-primary" />
               </div>
-              <h3 className="font-bold text-lg mb-2 text-black">10 vagas/mês</h3>
-              <p className="text-gray-800">Exclusividade garantida</p>
+              <h3 className="font-bold text-lg mb-2 text-white">10 Vagas/Mês</h3>
+              <p className="text-sm text-muted-foreground">Foco total no seu projeto.</p>
             </div>
           </div>
 
           {/* CTA */}
-          <a
-            href="/reuniao/"
-            className="btn-hero px-12 py-6 text-xl font-bold interactive rounded-2xl min-w-[300px] shadow-2xl inline-block text-center"
-            style={{ fontFamily: 'var(--font-display)' }}
+          <button
+            onClick={openBooking}
+            className="btn-premium px-10 py-4 text-lg inline-flex items-center justify-center"
           >
-            Entrar no processo seletivo
-          </a>
-        </div>
+            Aplicar para Vaga
+          </button>
 
-        {/* Additional Info */}
-        <div className="mt-12 flex flex-row gap-3 sm:gap-4 md:gap-6 justify-center items-center text-muted-foreground text-xs sm:text-sm">
-          <span>Vagas abertas mensalmente</span>
-          <span className="text-primary">•</span>
-          <span>Retorno em 24h úteis</span>
-          <span className="text-primary">•</span>
-          <span>Processo confidencial</span>
+          {/* Additional Info */}
+          <div className="mt-8 flex flex-wrap justify-center gap-4 text-xs text-muted-foreground uppercase tracking-widest">
+            <span>Vagas Mensais</span>
+            <span className="text-primary">•</span>
+            <span>Retorno em 24h</span>
+            <span className="text-primary">•</span>
+            <span>Confidencial</span>
+          </div>
         </div>
       </div>
     </section>

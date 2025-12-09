@@ -1,68 +1,70 @@
-import { Card } from '@/components/ui/card';
+import { MessageSquare, Target, Film, Rocket } from 'lucide-react';
 
 const ComoFunciona = () => {
   const steps = [
     {
       number: "01",
-      title: "Briefing ágil",
-      description: "você envia áudios, textos e arquivos no nosso formulário.",
-      icon: <img src="/portfolio/branco/briefing-agil-branco.png" alt="Briefing" className="w-12 h-12" />
+      title: "Briefing Ágil",
+      description: "Você envia áudios e arquivos via formulário simples. Sem reuniões desnecessárias.",
+      icon: <MessageSquare className="w-8 h-8 text-primary" />
     },
     {
-      number: "02", 
+      number: "02",
       title: "Estratégia & Mídia",
-      description: "defino ângulos virais e alinho a campanha com tráfego pago de elite.",
-      icon: <img src="/portfolio/branco/estrategia-target-branco.png" alt="Estratégia" className="w-12 h-12" />
+      description: "Definimos ângulos virais e alinhamos a campanha com tráfego pago de elite.",
+      icon: <Target className="w-8 h-8 text-primary" />
     },
     {
       number: "03",
-      title: "Produção artesanal",
-      description: "IA+VFX + cor + som com estética de grandes campanhas.",
-      icon: <img src="/portfolio/branco/producao-cinema-brancoo.png" alt="Produção" className="w-12 h-12" />
+      title: "Produção Artesanal",
+      description: "IA + VFX + Color Grading com estética cinematográfica de grandes marcas.",
+      icon: <Film className="w-8 h-8 text-primary" />
     },
     {
       number: "04",
       title: "Publicação & Escala",
-      description: "aprovação, campanha de 30 dias e plano de uso para orgânico e pago.",
-      icon: <img src="/portfolio/branco/publicacao-foguete-branco.png" alt="Publicação" className="w-12 h-12" />
+      description: "Aprovação, campanha de 30 dias e plano de uso para orgânico e pago.",
+      icon: <Rocket className="w-8 h-8 text-primary" />
     }
   ];
 
   return (
-    <section id="como-funciona" className="py-20 px-6">
-      <div className="max-w-7xl mx-auto">
+    <section id="como-funciona" className="py-24 bg-background relative">
+      <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-6 text-gradient text-center px-4">
-            Processo simples, sem reuniões demoradas
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-gradient-gold">
+            Processo Simplificado
           </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Eliminamos a burocracia para focar no que importa: seu resultado.
+          </p>
         </div>
 
         {/* Steps Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {steps.map((step, index) => (
-            <Card
+            <div
               key={index}
-              className="card-3d p-4 sm:p-6 md:p-8 text-center h-full interactive group relative"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="card-premium p-8 relative group hover:-translate-y-2 transition-transform duration-500"
             >
               {/* Step Number */}
-              <div className="absolute -top-2 sm:-top-3 md:-top-4 -right-2 sm:-right-3 md:-right-4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm sm:text-base md:text-lg">
+              <div className="absolute -top-4 -right-4 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-black font-bold text-lg shadow-lg shadow-primary/20">
                 {step.number}
               </div>
-              
-              <div className="mb-3 sm:mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300 flex justify-center">
-                <img src={step.icon.props.src} alt={step.icon.props.alt} className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
+
+              <div className="mb-6 p-3 rounded-full bg-white/5 w-fit group-hover:bg-primary/10 transition-colors">
+                {step.icon}
               </div>
-              
-              <h3 className="text-base sm:text-lg md:text-xl font-bold mb-4 sm:mb-5 md:mb-6 text-foreground">
+
+              <h3 className="text-xl font-bold mb-4 text-white font-display">
                 {step.title}
               </h3>
-              
-              <p className="text-muted-foreground leading-relaxed text-xs sm:text-sm md:text-sm px-2">
+
+              <p className="text-muted-foreground leading-relaxed text-sm">
                 {step.description}
               </p>
-            </Card>
+            </div>
           ))}
         </div>
 

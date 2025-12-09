@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
+import { useBooking } from '@/context/BookingContext';
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { openBooking } = useBooking();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,26 +23,25 @@ const Navigation = () => {
   };
 
   const navItems = [
-    { id: 'portfolio', label: 'Início' },
-    { id: 'prova-social', label: 'Prova Social' },
-    { id: 'como-funciona', label: 'Como Funciona' },
-    { id: 'portfolio', label: 'Casos' },
-    { id: 'exclusividade', label: 'Exclusividade' },
+    { id: 'home', label: 'Início' },
+    { id: 'prova-social', label: 'Resultados' },
+    { id: 'como-funciona', label: 'Metodologia' },
+    { id: 'exclusividade', label: 'Diferenciais' },
     { id: 'sobre', label: 'Sobre' }
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-background/80 backdrop-blur-md border-b border-border' : 'bg-transparent'
-    }`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-background/80 backdrop-blur-xl border-b border-white/5' : 'bg-transparent'
+      }`}>
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-24">
           {/* Logo */}
-          <div 
-            className="text-2xl font-bold text-gradient cursor-pointer interactive"
-            onClick={() => scrollToSection('portfolio')}
+          <div
+            className="text-2xl font-bold tracking-tighter cursor-pointer interactive"
+            onClick={() => scrollToSection('home')}
           >
-            SOARES.FOOH
+            <span className="text-white">SOARES</span>
+            <span className="text-primary">.FOOH</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -49,17 +50,17 @@ const Navigation = () => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="text-foreground hover:text-primary transition-colors font-medium interactive"
+                className="text-sm uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors font-medium interactive"
               >
                 {item.label}
               </button>
             ))}
-            <a
-              href="/reuniao/"
-              className="btn-hero px-6 py-2 interactive inline-block text-center whitespace-nowrap flex items-center justify-center"
+            <button
+              onClick={openBooking}
+              className="btn-premium px-6 py-2 interactive inline-block text-center whitespace-nowrap flex items-center justify-center text-xs"
             >
-              Garantir minha vaga agora
-            </a>
+              Agendar Consultoria
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -85,13 +86,15 @@ const Navigation = () => {
                 </button>
               ))}
               <div className="flex justify-center mt-4">
-                <a
-                  href="/reuniao/"
-                  className="btn-hero px-6 py-2 interactive inline-block text-center whitespace-nowrap flex items-center justify-center"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    openBooking();
+                  }}
+                  className="btn-premium px-6 py-2 interactive inline-block text-center whitespace-nowrap flex items-center justify-center"
                 >
-                  Garantir minha vaga agora
-                </a>
+                  Agendar Consultoria
+                </button>
               </div>
             </div>
           </div>

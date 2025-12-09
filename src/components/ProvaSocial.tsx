@@ -1,64 +1,49 @@
 import { Card } from '@/components/ui/card';
+import { MessageCircle } from 'lucide-react';
 
 const ProvaSocial = () => {
-  const metrics = [
-    {
-      icon: <div className="w-8 h-1 bg-white rounded-full mx-auto"></div>,
-      number: "+100M",
-      label: "Views Geradas"
-    },
-    {
-      icon: <div className="w-8 h-1 bg-white rounded-full mx-auto"></div>,
-      number: "15-30x",
-      label: "ROAS Médio"
-    },
-    {
-      icon: <div className="w-8 h-1 bg-white rounded-full mx-auto"></div>,
-      number: "12X-25X",
-      label: "Views"
-    }
-  ];
+  // Stats removed as per user request
 
   return (
-    <section id="prova-social" className="py-20 px-6 bg-background-secondary relative z-0">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6 text-gradient">
-            Prova Social
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Resultados que falam por si só
-          </p>
-        </div>
+    <section id="prova-social" className="py-24 bg-background relative border-t border-white/5 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
 
-        {/* Metrics */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-8 mb-16">
-          {metrics.map((metric, index) => (
-            <Card key={index} className="card-3d p-2 sm:p-4 md:p-8 text-center interactive group hover:scale-105 transition-all duration-300">
-              <div className="text-2xl sm:text-3xl md:text-4xl mb-2 md:mb-4">{metric.icon}</div>
-              <div className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-gradient mb-1 md:mb-2">
-                {metric.number}
+        {/* Chat Cloud Simulation */}
+        <div className="mb-24 relative">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
+              Sua Agenda <span className="text-gradient-gold">Lotada</span>
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              O resultado de uma estratégia bem executada é o WhatsApp da sua clínica não parar de tocar.
+            </p>
+          </div>
+
+          {/* Abstract representation of "Chat Cloud" since we don't have the image yet */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 opacity-80">
+            {[1, 2, 3].map((_, i) => (
+              <div key={i} className="bg-[#0a1a10] border border-[#1a2a20] p-4 rounded-xl rounded-tl-none relative animate-pulse" style={{ animationDelay: `${i * 0.5}s` }}>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center shrink-0">
+                    <MessageCircle className="w-4 h-4 text-green-500" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-green-400 font-bold mb-1">+55 11 99999-****</p>
+                    <p className="text-sm text-white/90">Olá, vi o vídeo no Instagram e gostaria de agendar uma avaliação.</p>
+                  </div>
+                </div>
               </div>
-              <p className="text-xs sm:text-sm md:text-base text-muted-foreground font-medium">{metric.label}</p>
-            </Card>
-          ))}
-        </div>
-
-        {/* Brands */}
-        <div className="text-center">
-          <h3 className="text-2xl font-bold mb-8 text-foreground whitespace-nowrap text-center">Confiado por marcas como</h3>
-          <div className="flex justify-center">
-            <div className="max-w-4xl">
-              <img 
-                src="/portfolio/LOGOS SEM FUNDO.png" 
-                alt="Marcas que confiam: Nike, Marvel, Fanta, iFood e outras" 
-                className="w-full h-auto"
-                style={{ backgroundColor: 'transparent' }}
-              />
+            ))}
+            <div className="hidden md:block col-span-3 text-center mt-4">
+              <p className="text-xs text-muted-foreground uppercase tracking-widest animate-pulse">
+                + de 50 mensagens chegando agora...
+              </p>
             </div>
           </div>
         </div>
+
+        {/* Stats Grid Removed as per user request */}
+
       </div>
     </section>
   );

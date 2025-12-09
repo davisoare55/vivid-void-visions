@@ -1,67 +1,64 @@
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Award, Users, Eye } from 'lucide-react';
 
 const About = () => {
-
   return (
-    <section id="sobre" className="py-20 px-4 md:px-6 relative w-full max-w-full overflow-x-hidden">
-      <div className="max-w-7xl mx-auto w-full max-w-full">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-6xl font-bold mb-6 text-gradient">
-            Sobre Mim
-          </h2>
-        </div>
+    <section id="sobre" className="py-24 bg-background relative border-t border-white/5">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 
-        <div className="relative mb-20">
-          <div className="flex justify-center">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start max-w-5xl w-full">
-              {/* Profile Text */}
-              <div className="order-2 md:order-1 flex justify-center md:justify-end">
-                <div className="p-6 md:p-8 border-2 border-white rounded-2xl bg-transparent interactive group hover:scale-105 transition-all duration-300 max-w-2xl w-full" style={{boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
-                  <h3 className="text-2xl md:text-3xl font-bold mb-6 text-warm">Davi Soares</h3>
-                  <div className="space-y-4">
-                    <p className="text-muted-foreground leading-relaxed text-lg md:text-xl">
-                      13 anos criando o que nenhuma IA ou editor genérico consegue. Especialista em IA+VFX com técnicas de cinema, transformando marcas através de efeitos visuais impossíveis de ignorar.
-                    </p>
-                    <p className="text-muted-foreground leading-relaxed text-lg md:text-xl">
-                      Trabalho com gigantes como Nike, Marvel, Fanta e iFood, entregando campanhas que geram +100M de views e ROAS entre 15-30x.
-                    </p>
-                    <p className="text-muted-foreground leading-relaxed text-lg md:text-xl">
-                      Cada projeto é uma obra artesanal, combinando estratégia viral com execução cinematográfica para criar conteúdo que marca época.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Personal Image */}
-              <div className="order-1 md:order-2 flex justify-center md:justify-start">
-                <div className="relative max-w-sm md:max-w-md">
-                  <img 
-                    src="/perfil.png" 
-                    alt="Davi Soares - IA+VFX Specialist" 
-                    className="w-full h-auto object-cover object-center rounded-2xl shadow-2xl"
-                    style={{ 
-                      backgroundColor: 'transparent',
-                      maxHeight: '600px',
-                      aspectRatio: '3/4'
-                    }}
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                  {/* Bottom fade gradient */}
-                  <div 
-                    className="absolute bottom-0 left-0 right-0 rounded-b-2xl pointer-events-none"
-                    style={{
-                      height: '33.33%',
-                      background: 'linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%)'
-                    }}
-                  />
-                </div>
-              </div>
+          {/* Left Column: Image/Profile */}
+          <div className="relative">
+            <div className="aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 relative">
+              {/* Placeholder for Davi's image if available, otherwise using a generic premium placeholder or gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent" />
+              <img src="/portfolio/PERFIL RETRATO.png" alt="Davi Soares" className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-500" />
+            </div>
+            {/* Floating Badge */}
+            <div className="absolute -bottom-6 -right-6 bg-background-secondary border border-white/10 p-6 rounded-xl shadow-2xl">
+              <p className="text-primary font-bold text-4xl mb-1">12+</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-widest">Anos de XP</p>
             </div>
           </div>
+
+          {/* Right Column: Content */}
+          <div>
+            <p className="text-sm text-primary uppercase tracking-widest mb-4">Quem é</p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-8 text-white font-display">
+              DAVI SOARES
+            </h2>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-3 gap-4 mb-10">
+              <div className="p-4 rounded-xl bg-white/5 border border-white/10 text-center">
+                <p className="text-2xl font-bold text-white mb-1">12+</p>
+                <p className="text-[10px] text-muted-foreground uppercase">Anos de Experiência</p>
+              </div>
+              <div className="p-4 rounded-xl bg-white/5 border border-white/10 text-center">
+                <p className="text-2xl font-bold text-white mb-1">450+</p>
+                <p className="text-[10px] text-muted-foreground uppercase">Projetos de Sucesso</p>
+              </div>
+              <div className="p-4 rounded-xl bg-white/5 border border-white/10 text-center">
+                <p className="text-2xl font-bold text-white mb-1">100mi</p>
+                <p className="text-[10px] text-muted-foreground uppercase">Views em Projetos</p>
+              </div>
+            </div>
+
+            <div className="space-y-6 text-muted-foreground leading-relaxed p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
+              <p>
+                Já são <span className="text-white font-medium">100M+ visualizações</span> para Nike, NFL, Ifood...
+              </p>
+              <p>
+                Mas por que abandonei marcas gigantes para trabalhar com clínicas de estética?
+              </p>
+              <p>
+                Porque criar vídeo viral pra milhões não pagava as contas das PESSOAS que me contratavam.
+              </p>
+              <p className="text-white font-medium text-lg border-l-2 border-primary pl-4">
+                Agora eu só ganho quando VOCÊ ganha.
+              </p>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
