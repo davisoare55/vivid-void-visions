@@ -40,8 +40,8 @@ const Navigation = () => {
             className="text-2xl font-bold tracking-tighter cursor-pointer interactive"
             onClick={() => scrollToSection('home')}
           >
-            <span className="text-white">SOARES</span>
-            <span className="text-primary">.FOOH</span>
+            <span className="text-white">CLÍNIC</span>
+            <span className="text-primary">.IA</span>
           </div>
 
           {/* Desktop Navigation */}
