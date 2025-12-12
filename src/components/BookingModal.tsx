@@ -130,6 +130,17 @@ const BookingModal = () => {
                     if (Array.isArray(data.slots)) {
                         // Format: { slots: ["2025-12-13_14:00", ...] }
                         slots = data.slots;
+                    } else if (Array.isArray(data.array)) {
+                        // Format from Make.com aggregator: { array: [{key: "2025-12-1611:00", value: "..."}, ...] }
+                        slots = data.array.map((item: { key?: string; value?: string }) => {
+                            const dateTime = item.key || item.value || '';
+                            // Parse format like "2025-12-1611:00" -> "2025-12-16_11:00"
+                            const match = dateTime.match(/(\d{4}-\d{2}-\d{2})(\d{2}:\d{2})/);
+                            if (match) {
+                                return `${match[1]}_${match[2]}`;
+                            }
+                            return dateTime;
+                        }).filter((s: string) => s && s !== '_');
                     } else if (Array.isArray(data)) {
                         // Format: [{ DATA: "2025-12-13", HORARIO: "14:00" }, ...]
                         slots = data.map((row: { DATA?: string; HORARIO?: string; A?: string; B?: string }) => {
