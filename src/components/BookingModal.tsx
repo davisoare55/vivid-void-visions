@@ -1,4 +1,4 @@
-import { X, Calendar, Clock, User, Instagram, CheckCircle, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { X, Calendar, Clock, User, Instagram, CheckCircle, ChevronLeft, ChevronRight, Loader2, Mail } from 'lucide-react';
 import { useBooking } from '@/context/BookingContext';
 import { useState, useEffect } from 'react';
 
@@ -75,6 +75,7 @@ const BookingModal = () => {
     const [bookedSlots, setBookedSlots] = useState<string[]>([]);
     const [formData, setFormData] = useState({
         name: '',
+        email: '',
         instagram: '',
         clinicName: ''
     });
@@ -204,6 +205,7 @@ const BookingModal = () => {
                 date: dateStr,
                 time: selectedTime,
                 name: formData.name,
+                email: formData.email,
                 instagram: formData.instagram,
                 clinicName: formData.clinicName,
                 formattedDate: formatFullDate(selectedDate),
@@ -256,7 +258,7 @@ Aguardo confirmação!`;
         setStep('date');
         setSelectedDate(null);
         setSelectedTime(null);
-        setFormData({ name: '', instagram: '', clinicName: '' });
+        setFormData({ name: '', email: '', instagram: '', clinicName: '' });
         closeBooking();
     };
 
@@ -426,6 +428,21 @@ Aguardo confirmação!`;
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                             placeholder="Seu nome"
+                                            className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary/50"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm text-muted-foreground mb-1">E-mail</label>
+                                    <div className="relative">
+                                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                                        <input
+                                            type="email"
+                                            required
+                                            value={formData.email}
+                                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                            placeholder="seu@email.com"
                                             className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary/50"
                                         />
                                     </div>
