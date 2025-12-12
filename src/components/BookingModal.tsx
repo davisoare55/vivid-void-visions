@@ -122,10 +122,33 @@ const BookingModal = () => {
                 const response = await fetch(WEBHOOK_GET_SLOTS);
                 if (response.ok) {
                     const data = await response.json();
-                    // Expecting array of slots like ["2025-12-13_14:00", "2025-12-14_10:00", ...]
+                    console.log('Booked slots response:', data);
+
+                    // Handle different response formats
+                    let slots: string[] = [];
+
                     if (Array.isArray(data.slots)) {
-                        setBookedSlots(data.slots);
+                        // Format: { slots: ["2025-12-13_14:00", ...] }
+                        slots = data.slots;
+                    } else if (Array.isArray(data)) {
+                        // Format: [{ DATA: "2025-12-13", HORARIO: "14:00" }, ...]
+                        slots = data.map((row: { DATA?: string; HORARIO?: string; A?: string; B?: string }) => {
+                            const date = row.DATA || row.A || '';
+                            const time = row.HORARIO || row.B || '';
+                            return `${date}_${time}`;
+                        }).filter((s: string) => s !== '_');
+                    } else if (typeof data === 'string' || (data && !Array.isArray(data))) {
+                        // Handle body text responses - parse dates like "2025-12-1509:00"
+                        const bodyText = typeof data === 'string' ? data : JSON.stringify(data);
+                        const dateTimeRegex = /(\d{4}-\d{2}-\d{2})(\d{2}:\d{2})/g;
+                        let match;
+                        while ((match = dateTimeRegex.exec(bodyText)) !== null) {
+                            slots.push(`${match[1]}_${match[2]}`);
+                        }
                     }
+
+                    console.log('Parsed slots:', slots);
+                    setBookedSlots(slots);
                 }
             } catch (error) {
                 console.log('Could not fetch booked slots, continuing without');
