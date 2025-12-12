@@ -1,13 +1,13 @@
-import { X, Calendar, Clock, User, Instagram, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, Calendar, Clock, User, Instagram, CheckCircle, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { useBooking } from '@/context/BookingContext';
 import { useState, useEffect } from 'react';
+import { saveBooking, getBookedSlots } from '@/lib/firebase';
 
 // WhatsApp number
 const WHATSAPP_NUMBER = '5511982603777';
 
 // Storage keys
 const SETTINGS_KEY = 'soares_calendar_settings';
-const BOOKED_SLOTS_KEY = 'soares_booked_slots';
 
 // Default settings
 const DEFAULT_SETTINGS = {
@@ -46,35 +46,6 @@ const getCalendarSettings = (): CalendarSettings => {
     return DEFAULT_SETTINGS;
 };
 
-// Get booked slots
-const getBookedSlots = (): string[] => {
-    try {
-        const stored = localStorage.getItem(BOOKED_SLOTS_KEY);
-        if (stored) {
-            return JSON.parse(stored);
-        }
-    } catch (e) {
-        console.error('Error reading booked slots:', e);
-    }
-    return [];
-};
-
-// Save booked slot
-const saveBookedSlot = (date: string, time: string) => {
-    const slots = getBookedSlots();
-    const slotKey = `${date}_${time}`;
-    if (!slots.includes(slotKey)) {
-        slots.push(slotKey);
-        localStorage.setItem(BOOKED_SLOTS_KEY, JSON.stringify(slots));
-    }
-};
-
-// Check if slot is booked
-const isSlotBooked = (date: string, time: string): boolean => {
-    const slots = getBookedSlots();
-    return slots.includes(`${date}_${time}`);
-};
-
 // Map day of week (0-6) to settings key
 const dayIndexToKey = (dayIndex: number): keyof typeof DEFAULT_SETTINGS.diasSemana => {
     const map: { [key: number]: keyof typeof DEFAULT_SETTINGS.diasSemana } = {
@@ -95,9 +66,11 @@ const BookingModal = () => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isLoadingSlots, setIsLoadingSlots] = useState(false);
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [settings, setSettings] = useState<CalendarSettings>(DEFAULT_SETTINGS);
     const [availableDates, setAvailableDates] = useState<Date[]>([]);
+    const [bookedSlots, setBookedSlots] = useState<string[]>([]);
     const [formData, setFormData] = useState({
         name: '',
         instagram: '',
@@ -129,6 +102,20 @@ const BookingModal = () => {
         setAvailableDates(available);
     }, [isBookingOpen]);
 
+    // Load booked slots from Firebase
+    useEffect(() => {
+        if (isBookingOpen) {
+            setIsLoadingSlots(true);
+            getBookedSlots()
+                .then(slots => {
+                    setBookedSlots(slots);
+                })
+                .finally(() => {
+                    setIsLoadingSlots(false);
+                });
+        }
+    }, [isBookingOpen]);
+
     const isDateAvailable = (date: Date) => {
         return availableDates.some(
             (availableDate) =>
@@ -136,6 +123,10 @@ const BookingModal = () => {
                 availableDate.getMonth() === date.getMonth() &&
                 availableDate.getFullYear() === date.getFullYear()
         );
+    };
+
+    const isSlotBookedLocal = (date: string, time: string): boolean => {
+        return bookedSlots.includes(`${date}_${time}`);
     };
 
     const getTimeSlots = () => {
@@ -152,7 +143,7 @@ const BookingModal = () => {
     const getAvailableTimeSlots = () => {
         if (!selectedDate) return [];
         const dateStr = selectedDate.toISOString().split('T')[0];
-        return getTimeSlots().filter(time => !isSlotBooked(dateStr, time));
+        return getTimeSlots().filter(time => !isSlotBookedLocal(dateStr, time));
     };
 
     const getDaysInMonth = (date: Date) => {
@@ -211,11 +202,21 @@ const BookingModal = () => {
 
         const dateStr = selectedDate.toISOString().split('T')[0];
 
-        // Save the booked slot to localStorage
-        saveBookedSlot(dateStr, selectedTime);
+        // Save the booking to Firebase
+        const saved = await saveBooking(
+            dateStr,
+            selectedTime,
+            formData.name,
+            formData.instagram,
+            formData.clinicName
+        );
 
-        // Create WhatsApp message
-        const message = `Olá! Gostaria de confirmar meu agendamento:
+        if (saved) {
+            // Update local state
+            setBookedSlots([...bookedSlots, `${dateStr}_${selectedTime}`]);
+
+            // Create WhatsApp message
+            const message = `Olá! Gostaria de confirmar meu agendamento:
 
 📅 *Data:* ${formatFullDate(selectedDate)}
 🕐 *Horário:* ${selectedTime}
@@ -226,13 +227,17 @@ ${formData.clinicName ? `🏥 *Clínica:* ${formData.clinicName}` : ''}
 
 Aguardo confirmação!`;
 
-        const encodedMessage = encodeURIComponent(message);
-        const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
 
-        // Open WhatsApp
-        window.open(whatsappUrl, '_blank');
+            // Open WhatsApp
+            window.open(whatsappUrl, '_blank');
 
-        setStep('success');
+            setStep('success');
+        } else {
+            alert('Erro ao salvar agendamento. Tente novamente.');
+        }
+
         setIsSubmitting(false);
     };
 
@@ -273,7 +278,13 @@ Aguardo confirmação!`;
                 </div>
 
                 <div className="p-4 overflow-y-auto">
-                    {step === 'date' && (
+                    {isLoadingSlots && (
+                        <div className="flex items-center justify-center py-8">
+                            <Loader2 className="w-8 h-8 text-primary animate-spin" />
+                        </div>
+                    )}
+
+                    {!isLoadingSlots && step === 'date' && (
                         <div className="animate-in fade-in duration-300">
                             <div className="flex items-center justify-between mb-4">
                                 <button
@@ -336,7 +347,7 @@ Aguardo confirmação!`;
                         </div>
                     )}
 
-                    {step === 'time' && selectedDate && (
+                    {!isLoadingSlots && step === 'time' && selectedDate && (
                         <div className="animate-in fade-in duration-300">
                             <button
                                 onClick={() => setStep('date')}
@@ -379,7 +390,7 @@ Aguardo confirmação!`;
                         </div>
                     )}
 
-                    {step === 'form' && selectedDate && selectedTime && (
+                    {!isLoadingSlots && step === 'form' && selectedDate && selectedTime && (
                         <div className="animate-in fade-in duration-300">
                             <button
                                 onClick={() => setStep('time')}
@@ -442,8 +453,8 @@ Aguardo confirmação!`;
                                 >
                                     {isSubmitting ? (
                                         <>
-                                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                            Abrindo WhatsApp...
+                                            <Loader2 className="w-5 h-5 animate-spin" />
+                                            Salvando...
                                         </>
                                     ) : (
                                         '✅ Confirmar e Enviar no WhatsApp'
