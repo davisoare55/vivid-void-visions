@@ -1,6 +1,7 @@
-import { useState, Suspense, lazy } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import Hero from '@/components/Hero';
 import Navigation from '@/components/Navigation';
+import { preloadFirebase } from '@/lib/firebase';
 
 // Lazy load non-critical components
 const CustomCursor = lazy(() => import('@/components/CustomCursor'));
@@ -21,6 +22,11 @@ const LoadingFallback = () => <div className="w-full h-32 animate-pulse bg-white
 
 const Index = () => {
   const [showFullSite, setShowFullSite] = useState(true);
+
+  // Preload Firebase in background
+  useEffect(() => {
+    preloadFirebase();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background w-full max-w-full overflow-x-hidden">

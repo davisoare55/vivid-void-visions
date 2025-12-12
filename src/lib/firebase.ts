@@ -1,5 +1,5 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, getDocs, query, where } from "firebase/firestore";
+import { initializeApp, FirebaseApp } from "firebase/app";
+import { getFirestore, collection, addDoc, getDocs, Firestore } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBaXTPgtOuBq8_6VGSzTk3E7Ha9uMsW94o",
@@ -11,17 +11,31 @@ const firebaseConfig = {
     measurementId: "G-6JZ8RF5TEL"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+// Lazy initialization
+let app: FirebaseApp | null = null;
+let db: Firestore | null = null;
+
+const getDb = () => {
+    if (!db) {
+        app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+    }
+    return db;
+};
 
 // Collection name
 const BOOKINGS_COLLECTION = 'bookings';
 
+// Cache for booked slots
+let slotsCache: string[] | null = null;
+let cacheTimestamp: number = 0;
+const CACHE_DURATION = 30000; // 30 seconds
+
 // Save a booking
 export const saveBooking = async (date: string, time: string, name: string, instagram: string, clinicName?: string) => {
     try {
-        await addDoc(collection(db, BOOKINGS_COLLECTION), {
+        const database = getDb();
+        await addDoc(collection(database, BOOKINGS_COLLECTION), {
             date,
             time,
             name,
@@ -29,6 +43,8 @@ export const saveBooking = async (date: string, time: string, name: string, inst
             clinicName: clinicName || '',
             createdAt: new Date().toISOString()
         });
+        // Invalid cache after saving
+        slotsCache = null;
         return true;
     } catch (error) {
         console.error('Error saving booking:', error);
@@ -36,10 +52,16 @@ export const saveBooking = async (date: string, time: string, name: string, inst
     }
 };
 
-// Get all booked slots
+// Get all booked slots with caching
 export const getBookedSlots = async (): Promise<string[]> => {
+    // Return cache if valid
+    if (slotsCache && Date.now() - cacheTimestamp < CACHE_DURATION) {
+        return slotsCache;
+    }
+
     try {
-        const querySnapshot = await getDocs(collection(db, BOOKINGS_COLLECTION));
+        const database = getDb();
+        const querySnapshot = await getDocs(collection(database, BOOKINGS_COLLECTION));
         const slots: string[] = [];
         querySnapshot.forEach((doc) => {
             const data = doc.data();
@@ -47,27 +69,20 @@ export const getBookedSlots = async (): Promise<string[]> => {
                 slots.push(`${data.date}_${data.time}`);
             }
         });
+        // Update cache
+        slotsCache = slots;
+        cacheTimestamp = Date.now();
         return slots;
     } catch (error) {
         console.error('Error getting booked slots:', error);
-        return [];
+        return slotsCache || [];
     }
 };
 
-// Check if a specific slot is booked
-export const isSlotBooked = async (date: string, time: string): Promise<boolean> => {
-    try {
-        const q = query(
-            collection(db, BOOKINGS_COLLECTION),
-            where("date", "==", date),
-            where("time", "==", time)
-        );
-        const querySnapshot = await getDocs(q);
-        return !querySnapshot.empty;
-    } catch (error) {
-        console.error('Error checking slot:', error);
-        return false;
-    }
+// Preload Firebase in background (call this on page load)
+export const preloadFirebase = () => {
+    setTimeout(() => {
+        getDb();
+        getBookedSlots();
+    }, 2000);
 };
-
-export { db };
