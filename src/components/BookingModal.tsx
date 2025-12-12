@@ -198,9 +198,9 @@ const BookingModal = () => {
 
         const dateStr = selectedDate.toISOString().split('T')[0];
 
-        // Send booking to Make.com webhook using sendBeacon (no CORS issues)
+        // Send booking to Make.com webhook
         try {
-            const data = JSON.stringify({
+            const bookingData = {
                 date: dateStr,
                 time: selectedTime,
                 name: formData.name,
@@ -208,11 +208,18 @@ const BookingModal = () => {
                 clinicName: formData.clinicName,
                 formattedDate: formatFullDate(selectedDate),
                 timestamp: new Date().toISOString()
-            });
+            };
 
-            // Use sendBeacon for reliable cross-origin requests
-            const blob = new Blob([data], { type: 'application/json' });
-            navigator.sendBeacon(WEBHOOK_CREATE_BOOKING, blob);
+            // Try fetch first
+            fetch(WEBHOOK_CREATE_BOOKING, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(bookingData)
+            }).catch(() => {
+                // Fallback: use image beacon with query params
+                const params = new URLSearchParams(bookingData as Record<string, string>).toString();
+                new Image().src = `${WEBHOOK_CREATE_BOOKING}?${params}`;
+            });
 
             // Update local state
             setBookedSlots([...bookedSlots, `${dateStr}_${selectedTime}`]);
