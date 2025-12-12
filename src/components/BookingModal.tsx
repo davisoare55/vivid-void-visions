@@ -2,8 +2,9 @@ import { X, Calendar, Clock, User, Instagram, CheckCircle, ChevronLeft, ChevronR
 import { useBooking } from '@/context/BookingContext';
 import { useState, useEffect } from 'react';
 
-// Make.com Webhook
+// Make.com Webhooks
 const WEBHOOK_CREATE_BOOKING = 'https://hook.us2.make.com/fcnk89n4sslh6c724l26vults2jed8dg';
+const WEBHOOK_GET_SLOTS = 'https://hook.us2.make.com/mleyo7sx9rlp63lflj62cokfw1powytm';
 
 // WhatsApp number
 const WHATSAPP_NUMBER = '5511982603777';
@@ -21,7 +22,7 @@ const DEFAULT_SETTINGS = {
         quarta: true,
         quinta: true,
         sexta: true,
-        sabado: true
+        sabado: false
     },
     horarios: {
         manha: ['09:00', '09:30', '10:00', '10:30', '11:00'],
@@ -105,12 +106,34 @@ const BookingModal = () => {
         setAvailableDates(available);
     }, [isBookingOpen]);
 
-    // For now, just set loading to false immediately
-    // Can add webhook to get booked slots later
+    // Fetch booked slots from Make.com (reads from Google Sheets)
     useEffect(() => {
-        if (isBookingOpen) {
+        const fetchBookedSlots = async () => {
+            if (!isBookingOpen) return;
+
+            // Only fetch if webhook URL is configured
+            if (!WEBHOOK_GET_SLOTS) {
+                setIsLoadingSlots(false);
+                return;
+            }
+
+            setIsLoadingSlots(true);
+            try {
+                const response = await fetch(WEBHOOK_GET_SLOTS);
+                if (response.ok) {
+                    const data = await response.json();
+                    // Expecting array of slots like ["2025-12-13_14:00", "2025-12-14_10:00", ...]
+                    if (Array.isArray(data.slots)) {
+                        setBookedSlots(data.slots);
+                    }
+                }
+            } catch (error) {
+                console.log('Could not fetch booked slots, continuing without');
+            }
             setIsLoadingSlots(false);
-        }
+        };
+
+        fetchBookedSlots();
     }, [isBookingOpen]);
 
     const isDateAvailable = (date: Date) => {
@@ -461,17 +484,6 @@ Aguardo confirmação!`;
                                             className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary/50"
                                         />
                                     </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm text-muted-foreground mb-1">Nome da clínica (opcional)</label>
-                                    <input
-                                        type="text"
-                                        value={formData.clinicName}
-                                        onChange={(e) => setFormData({ ...formData, clinicName: e.target.value })}
-                                        placeholder="Nome da sua clínica"
-                                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary/50"
-                                    />
                                 </div>
 
                                 <button
