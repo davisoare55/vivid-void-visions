@@ -198,22 +198,21 @@ const BookingModal = () => {
 
         const dateStr = selectedDate.toISOString().split('T')[0];
 
-        // Send booking to Make.com webhook
+        // Send booking to Make.com webhook using sendBeacon (no CORS issues)
         try {
-            await fetch(WEBHOOK_CREATE_BOOKING, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    date: dateStr,
-                    time: selectedTime,
-                    name: formData.name,
-                    instagram: formData.instagram,
-                    clinicName: formData.clinicName,
-                    formattedDate: formatFullDate(selectedDate),
-                    timestamp: new Date().toISOString()
-                }),
-                mode: 'no-cors'
+            const data = JSON.stringify({
+                date: dateStr,
+                time: selectedTime,
+                name: formData.name,
+                instagram: formData.instagram,
+                clinicName: formData.clinicName,
+                formattedDate: formatFullDate(selectedDate),
+                timestamp: new Date().toISOString()
             });
+
+            // Use sendBeacon for reliable cross-origin requests
+            const blob = new Blob([data], { type: 'application/json' });
+            navigator.sendBeacon(WEBHOOK_CREATE_BOOKING, blob);
 
             // Update local state
             setBookedSlots([...bookedSlots, `${dateStr}_${selectedTime}`]);
