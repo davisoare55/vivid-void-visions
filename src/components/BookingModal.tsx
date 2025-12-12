@@ -1,11 +1,13 @@
-import { X, Calendar, Clock, User, Phone, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, Calendar, Clock, User, Instagram, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useBooking } from '@/context/BookingContext';
 import { useState, useEffect } from 'react';
 
-const WEBHOOK_URL = 'https://webhookia.brazilzap.com.br/webhook/davisoares-agendamento';
+// WhatsApp number
+const WHATSAPP_NUMBER = '5511982603777';
 
-// Storage key (same as GestaoPage)
-const STORAGE_KEY = 'soares_calendar_settings';
+// Storage keys
+const SETTINGS_KEY = 'soares_calendar_settings';
+const BOOKED_SLOTS_KEY = 'soares_booked_slots';
 
 // Default settings
 const DEFAULT_SETTINGS = {
@@ -34,7 +36,7 @@ type CalendarSettings = typeof DEFAULT_SETTINGS;
 // Get stored settings
 const getCalendarSettings = (): CalendarSettings => {
     try {
-        const stored = localStorage.getItem(STORAGE_KEY);
+        const stored = localStorage.getItem(SETTINGS_KEY);
         if (stored) {
             return JSON.parse(stored);
         }
@@ -42,6 +44,35 @@ const getCalendarSettings = (): CalendarSettings => {
         console.error('Error reading calendar settings:', e);
     }
     return DEFAULT_SETTINGS;
+};
+
+// Get booked slots
+const getBookedSlots = (): string[] => {
+    try {
+        const stored = localStorage.getItem(BOOKED_SLOTS_KEY);
+        if (stored) {
+            return JSON.parse(stored);
+        }
+    } catch (e) {
+        console.error('Error reading booked slots:', e);
+    }
+    return [];
+};
+
+// Save booked slot
+const saveBookedSlot = (date: string, time: string) => {
+    const slots = getBookedSlots();
+    const slotKey = `${date}_${time}`;
+    if (!slots.includes(slotKey)) {
+        slots.push(slotKey);
+        localStorage.setItem(BOOKED_SLOTS_KEY, JSON.stringify(slots));
+    }
+};
+
+// Check if slot is booked
+const isSlotBooked = (date: string, time: string): boolean => {
+    const slots = getBookedSlots();
+    return slots.includes(`${date}_${time}`);
 };
 
 // Map day of week (0-6) to settings key
@@ -69,7 +100,7 @@ const BookingModal = () => {
     const [availableDates, setAvailableDates] = useState<Date[]>([]);
     const [formData, setFormData] = useState({
         name: '',
-        phone: '',
+        instagram: '',
         clinicName: ''
     });
 
@@ -116,6 +147,12 @@ const BookingModal = () => {
             slots.push(...settings.horarios.tarde);
         }
         return slots;
+    };
+
+    const getAvailableTimeSlots = () => {
+        if (!selectedDate) return [];
+        const dateStr = selectedDate.toISOString().split('T')[0];
+        return getTimeSlots().filter(time => !isSlotBooked(dateStr, time));
     };
 
     const getDaysInMonth = (date: Date) => {
@@ -172,40 +209,38 @@ const BookingModal = () => {
 
         setIsSubmitting(true);
 
-        const payload = {
-            name: formData.name,
-            phone: formData.phone,
-            clinicName: formData.clinicName,
-            date: selectedDate.toISOString().split('T')[0],
-            time: selectedTime,
-            formattedDate: formatFullDate(selectedDate),
-            timestamp: new Date().toISOString()
-        };
+        const dateStr = selectedDate.toISOString().split('T')[0];
 
-        try {
-            await fetch(WEBHOOK_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-                mode: 'no-cors'
-            });
+        // Save the booked slot to localStorage
+        saveBookedSlot(dateStr, selectedTime);
 
-            setStep('success');
-        } catch (error) {
-            console.error('Erro ao enviar agendamento:', error);
-            setStep('success');
-        } finally {
-            setIsSubmitting(false);
-        }
+        // Create WhatsApp message
+        const message = `Olá! Gostaria de confirmar meu agendamento:
+
+📅 *Data:* ${formatFullDate(selectedDate)}
+🕐 *Horário:* ${selectedTime}
+
+👤 *Nome:* ${formData.name}
+📸 *Instagram:* ${formData.instagram}
+${formData.clinicName ? `🏥 *Clínica:* ${formData.clinicName}` : ''}
+
+Aguardo confirmação!`;
+
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+
+        // Open WhatsApp
+        window.open(whatsappUrl, '_blank');
+
+        setStep('success');
+        setIsSubmitting(false);
     };
 
     const handleClose = () => {
         setStep('date');
         setSelectedDate(null);
         setSelectedTime(null);
-        setFormData({ name: '', phone: '', clinicName: '' });
+        setFormData({ name: '', instagram: '', clinicName: '' });
         closeBooking();
     };
 
@@ -213,7 +248,7 @@ const BookingModal = () => {
 
     const days = getDaysInMonth(currentMonth);
     const weekDays = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'];
-    const timeSlots = getTimeSlots();
+    const availableTimeSlots = getAvailableTimeSlots();
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
@@ -312,23 +347,35 @@ const BookingModal = () => {
                             <p className="text-muted-foreground mb-2 text-sm">
                                 Data: <span className="text-white font-medium">{formatDate(selectedDate)}</span>
                             </p>
-                            <p className="text-muted-foreground mb-4 text-sm">Escolha um horário:</p>
+                            <p className="text-muted-foreground mb-4 text-sm">Escolha um horário disponível:</p>
 
-                            <div className="grid grid-cols-3 gap-2 max-h-[40vh] overflow-y-auto">
-                                {timeSlots.map((time) => (
+                            {availableTimeSlots.length === 0 ? (
+                                <div className="text-center py-8">
+                                    <p className="text-muted-foreground">Todos os horários deste dia estão ocupados.</p>
                                     <button
-                                        key={time}
-                                        onClick={() => {
-                                            setSelectedTime(time);
-                                            setStep('form');
-                                        }}
-                                        className="p-3 rounded-lg border border-white/10 hover:border-primary/50 hover:bg-primary/10 transition-all flex items-center justify-center gap-2"
+                                        onClick={() => setStep('date')}
+                                        className="mt-4 text-primary hover:underline"
                                     >
-                                        <Clock className="w-4 h-4 text-primary" />
-                                        <span className="text-white font-medium">{time}</span>
+                                        Escolher outra data
                                     </button>
-                                ))}
-                            </div>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-3 gap-2 max-h-[40vh] overflow-y-auto">
+                                    {availableTimeSlots.map((time) => (
+                                        <button
+                                            key={time}
+                                            onClick={() => {
+                                                setSelectedTime(time);
+                                                setStep('form');
+                                            }}
+                                            className="p-3 rounded-lg border border-white/10 hover:border-primary/50 hover:bg-primary/10 transition-all flex items-center justify-center gap-2"
+                                        >
+                                            <Clock className="w-4 h-4 text-primary" />
+                                            <span className="text-white font-medium">{time}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     )}
 
@@ -363,15 +410,15 @@ const BookingModal = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm text-muted-foreground mb-1">WhatsApp</label>
+                                    <label className="block text-sm text-muted-foreground mb-1">Instagram</label>
                                     <div className="relative">
-                                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                                        <Instagram className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                                         <input
-                                            type="tel"
+                                            type="text"
                                             required
-                                            value={formData.phone}
-                                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                            placeholder="(11) 99999-9999"
+                                            value={formData.instagram}
+                                            onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
+                                            placeholder="@seuinstagram"
                                             className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary/50"
                                         />
                                     </div>
@@ -396,10 +443,10 @@ const BookingModal = () => {
                                     {isSubmitting ? (
                                         <>
                                             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                            Agendando...
+                                            Abrindo WhatsApp...
                                         </>
                                     ) : (
-                                        'Confirmar Agendamento'
+                                        '✅ Confirmar e Enviar no WhatsApp'
                                     )}
                                 </button>
                             </form>
@@ -411,9 +458,9 @@ const BookingModal = () => {
                             <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
                                 <CheckCircle className="w-8 h-8 text-green-500" />
                             </div>
-                            <h4 className="text-xl font-bold text-white mb-2">Agendamento Confirmado!</h4>
+                            <h4 className="text-xl font-bold text-white mb-2">Quase lá!</h4>
                             <p className="text-muted-foreground mb-6">
-                                Você receberá uma mensagem no WhatsApp com os detalhes.
+                                Envie a mensagem no WhatsApp para confirmar seu agendamento.
                             </p>
                             <button
                                 onClick={handleClose}
