@@ -2,9 +2,8 @@ import { X, Calendar, Clock, User, Instagram, CheckCircle, ChevronLeft, ChevronR
 import { useBooking } from '@/context/BookingContext';
 import { useState, useEffect } from 'react';
 
-// Make.com Webhooks - CONFIGURE ESTES URLs APÓS CRIAR NO MAKE.COM
-const WEBHOOK_CREATE_BOOKING = 'https://hook.us1.make.com/SEU_WEBHOOK_CRIAR_AGENDAMENTO';
-const WEBHOOK_GET_SLOTS = 'https://hook.us1.make.com/SEU_WEBHOOK_BUSCAR_SLOTS';
+// Make.com Webhook
+const WEBHOOK_CREATE_BOOKING = 'https://hook.us2.make.com/fcnk89n4sslh6c724l26vults2jed8dg';
 
 // WhatsApp number
 const WHATSAPP_NUMBER = '5511982603777';
@@ -105,25 +104,11 @@ const BookingModal = () => {
         setAvailableDates(available);
     }, [isBookingOpen]);
 
-    // Load booked slots from Make.com webhook (Google Sheets)
+    // For now, just set loading to false immediately
+    // Can add webhook to get booked slots later
     useEffect(() => {
         if (isBookingOpen) {
-            setIsLoadingSlots(true);
-
-            // Try to fetch booked slots from Make.com
-            fetch(WEBHOOK_GET_SLOTS)
-                .then(res => res.json())
-                .then(data => {
-                    if (Array.isArray(data)) {
-                        setBookedSlots(data);
-                    }
-                })
-                .catch(err => {
-                    console.log('Could not load booked slots, continuing without');
-                })
-                .finally(() => {
-                    setIsLoadingSlots(false);
-                });
+            setIsLoadingSlots(false);
         }
     }, [isBookingOpen]);
 
