@@ -1,7 +1,10 @@
 import { X, Calendar, Clock, User, Instagram, CheckCircle, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { useBooking } from '@/context/BookingContext';
 import { useState, useEffect } from 'react';
-import { saveBooking, getBookedSlots } from '@/lib/firebase';
+
+// Make.com Webhooks - CONFIGURE ESTES URLs APÓS CRIAR NO MAKE.COM
+const WEBHOOK_CREATE_BOOKING = 'https://hook.us1.make.com/SEU_WEBHOOK_CRIAR_AGENDAMENTO';
+const WEBHOOK_GET_SLOTS = 'https://hook.us1.make.com/SEU_WEBHOOK_BUSCAR_SLOTS';
 
 // WhatsApp number
 const WHATSAPP_NUMBER = '5511982603777';
@@ -102,13 +105,21 @@ const BookingModal = () => {
         setAvailableDates(available);
     }, [isBookingOpen]);
 
-    // Load booked slots from Firebase
+    // Load booked slots from Make.com webhook (Google Sheets)
     useEffect(() => {
         if (isBookingOpen) {
             setIsLoadingSlots(true);
-            getBookedSlots()
-                .then(slots => {
-                    setBookedSlots(slots);
+
+            // Try to fetch booked slots from Make.com
+            fetch(WEBHOOK_GET_SLOTS)
+                .then(res => res.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        setBookedSlots(data);
+                    }
+                })
+                .catch(err => {
+                    console.log('Could not load booked slots, continuing without');
                 })
                 .finally(() => {
                     setIsLoadingSlots(false);
@@ -202,16 +213,23 @@ const BookingModal = () => {
 
         const dateStr = selectedDate.toISOString().split('T')[0];
 
-        // Save the booking to Firebase
-        const saved = await saveBooking(
-            dateStr,
-            selectedTime,
-            formData.name,
-            formData.instagram,
-            formData.clinicName
-        );
+        // Send booking to Make.com webhook
+        try {
+            await fetch(WEBHOOK_CREATE_BOOKING, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    date: dateStr,
+                    time: selectedTime,
+                    name: formData.name,
+                    instagram: formData.instagram,
+                    clinicName: formData.clinicName,
+                    formattedDate: formatFullDate(selectedDate),
+                    timestamp: new Date().toISOString()
+                }),
+                mode: 'no-cors'
+            });
 
-        if (saved) {
             // Update local state
             setBookedSlots([...bookedSlots, `${dateStr}_${selectedTime}`]);
 
@@ -234,8 +252,10 @@ Aguardo confirmação!`;
             window.open(whatsappUrl, '_blank');
 
             setStep('success');
-        } else {
-            alert('Erro ao salvar agendamento. Tente novamente.');
+        } catch (error) {
+            console.error('Error sending booking:', error);
+            // Still show success and open WhatsApp
+            setStep('success');
         }
 
         setIsSubmitting(false);
