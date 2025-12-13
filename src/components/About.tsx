@@ -52,21 +52,19 @@ const About = () => {
 
             <div className="space-y-6 text-muted-foreground leading-relaxed p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
               <p>
-                <span className="text-white font-medium">100M+ visualizações</span> para Nike, NFL, iFood...
+                Trabalhei com <span className="text-white font-medium">Nike, NFL, Fanta, Memphis Depay.</span>
               </p>
               <p>
-                Mas por que larguei marcas gigantes pra trabalhar só com clínicas de estética?
+                Mais de <span className="text-white font-medium">100 milhões de views</span> em projetos.
               </p>
               <p>
-                Porque descobri que <span className="text-white font-medium">viralização sem conversão é vaidade.</span>
+                Mas parei. <span className="text-primary font-bold">Por quê?</span>
               </p>
               <p>
-                E clínica que não gera paciente não precisa de views — <span className="text-primary font-bold">precisa de CONSULTAS.</span>
+                <span className="text-white font-medium">Visualização não paga conta.</span> Agendamento qualificado sim paga.
               </p>
               <p className="text-white font-medium text-lg border-l-2 border-primary pl-4 mt-6">
-                Por isso criei o único modelo do Brasil onde:<br />
-                <span className="text-muted-foreground">❌ Você NÃO paga por vídeo</span><br />
-                <span className="text-primary">✅ Você paga POR RESULTADO</span>
+                Agora: crio vídeos de alta atenção 100% focados em clínicas brasileiras.
               </p>
             </div>
           </div>
