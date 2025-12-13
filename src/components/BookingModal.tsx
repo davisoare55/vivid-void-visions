@@ -2,9 +2,9 @@ import { X, Calendar, Clock, User, Instagram, CheckCircle, ChevronLeft, ChevronR
 import { useBooking } from '@/context/BookingContext';
 import { useState, useEffect } from 'react';
 
-// Make.com Webhooks
-const WEBHOOK_CREATE_BOOKING = 'https://hook.us2.make.com/fcnk89n4sslh6c724l26vults2jed8dg';
-const WEBHOOK_GET_SLOTS = 'https://hook.us2.make.com/mleyo7sx9rlp63lflj62cokfw1powytm';
+// Webhook for booking
+const WEBHOOK_CREATE_BOOKING = 'https://webhookia.brazilzap.com.br/webhook/davisoares-agendamento';
+const WEBHOOK_GET_SLOTS = ''; // Disabled - slots managed by BrazilZap
 
 // WhatsApp number
 const WHATSAPP_NUMBER = '5511982603777';
