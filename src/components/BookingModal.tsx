@@ -520,7 +520,7 @@ const BookingModal = () => {
                             </div>
                             <h4 className="text-xl font-bold text-white mb-2">Reunião agendada! 🎉</h4>
                             <p className="text-muted-foreground mb-6">
-                                Você receberá um e-mail com o link da reunião. Nos vemos lá!
+                                Você receberá uma confirmação pelo WhatsApp ou e-mail. Nos vemos lá!
                             </p>
                             <button
                                 onClick={handleClose}
