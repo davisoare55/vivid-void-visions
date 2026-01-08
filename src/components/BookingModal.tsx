@@ -255,6 +255,10 @@ const BookingModal = () => {
             // Update local state immediately
             setBookedSlots([...bookedSlots, `${dateStr}_${selectedTime}`]);
 
+            // Open WhatsApp with simple message
+            const message = encodeURIComponent('Nos vemos na reunião! 🎉');
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+
             setStep('success');
         } catch (error) {
             console.error('Error sending booking:', error);
