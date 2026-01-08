@@ -2,9 +2,10 @@ import { X, Calendar, Clock, User, Instagram, CheckCircle, ChevronLeft, ChevronR
 import { useBooking } from '@/context/BookingContext';
 import { useState, useEffect } from 'react';
 
-// Webhook for booking
-const WEBHOOK_CREATE_BOOKING = 'https://webhookia.brazilzap.com.br/webhook/davisoares-agendamento';
-const WEBHOOK_GET_SLOTS = ''; // Disabled - slots managed by BrazilZap
+// BrazilZap Webhook - handles both creating and fetching bookings
+const WEBHOOK_URL = 'https://webhookia.brazilzap.com.br/webhook/davisoares-agendamento';
+const WEBHOOK_CREATE_BOOKING = WEBHOOK_URL;
+const WEBHOOK_GET_SLOTS = `${WEBHOOK_URL}?action=getSlots`;
 
 // WhatsApp number
 const WHATSAPP_NUMBER = '5511982603777';
@@ -106,68 +107,59 @@ const BookingModal = () => {
         setAvailableDates(available);
     }, [isBookingOpen]);
 
-    // Fetch booked slots from Make.com (reads from Google Sheets)
+    // Fetch booked slots from BrazilZap
     useEffect(() => {
         const fetchBookedSlots = async () => {
-            if (!isBookingOpen) return;
-
-            // Only fetch if webhook URL is configured
-            if (!WEBHOOK_GET_SLOTS) {
+            if (!isBookingOpen || !WEBHOOK_GET_SLOTS) {
                 setIsLoadingSlots(false);
                 return;
             }
 
-            setIsLoadingSlots(true);
             try {
                 const response = await fetch(WEBHOOK_GET_SLOTS);
                 if (response.ok) {
                     const data = await response.json();
-                    console.log('Booked slots response:', data);
+                    console.log('BrazilZap response:', data);
 
-                    // Handle different response formats
                     let slots: string[] = [];
 
+                    // Handle response format: { slots: ["2025-01-09_14:00", ...] }
                     if (Array.isArray(data.slots)) {
-                        // Format: { slots: ["2025-12-13_14:00", ...] }
                         slots = data.slots;
-                    } else if (Array.isArray(data.array)) {
-                        // Format from Make.com aggregator: { array: [{key: "2025-12-1611:00", value: "..."}, ...] }
-                        slots = data.array.map((item: { key?: string; value?: string }) => {
-                            const dateTime = item.key || item.value || '';
-                            // Parse format like "2025-12-1611:00" -> "2025-12-16_11:00"
-                            const match = dateTime.match(/(\d{4}-\d{2}-\d{2})(\d{2}:\d{2})/);
-                            if (match) {
-                                return `${match[1]}_${match[2]}`;
-                            }
-                            return dateTime;
-                        }).filter((s: string) => s && s !== '_');
                     } else if (Array.isArray(data)) {
-                        // Format: [{ DATA: "2025-12-13", HORARIO: "14:00" }, ...]
-                        slots = data.map((row: { DATA?: string; HORARIO?: string; A?: string; B?: string }) => {
-                            const date = row.DATA || row.A || '';
-                            const time = row.HORARIO || row.B || '';
-                            return `${date}_${time}`;
-                        }).filter((s: string) => s !== '_');
-                    } else if (typeof data === 'string' || (data && !Array.isArray(data))) {
-                        // Handle body text responses - parse dates like "2025-12-1509:00"
-                        const bodyText = typeof data === 'string' ? data : JSON.stringify(data);
-                        const dateTimeRegex = /(\d{4}-\d{2}-\d{2})(\d{2}:\d{2})/g;
-                        let match;
-                        while ((match = dateTimeRegex.exec(bodyText)) !== null) {
-                            slots.push(`${match[1]}_${match[2]}`);
-                        }
+                        // Array of objects with date/time fields
+                        slots = data.map((row: { date?: string; time?: string; DATA?: string; HORARIO?: string }) => {
+                            const date = row.date || row.DATA || '';
+                            const time = row.time || row.HORARIO || '';
+                            return date && time ? `${date}_${time}` : '';
+                        }).filter(Boolean);
                     }
 
-                    console.log('Parsed slots:', slots);
-                    setBookedSlots(slots);
+                    console.log('Slots ocupados:', slots);
+                    setBookedSlots(prev => {
+                        // Merge with any locally booked slots
+                        const merged = [...new Set([...slots, ...prev])];
+                        return merged;
+                    });
                 }
             } catch (error) {
-                console.log('Could not fetch booked slots, continuing without');
+                console.log('Erro ao buscar slots, usando cache local');
             }
             setIsLoadingSlots(false);
         };
 
-        fetchBookedSlots();
+        // Fetch immediately when modal opens
+        if (isBookingOpen) {
+            setIsLoadingSlots(true);
+            fetchBookedSlots();
+        }
+
+        // Poll every 30 seconds while modal is open for real-time updates
+        const interval = isBookingOpen ? setInterval(fetchBookedSlots, 30000) : null;
+
+        return () => {
+            if (interval) clearInterval(interval);
+        };
     }, [isBookingOpen]);
 
     const isDateAvailable = (date: Date) => {
