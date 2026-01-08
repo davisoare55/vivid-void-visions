@@ -255,28 +255,10 @@ const BookingModal = () => {
             // Update local state immediately
             setBookedSlots([...bookedSlots, `${dateStr}_${selectedTime}`]);
 
-            // Create WhatsApp message
-            const message = `Olá! Gostaria de confirmar meu agendamento:
-
-📅 *Data:* ${formatFullDate(selectedDate)}
-🕐 *Horário:* ${selectedTime}
-
-👤 *Nome:* ${formData.name}
-📧 *Email:* ${formData.email}
-📸 *Instagram:* ${formData.instagram}
-
-Aguardo confirmação!`;
-
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
-
-            // Open WhatsApp
-            window.open(whatsappUrl, '_blank');
-
             setStep('success');
         } catch (error) {
             console.error('Error sending booking:', error);
-            // Still show success and open WhatsApp
+            // Still show success - webhook will handle notifications
             setStep('success');
         }
 
@@ -524,7 +506,7 @@ Aguardo confirmação!`;
                                             Salvando...
                                         </>
                                     ) : (
-                                        '✅ Confirmar e Enviar no WhatsApp'
+                                        '✅ Confirmar Agendamento'
                                     )}
                                 </button>
                             </form>
@@ -536,9 +518,9 @@ Aguardo confirmação!`;
                             <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
                                 <CheckCircle className="w-8 h-8 text-green-500" />
                             </div>
-                            <h4 className="text-xl font-bold text-white mb-2">Quase lá!</h4>
+                            <h4 className="text-xl font-bold text-white mb-2">Reunião agendada! 🎉</h4>
                             <p className="text-muted-foreground mb-6">
-                                Envie a mensagem no WhatsApp para confirmar seu agendamento.
+                                Você receberá um e-mail com o link da reunião. Nos vemos lá!
                             </p>
                             <button
                                 onClick={handleClose}
