@@ -1,4 +1,4 @@
-import { X, Calendar, Clock, User, Instagram, CheckCircle, ChevronLeft, ChevronRight, Loader2, Mail } from 'lucide-react';
+import { X, Calendar, Clock, User, Instagram, CheckCircle, ChevronLeft, ChevronRight, Loader2, Mail, Lock } from 'lucide-react';
 import { useBooking } from '@/context/BookingContext';
 import { useState, useEffect } from 'react';
 import { getBookedSlots, createBooking } from '@/lib/supabase';
@@ -402,9 +402,9 @@ Aguardo confirmação!`;
                             </p>
                             <p className="text-muted-foreground mb-4 text-sm">Escolha um horário disponível:</p>
 
-                            {availableTimeSlots.length === 0 ? (
+                            {getTimeSlots().length === 0 ? (
                                 <div className="text-center py-8">
-                                    <p className="text-muted-foreground">Todos os horários deste dia estão ocupados.</p>
+                                    <p className="text-muted-foreground">Nenhum horário configurado para este dia.</p>
                                     <button
                                         onClick={() => setStep('date')}
                                         className="mt-4 text-primary hover:underline"
@@ -414,19 +414,40 @@ Aguardo confirmação!`;
                                 </div>
                             ) : (
                                 <div className="grid grid-cols-3 gap-2 max-h-[40vh] overflow-y-auto">
-                                    {availableTimeSlots.map((time) => (
-                                        <button
-                                            key={time}
-                                            onClick={() => {
-                                                setSelectedTime(time);
-                                                setStep('form');
-                                            }}
-                                            className="p-3 rounded-lg border border-white/10 hover:border-primary/50 hover:bg-primary/10 transition-all flex items-center justify-center gap-2"
-                                        >
-                                            <Clock className="w-4 h-4 text-primary" />
-                                            <span className="text-white font-medium">{time}</span>
-                                        </button>
-                                    ))}
+                                    {getTimeSlots().map((time) => {
+                                        const dateStr = selectedDate.toISOString().split('T')[0];
+                                        const isBooked = isSlotBookedLocal(dateStr, time);
+
+                                        return (
+                                            <button
+                                                key={time}
+                                                onClick={() => {
+                                                    if (!isBooked) {
+                                                        setSelectedTime(time);
+                                                        setStep('form');
+                                                    }
+                                                }}
+                                                disabled={isBooked}
+                                                className={`p-3 rounded-lg border transition-all flex items-center justify-center gap-2
+                                                    ${isBooked
+                                                        ? 'border-red-500/30 bg-red-500/10 cursor-not-allowed opacity-60'
+                                                        : 'border-white/10 hover:border-primary/50 hover:bg-primary/10 cursor-pointer'
+                                                    }`}
+                                            >
+                                                {isBooked ? (
+                                                    <>
+                                                        <Lock className="w-4 h-4 text-red-400" />
+                                                        <span className="text-red-400 font-medium line-through">{time}</span>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Clock className="w-4 h-4 text-primary" />
+                                                        <span className="text-white font-medium">{time}</span>
+                                                    </>
+                                                )}
+                                            </button>
+                                        );
+                                    })}
                                 </div>
                             )}
                         </div>
