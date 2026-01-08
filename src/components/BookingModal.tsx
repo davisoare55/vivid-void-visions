@@ -1,11 +1,10 @@
 import { X, Calendar, Clock, User, Instagram, CheckCircle, ChevronLeft, ChevronRight, Loader2, Mail } from 'lucide-react';
 import { useBooking } from '@/context/BookingContext';
 import { useState, useEffect } from 'react';
+import { getBookedSlots, createBooking } from '@/lib/supabase';
 
-// BrazilZap Webhook - handles both creating and fetching bookings
+// Optional: Also send to webhook for additional integrations (WhatsApp, etc)
 const WEBHOOK_URL = 'https://webhookia.brazilzap.com.br/webhook/davisoares-agendamento';
-const WEBHOOK_CREATE_BOOKING = WEBHOOK_URL;
-const WEBHOOK_GET_SLOTS = `${WEBHOOK_URL}?action=getSlots`;
 
 // WhatsApp number
 const WHATSAPP_NUMBER = '5511982603777';
@@ -107,43 +106,20 @@ const BookingModal = () => {
         setAvailableDates(available);
     }, [isBookingOpen]);
 
-    // Fetch booked slots from BrazilZap
+    // Fetch booked slots from Supabase (real-time sync across all users)
     useEffect(() => {
-        const fetchBookedSlots = async () => {
-            if (!isBookingOpen || !WEBHOOK_GET_SLOTS) {
+        const fetchSlots = async () => {
+            if (!isBookingOpen) {
                 setIsLoadingSlots(false);
                 return;
             }
 
             try {
-                const response = await fetch(WEBHOOK_GET_SLOTS);
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('BrazilZap response:', data);
-
-                    let slots: string[] = [];
-
-                    // Handle response format: { slots: ["2025-01-09_14:00", ...] }
-                    if (Array.isArray(data.slots)) {
-                        slots = data.slots;
-                    } else if (Array.isArray(data)) {
-                        // Array of objects with date/time fields
-                        slots = data.map((row: { date?: string; time?: string; DATA?: string; HORARIO?: string }) => {
-                            const date = row.date || row.DATA || '';
-                            const time = row.time || row.HORARIO || '';
-                            return date && time ? `${date}_${time}` : '';
-                        }).filter(Boolean);
-                    }
-
-                    console.log('Slots ocupados:', slots);
-                    setBookedSlots(prev => {
-                        // Merge with any locally booked slots
-                        const merged = [...new Set([...slots, ...prev])];
-                        return merged;
-                    });
-                }
+                const slots = await getBookedSlots();
+                console.log('Slots ocupados (Supabase):', slots);
+                setBookedSlots(slots);
             } catch (error) {
-                console.log('Erro ao buscar slots, usando cache local');
+                console.error('Erro ao buscar slots:', error);
             }
             setIsLoadingSlots(false);
         };
@@ -151,11 +127,11 @@ const BookingModal = () => {
         // Fetch immediately when modal opens
         if (isBookingOpen) {
             setIsLoadingSlots(true);
-            fetchBookedSlots();
+            fetchSlots();
         }
 
-        // Poll every 30 seconds while modal is open for real-time updates
-        const interval = isBookingOpen ? setInterval(fetchBookedSlots, 30000) : null;
+        // Poll every 15 seconds for real-time updates
+        const interval = isBookingOpen ? setInterval(fetchSlots, 15000) : null;
 
         return () => {
             if (interval) clearInterval(interval);
@@ -248,31 +224,35 @@ const BookingModal = () => {
 
         const dateStr = selectedDate.toISOString().split('T')[0];
 
-        // Send booking to Make.com webhook
+        // Save booking to Supabase (real-time sync)
         try {
             const bookingData = {
                 date: dateStr,
                 time: selectedTime,
                 name: formData.name,
                 email: formData.email,
-                instagram: formData.instagram,
-                clinicName: formData.clinicName,
-                formattedDate: formatFullDate(selectedDate),
-                timestamp: new Date().toISOString()
+                instagram: formData.instagram
             };
 
-            // Try fetch first
-            fetch(WEBHOOK_CREATE_BOOKING, {
+            // Save to Supabase
+            const success = await createBooking(bookingData);
+
+            if (success) {
+                console.log('Booking saved to Supabase!');
+            }
+
+            // Also send to webhook for WhatsApp/other integrations
+            fetch(WEBHOOK_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(bookingData)
-            }).catch(() => {
-                // Fallback: use image beacon with query params
-                const params = new URLSearchParams(bookingData as Record<string, string>).toString();
-                new Image().src = `${WEBHOOK_CREATE_BOOKING}?${params}`;
-            });
+                body: JSON.stringify({
+                    ...bookingData,
+                    formattedDate: formatFullDate(selectedDate),
+                    timestamp: new Date().toISOString()
+                })
+            }).catch(() => console.log('Webhook fallback'));
 
-            // Update local state
+            // Update local state immediately
             setBookedSlots([...bookedSlots, `${dateStr}_${selectedTime}`]);
 
             // Create WhatsApp message
@@ -282,8 +262,8 @@ const BookingModal = () => {
 🕐 *Horário:* ${selectedTime}
 
 👤 *Nome:* ${formData.name}
+📧 *Email:* ${formData.email}
 📸 *Instagram:* ${formData.instagram}
-${formData.clinicName ? `🏥 *Clínica:* ${formData.clinicName}` : ''}
 
 Aguardo confirmação!`;
 
