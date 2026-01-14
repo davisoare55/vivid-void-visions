@@ -14,6 +14,7 @@ export interface Booking {
     time: string;          // HH:mm format
     name: string;
     email: string;
+    whatsapp: string;
     instagram: string;
     created_at?: string;
 }

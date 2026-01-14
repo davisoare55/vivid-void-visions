@@ -1,4 +1,4 @@
-import { X, Calendar, Clock, User, Instagram, CheckCircle, ChevronLeft, ChevronRight, Loader2, Mail, Lock } from 'lucide-react';
+import { X, Calendar, Clock, User, Instagram, CheckCircle, ChevronLeft, ChevronRight, Loader2, Mail, Lock, Phone } from 'lucide-react';
 import { useBooking } from '@/context/BookingContext';
 import { useState, useEffect } from 'react';
 import { getBookedSlots, createBooking } from '@/lib/supabase';
@@ -77,6 +77,7 @@ const BookingModal = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
+        whatsapp: '',
         instagram: '',
         clinicName: ''
     });
@@ -231,6 +232,7 @@ const BookingModal = () => {
                 time: selectedTime,
                 name: formData.name,
                 email: formData.email,
+                whatsapp: formData.whatsapp,
                 instagram: formData.instagram
             };
 
@@ -273,7 +275,7 @@ const BookingModal = () => {
         setStep('date');
         setSelectedDate(null);
         setSelectedTime(null);
-        setFormData({ name: '', email: '', instagram: '', clinicName: '' });
+        setFormData({ name: '', email: '', whatsapp: '', instagram: '', clinicName: '' });
         closeBooking();
     };
 
@@ -479,6 +481,21 @@ const BookingModal = () => {
                                             value={formData.email}
                                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                             placeholder="seu@email.com"
+                                            className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary/50"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm text-muted-foreground mb-1">WhatsApp</label>
+                                    <div className="relative">
+                                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                                        <input
+                                            type="tel"
+                                            required
+                                            value={formData.whatsapp}
+                                            onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+                                            placeholder="(11) 99999-9999"
                                             className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary/50"
                                         />
                                     </div>
